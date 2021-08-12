@@ -8,7 +8,7 @@ public class PublicBlockParams : MonoBehaviour
 {
     public struct BlockSequence
     {
-        LabScene labName;
+        LabName labName;
         int lenBlock;
         public ArrayList seqPosture;        // lab 1
         public ArrayList seqOrientation;    // lab 1
@@ -16,12 +16,12 @@ public class PublicBlockParams : MonoBehaviour
         public ArrayList seqShape;
 
         #region Public Method
-        public void setBlockLength(LabScene name)
+        public void setBlockLength(LabName name)
         {
             labName = name;
             switch (name)
             {
-                case LabScene.Lab1_move_28:
+                case LabName.Lab1_move_28:
                     lenBlock = Lab1_move_28.totalBlockCount;
                     break;
             }
@@ -34,7 +34,7 @@ public class PublicBlockParams : MonoBehaviour
         {
             switch (labName)
             {
-                case LabScene.Lab1_move_28:
+                case LabName.Lab1_move_28:
                     setLab1Sequance(userid);
                     break;
                 default:
@@ -55,7 +55,7 @@ public class PublicBlockParams : MonoBehaviour
         public string getAllDataWithLabName()
         {
             string res = "";
-            if (labName == LabScene.Lab1_move_28)
+            if (labName == LabName.Lab1_move_28)
             {
                 string sp = getSequenceString(seqPosture);
                 string so = getSequenceString(seqOrientation);
@@ -149,7 +149,7 @@ public class PublicBlockParams : MonoBehaviour
             }
             else if (userid % 4 == 3 || userid % 4 == 0)
             {
-                for (int i = lenOrientation; i > -1; i--)
+                for (int i = lenOrientation - 1; i > -1; i--)
                 {
                     for (int k = 0; k < Lab1_move_28.AngleOfScreens.Length; k++)
                     {
@@ -182,12 +182,12 @@ public class PublicBlockParams : MonoBehaviour
 
         private ArrayList getGroupOrderedList(ArrayList list, int repeatNum)
         {
-            ArrayList res = list;
+            ArrayList res = new ArrayList();
             for (int i=0; i< list.Count; i++)
             {
                 for (int k = 0; k < repeatNum; k++)
                 {
-                    list.Add(list[i]);
+                    res.Add(list[i]);
                 }
             }
             return res;
@@ -245,5 +245,73 @@ public class PublicBlockParams : MonoBehaviour
         }
 
 
+    }
+
+    public struct BlockCondition
+    {
+        string prefix;
+        int blockid;
+        Lab1_move_28.Posture posture;
+        Lab1_move_28.Orientation orientation;
+        Lab1_move_28.Shape shape;
+        float angle;
+
+        public BlockCondition(int bid, int p, int o, int a, int s)
+        {
+            blockid = bid;
+            prefix = string.Format("B{0:D2}", bid);
+            posture = (Lab1_move_28.Posture)p;
+            orientation = (Lab1_move_28.Orientation)o;
+            shape = (Lab1_move_28.Shape)s;
+            angle = Lab1_move_28.AngleOfScreens[a];
+        }
+
+        public int getBlockid()
+        {
+            return blockid;
+        }
+
+        public Lab1_move_28.Posture getPosture()
+        {
+            return posture;
+        }
+
+        public Lab1_move_28.Orientation getOrientation()
+        {
+            return orientation;
+        }
+
+        public float getAngle()
+        {
+            return angle;
+        }
+
+        public Lab1_move_28.Shape getShape()
+        {
+            return shape;
+        }
+
+        public string getAllDataForSceneDisplay()
+        {
+            string str;
+            str = "Posture: " + posture.ToString() + Environment.NewLine
+                + "Orientation: " + orientation.ToString() + Environment.NewLine
+                + "Shape: " + shape.ToString() + Environment.NewLine
+                + "Angle: " + angle.ToString() + "°"
+                ;
+            return str;
+        }
+
+        public string getAllDataForFile()
+        {
+            string str;
+            str = prefix + ";"
+                + posture.ToString() + ";"
+                + orientation.ToString() + ";"
+                + shape.ToString() + ";"
+                + angle.ToString() + ";"
+                ;
+            return str;
+        }
     }
 }

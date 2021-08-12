@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
-using static PublicLabFactors;
+using static PublicInfo;
+using static PublicLabParams;
 
 public class AngleProcessor : MonoBehaviour
 {
@@ -23,37 +24,37 @@ public class AngleProcessor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /*
+        
         if (inReceivingAccStatus || inTrial)
         {
             accThis = Input.acceleration;
             accThis.y = 0f;
-            accOther = GlobalController.Instance.accClient;
+            accOther = GlobalMemory.Instance.accClient;
             accOther.y = 0f;
 
             angle = Vector3.Angle(accThis, accOther);
 
             if(
-                GlobalController.Instance.curLabInfos.labName == LabScene.Lab0_tap_5_5 &&
-                GlobalController.Instance.curLab0BlockCondition.getShape() == Lab0_tap_55.Shape.concave
-                ||
-                GlobalController.Instance.curLabInfos.labName == LabScene.Lab1_tap_33_33 &&
-                GlobalController.Instance.curLab1BlockCondition.getShape() == Lab1_tap_99.Shape.concave)
+                GlobalMemory.Instance.curLabInfos.labName == LabName.Lab1_move_28 &&
+                GlobalMemory.Instance.curBlockCondition.getShape() == Lab1_move_28.Shape.concave)
             {
-                GlobalController.Instance.curAngle = 180 - angle;
+                GlobalMemory.Instance.curAngle = 180 - angle;
             }
             else if(
-                GlobalController.Instance.curLabInfos.labName == LabScene.Lab0_tap_5_5 &&
-                GlobalController.Instance.curLab0BlockCondition.getShape() == Lab0_tap_55.Shape.convex
-                ||
-                GlobalController.Instance.curLabInfos.labName == LabScene.Lab1_tap_33_33 &&
-                GlobalController.Instance.curLab1BlockCondition.getShape() == Lab1_tap_99.Shape.convex)
+                GlobalMemory.Instance.curLabInfos.labName == LabName.Lab1_move_28 &&
+                GlobalMemory.Instance.curBlockCondition.getShape() == Lab1_move_28.Shape.convex)
             {
-                GlobalController.Instance.curAngle = 180 + angle;
+                GlobalMemory.Instance.curAngle = 180 + angle;
+            }
+            else if (
+                GlobalMemory.Instance.curLabInfos.labName == LabName.Lab1_move_28 &&
+                GlobalMemory.Instance.curBlockCondition.getShape() == Lab1_move_28.Shape.flat)
+            {
+                GlobalMemory.Instance.curAngle = 180 - angle;
             }
             else
             {
-                GlobalController.Instance.curAngle = float.MaxValue;
+                GlobalMemory.Instance.curAngle = float.MaxValue;
             }
 
             if(inTrial)
@@ -65,7 +66,7 @@ public class AngleProcessor : MonoBehaviour
         {
             angle = defaultAngle;
         }
-        */
+        
     }
 
 

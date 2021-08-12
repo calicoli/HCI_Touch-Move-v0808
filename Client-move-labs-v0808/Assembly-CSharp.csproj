@@ -62,7 +62,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\ClientController.cs" />
+    <Compile Include="Assets\Scripts\AngleProcessor.cs" />
+    <Compile Include="Assets\Scripts\ClientCenter.cs" />
     <Compile Include="Assets\Scripts\Demo\demoDirectDragProcessor.cs" />
     <Compile Include="Assets\Scripts\Demo\demoFlickerVisualizer.cs" />
     <Compile Include="Assets\Scripts\Demo\demoHoldTapProcessor.cs" />
@@ -74,9 +75,18 @@
     <Compile Include="Assets\Scripts\Demo\demoUIController.cs" />
     <Compile Include="Assets\Scripts\Entry\enPhaseController.cs" />
     <Compile Include="Assets\Scripts\Entry\enUIController.cs" />
-    <Compile Include="Assets\Scripts\GlobalController.cs" />
+    <Compile Include="Assets\Scripts\FileProcessor.cs" />
+    <Compile Include="Assets\Scripts\GlobalMemory.cs" />
+    <Compile Include="Assets\Scripts\Index\inPhaseController.cs" />
+    <Compile Include="Assets\Scripts\Index\inUIController.cs" />
+    <Compile Include="Assets\Scripts\PublicBlockPramas.cs" />
     <Compile Include="Assets\Scripts\PublicDragParams.cs" />
-    <Compile Include="Assets\Scripts\PublicLabFactors.cs" />
+    <Compile Include="Assets\Scripts\PublicInfo.cs" />
+    <Compile Include="Assets\Scripts\PublicLabParams.cs" />
+    <Compile Include="Assets\Scripts\PublicTrialParams.cs" />
+    <Compile Include="Assets\Scripts\demoGlobal\ClientController.cs" />
+    <Compile Include="Assets\Scripts\demoGlobal\GlobalController.cs" />
+    <Compile Include="Assets\Scripts\demoGlobal\PublicLabFactors.cs" />
     <Reference Include="UnityEngine">
       <HintPath>E:/Program Files/Unity/2019.4.18f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>

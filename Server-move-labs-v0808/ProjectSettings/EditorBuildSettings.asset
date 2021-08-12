@@ -8,13 +8,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Entry.unity
     guid: f3a94f1245ff76848af75c1e59784f0c
-  - enabled: 0
-    path: Assets/Scenes/Demo-old.unity
-    guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 0
-    path: Assets/Scenes/Test.unity
-    guid: 682a6614b10f14740acb04ff59f113a5
   - enabled: 1
     path: Assets/Scenes/Demo.unity
     guid: b16d9295f64af714ca01ba356fc7e082
+  - enabled: 1
+    path: Assets/Scenes/Index_scene.unity
+    guid: 031d924a5b6b7604c84fb566c321206f
+  - enabled: 1
+    path: Assets/Scenes/Tech1_DirectDrag.unity
+    guid: fd3d6e0cc3261aa48bdc12ca3e2dae9b
   m_configObjects: {}

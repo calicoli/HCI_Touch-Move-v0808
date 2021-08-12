@@ -131,10 +131,36 @@ public class ServerCenter : MonoBehaviour
     public void prepareNewMessage4Client(MessageType msgType)
     {
         string msgContent = "";
-        if (msgType == MessageType.DragMode)
+        if (msgType == MessageType.Block)
+        {
+            string targetLabName = GlobalMemory.Instance.curLabInfos.labName.ToString();
+            string targetLabScene = GlobalMemory.Instance.getLabSceneToEnter();
+            string targetDragMode = GlobalMemory.Instance.curDragType.ToString();
+            msgContent = msgType.ToString() + paramSeperators
+                       + targetLabName + paramSeperators
+                       + targetLabScene + paramSeperators
+                       + targetDragMode + paramSeperators;
+        }
+        else if (msgType == MessageType.Scene)
+        {
+            string serverScene = GlobalMemory.Instance.curServerScene.ToString();
+            msgContent = msgType.ToString() + paramSeperators
+                        + serverScene + paramSeperators;
+        }
+        else if (msgType == MessageType.Trial)
+        {
+            msgContent = msgType.ToString() + paramSeperators;
+            switch (GlobalMemory.Instance.curLabInfos.labName)
+            {
+                case LabName.Lab1_move_28:
+                    msgContent = msgContent + getLabTrialMessage();
+                    break;
+            }
+        }
+        else if (msgType == MessageType.DragMode)
         {
             //int blockid = GlobalMemory.Instance.curBlockid;
-            string targetMode = GlobalMemory.Instance.lab1DragType.ToString();
+            string targetMode = GlobalMemory.Instance.curDragType.ToString();
             msgContent = msgType.ToString() + paramSeperators
                        + targetMode + paramSeperators;
         }
@@ -177,6 +203,18 @@ public class ServerCenter : MonoBehaviour
         {
             //analyzeCommand(messages);
         }
+        else if (msgType == MessageType.Angle)
+        {
+            analyzeAngleInfo(messages);
+        }
+        else if (msgType == MessageType.Scene)
+        {
+            analyzeSceneInfo(messages);
+        }
+        else if (msgType == MessageType.Trial)
+        {
+            analyzeTrialInfo(messages);
+        }
         else if (msgType == MessageType.DirectDragInfo)
         {
             analyzeDirectDragInfo(messages);
@@ -188,6 +226,51 @@ public class ServerCenter : MonoBehaviour
         else if (msgType == MessageType.ThrowCatchInfo)
         {
             analyzeThrowCatchInfo(messages);
+        }
+    }
+
+    private void analyzeSceneInfo(string[] messages)
+    {
+        GlobalMemory.Instance.curClientScene = (LabScene)Enum.Parse(typeof(LabScene), messages[1]);
+    }
+
+    private void analyzeAngleInfo(string[] messages)
+    {
+        Vector3 accReceived = new Vector3(
+            Convert.ToSingle(messages[1]),
+            Convert.ToSingle(messages[2]),
+            Convert.ToSingle(messages[3])
+        );
+        GlobalMemory.Instance.accClient = accReceived;
+    }
+
+    private void analyzeTrialInfo(string[] messages)
+    {
+        Vector3 cAcc = new Vector3(
+            Convert.ToSingle(messages[1]),
+            Convert.ToSingle(messages[2]),
+            Convert.ToSingle(messages[3]));
+
+        GlobalMemory.Instance.accClient = cAcc;
+        GlobalMemory.Instance.angleProcessor.setTrialStatus(true);
+
+        int cTrialIndex = Convert.ToInt32(messages[4]);
+        int cRepeatIndex = Convert.ToInt32(messages[5]);
+        int cTarget2id = Convert.ToInt32(messages[6]);
+        string cTrialPhase = messages[7];
+        string cTouch2data = messages[8];
+        bool sendMessageToClientAgain = false;
+
+        sendMessageToClientAgain = GlobalMemory.Instance.
+            checkClientTarget2Touch(cTrialIndex, cRepeatIndex, cTarget2id,
+            cTrialPhase, cTouch2data);
+        if (sendMessageToClientAgain)
+        {
+            prepareNewMessage4Client(MessageType.Trial);
+        }
+        else
+        {
+            GlobalMemory.Instance.accClient = cAcc;
         }
     }
 
@@ -211,5 +294,21 @@ public class ServerCenter : MonoBehaviour
         float target2PosX = Convert.ToSingle(messages[2]);
         float target2PosY = Convert.ToSingle(messages[3]);
         GlobalMemory.Instance.receiveThrowCatchInfoFromClinet(target2Status, target2PosX, target2PosY);
+    }
+
+    private string getLabTrialMessage()
+    {
+        string res;
+        string sTrialid = GlobalMemory.Instance.curLabTrialid.ToString();
+        string sRepetitionid = GlobalMemory.Instance.curLabRepeatid.ToString();
+        string sTarget1id = GlobalMemory.Instance.curLabTrial.firstid.ToString();
+        string sTarget2id = GlobalMemory.Instance.curLabTrial.secondid.ToString();
+        //string sTrialPhase = GlobalMemory.Instance.curLabTrialPhase.ToString();
+        res = sRepetitionid + paramSeperators
+            + sTrialid + paramSeperators
+            + sTarget2id + paramSeperators
+            //+ sTrialPhase + paramSeperators
+            ;
+        return res;
     }
 }

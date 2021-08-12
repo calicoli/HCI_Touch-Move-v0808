@@ -6,8 +6,15 @@ public class PublicInfo : MonoBehaviour
 {
     public enum LabScene
     {
-        Index = 0,
-        Lab1_move_28 = 1,
+        Index_scene = 0,
+        Tech1_DirectDrag = 1,
+        Tech2_HoldTap = 2,
+        Tech3_ThrowCatch = 3,
+    }
+
+    public enum LabName
+    {
+        Lab1_move_28
     }
 
     public enum LabMode
@@ -42,6 +49,7 @@ public class PublicInfo : MonoBehaviour
         server_say_end_lab = 6,
         server_say_reset_drag_type_and_position = 7,
     }
+
     public enum ClientCommand
     {
         no_client_command = 0,
