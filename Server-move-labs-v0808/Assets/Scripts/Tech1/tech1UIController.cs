@@ -4,12 +4,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static PublicInfo;
+using static PublicLabParams;
 
 public class tech1UIController : MonoBehaviour
 {
     public Camera renderCamera;
 
-    //public demoTouchProcessor touchProcessor;
+    public tech1PhaseController phaseController;
 
     public Button btnBack;
     public Text txtFinishLab;
@@ -28,7 +30,14 @@ public class tech1UIController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        setDebugUIVisibility(false);
+        if (GlobalMemory.Instance && GlobalMemory.Instance.curLabInfos.labMode == LabMode.Full)
+        {
+            setDebugUIVisibility(false);
+        }
+        else if (GlobalMemory.Instance && GlobalMemory.Instance.curLabInfos.labMode == LabMode.Test)
+        {
+            setDebugUIVisibility(true);
+        }
         btnBack.gameObject.SetActive(false);
         txtFinishLab.gameObject.SetActive(false);
     }
@@ -36,14 +45,14 @@ public class tech1UIController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        isConnecting = GlobalController.Instance.getConnectionStatus();
+        isConnecting = GlobalMemory.Instance.getConnectionStatus();
         renderCamera.backgroundColor = (isConnecting ? connectColor : disconnectColor);
         txtAngle.text = "Angle: " + Math.Round(GlobalMemory.Instance.curAngle, 1).ToString() + "°";
     }
 
     public void BackToEntrySceneSoon()
     {
-        //phaseController.moveToPhase(LabPhase.out_lab0_scene);
+        phaseController.moveToPhase(LabPhase.out_lab_scene);
     }
 
     public void ShowTheEndText()
@@ -54,6 +63,10 @@ public class tech1UIController : MonoBehaviour
 
     public void setDebugUIVisibility(bool debugging)
     {
+        txtDragMode.gameObject.SetActive(debugging);
+        txtDebugInfo.gameObject.SetActive(debugging);
+        txtStatusInfo.gameObject.SetActive(debugging);
+        txtPosInfo.gameObject.SetActive(debugging);
         txtAngle.gameObject.SetActive(debugging);
         txtTrial.gameObject.SetActive(debugging);
     }
@@ -66,7 +79,7 @@ public class tech1UIController : MonoBehaviour
     #region Public UI method
     public void updateDragMode(string str)
     {
-        txtDragMode.text = "Mode: " + str;
+        txtDragMode.text = str;
     }
 
     public void updateDebugInfo(string str)

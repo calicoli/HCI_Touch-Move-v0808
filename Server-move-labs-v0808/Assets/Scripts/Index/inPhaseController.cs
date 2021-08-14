@@ -181,6 +181,7 @@ public class inPhaseController : MonoBehaviour
     public void setDragType (DragType type)
     {
         GlobalMemory.Instance.curDragType = type;
+        Debug.Log("setDragType: " + type);
     }
     #endregion
 }

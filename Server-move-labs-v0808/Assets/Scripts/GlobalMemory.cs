@@ -50,9 +50,11 @@ public class GlobalMemory: MonoBehaviour
     [HideInInspector]
     public LabPhase curLabPhase;
     [HideInInspector]
-    public int curLabTrialid, curLabRepeatid;
+    public int curLabRepeatid, curLabTrialid, curLabTrialNumber;
     [HideInInspector]
     public Trial curLabTrial;
+    [HideInInspector]
+    public TrialPhase curLabTrialPhase, clientLabTrialPhase;
     [HideInInspector]
     public TrialSequence curLabTrialSequence;
     [HideInInspector]
@@ -63,19 +65,22 @@ public class GlobalMemory: MonoBehaviour
     public DragType curDragType;
     [HideInInspector]
     public bool refreshTarget1 = false;
-
     [HideInInspector]
     public TargetStatus lab1Target1Status = TargetStatus.total_on_screen_1;
+
     [HideInInspector]
-    public DirectDragStatus lab1Target1DirectDragStatus, lab1Target2DirectDragStatus;
+    public DirectDragStatus tech1Target1DirectDragStatus, tech1Target2DirectDragStatus;
     [HideInInspector]
-    public Vector3 lab1Target1DirectDragPosition = Vector3.zero, lab1Target2DirectDragPosition;
+    public Vector3 tech1Target1DirectDragPosition, tech1Target2DirectDragPosition;
     [HideInInspector]
-    public HoldTapStatus lab1Target1HoldTapStatus, lab1Target2HoldTapStatus;
+    public DirectDragResult tech1Target1DirectDragResult, tech1Target2DirectDragResult;
+
     [HideInInspector]
-    public ThrowCatchStatus lab1Target1ThrowCatchStatus, lab1Target2ThrowCatchStatus;
+    public HoldTapStatus tech2Target1HoldTapStatus, tech2Target2HoldTapStatus;
     [HideInInspector]
-    public Vector3 lab1Target1ThrowCatchPosition = Vector3.zero, lab1Target2ThrowCatchPosition;
+    public ThrowCatchStatus tech3Target1ThrowCatchStatus, tech3Target2ThrowCatchStatus;
+    [HideInInspector]
+    public Vector3 tech3Target1ThrowCatchPosition, tech3Target2ThrowCatchPosition;
 
     private bool isConnecting;
     private BlockSequence seqBlocks;
@@ -89,7 +94,7 @@ public class GlobalMemory: MonoBehaviour
             Instance = this;
             curServerScene = LabScene.Index_scene;
             curClientScene = LabScene.Index_scene;
-            curBlockid = trial_start_index;
+            curBlockid = BLOCK_START_INDEX;
             curIndexPhase = WelcomePhase.in_entry_scene;
             isUserLabInfoSet = false;
         }
@@ -122,7 +127,7 @@ public class GlobalMemory: MonoBehaviour
             seqBlocks.setAllSequence(userid);
 
             // set variable: conBlock
-            for (int blockid = block_start_index; blockid <= curLabInfos.totalBlockCount; blockid++)
+            for (int blockid = BLOCK_START_INDEX; blockid <= curLabInfos.totalBlockCount; blockid++)
             {
                 int pid = (int)seqBlocks.seqPosture[blockid - 1];
                 int oid = (int)seqBlocks.seqOrientation[blockid - 1];
@@ -173,6 +178,7 @@ public class GlobalMemory: MonoBehaviour
         bool end = scheduleBlocks();
         if (end)
         {
+            Debug.Log("Set labParams: " + curLabInfos.labName + " " + curLabInfos.labMode);
             return true;
         }
         return false;
@@ -227,57 +233,54 @@ public class GlobalMemory: MonoBehaviour
         server.prepareNewMessage4Client(MessageType.Command, cmd);
     }
 
-    public bool checkClientTarget2Touch(int cTrialIndex, int cRepeateIndex,
-       int cTarget2id, string cTrialPhase, string cTouch2data)
+    public void receiveTrialInfoFromClient(int cTrialNumber, int cTrialIndex,
+       int cTarget1id, int cTarget2id, string cTrialPhase, string cTouch2data)
     {
         switch (curLabInfos.labName)
         {
             case LabName.Lab1_move_28:
-                int sTarget2idLab0 = curLabTrial.secondid;
-                if (cTrialIndex == curLabTrialid && cRepeateIndex == curLabRepeatid
-                    //&& cTarget2id == sTarget2idLab0 && cTrialPhase.Equals(curLabTrialPhase.ToString())
-                    )
+                if (cTrialNumber == curLabTrialNumber && cTrialIndex == curLabTrialid)
                 {
                     //parseLabTouch2DataString(cTouch2data);
-                    clientRefreshedTrialData = true;
-                    return false;
+                    //clientRefreshedTrialData = true;
+                    clientLabTrialPhase = (TrialPhase)Enum.Parse(typeof(TrialPhase), cTrialPhase);
                 }
                 break;
         }
-        return true;
     }
 
-    public void receiveDirectDragInfoFromClient(DirectDragStatus t2dd, float t2px, float t2py)
+    public void receiveDirectDragInfoFromClient(DirectDragStatus t2dd, float t2px, float t2py, DirectDragResult t2result)
     {
-        lab1Target2DirectDragStatus = t2dd;
-        lab1Target2DirectDragPosition = new Vector3(t2px, t2py, 0f);
+        tech1Target2DirectDragStatus = t2dd;
+        tech1Target2DirectDragPosition = new Vector3(t2px, t2py, 0f);
         if (t2dd == DirectDragStatus.across_from_screen_2
             || t2dd == DirectDragStatus.across_end_from_screen_2
             || t2dd == DirectDragStatus.drag_phase2_on_screen_2)
         {
             float rightBound = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0)).x;
-            lab1Target1DirectDragPosition = new Vector3(t2px + rightBound * 2, t2py, 0f);
+            tech1Target1DirectDragPosition = new Vector3(t2px + rightBound * 2, t2py, 0f);
             refreshTarget1 = true;
         }
+        tech1Target2DirectDragResult = t2result;
     }
 
     public void receiveHoldTapInfoFromClient(HoldTapStatus t2hp)
     {
-        lab1Target2HoldTapStatus = t2hp;
+        tech2Target2HoldTapStatus = t2hp;
     }
 
     public void receiveThrowCatchInfoFromClinet(ThrowCatchStatus t2tc, float t2px, float t2py)
     {
-        lab1Target2ThrowCatchStatus = t2tc;
+        tech3Target2ThrowCatchStatus = t2tc;
         if (t2tc == ThrowCatchStatus.throw_successed_on_screen_2)
         {
             float rightBound = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0)).x;
-            lab1Target1ThrowCatchPosition = new Vector3(t2px + rightBound * 2, t2py, 0f);
+            tech3Target1ThrowCatchPosition = new Vector3(t2px + rightBound * 2, t2py, 0f);
         }
         else if (t2tc == ThrowCatchStatus.t1_move_phase2_ongoing)
         {
             float rightBound = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0)).x;
-            lab1Target1ThrowCatchPosition = new Vector3(t2px + rightBound * 2, t2py, 0f);
+            tech3Target1ThrowCatchPosition = new Vector3(t2px + rightBound * 2, t2py, 0f);
         }
     }
     #endregion

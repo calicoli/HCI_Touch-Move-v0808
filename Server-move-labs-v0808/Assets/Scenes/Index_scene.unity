@@ -506,21 +506,26 @@ MonoBehaviour:
   curBlockid: 0
   clientRefreshedTrialData: 0
   curLabPhase: 0
-  curLabTrialid: 0
   curLabRepeatid: 0
+  curLabTrialid: 0
+  curLabTrialNumber: 0
+  curLabTrialPhase: 0
+  clientLabTrialPhase: 0
   curDragType: 0
   refreshTarget1: 0
   lab1Target1Status: 0
-  lab1Target1DirectDragStatus: 0
-  lab1Target2DirectDragStatus: 0
-  lab1Target1DirectDragPosition: {x: 0, y: 0, z: 0}
-  lab1Target2DirectDragPosition: {x: 0, y: 0, z: 0}
-  lab1Target1HoldTapStatus: 0
-  lab1Target2HoldTapStatus: 0
-  lab1Target1ThrowCatchStatus: 0
-  lab1Target2ThrowCatchStatus: 0
-  lab1Target1ThrowCatchPosition: {x: 0, y: 0, z: 0}
-  lab1Target2ThrowCatchPosition: {x: 0, y: 0, z: 0}
+  tech1Target1DirectDragStatus: 0
+  tech1Target2DirectDragStatus: 0
+  tech1Target1DirectDragPosition: {x: 0, y: 0, z: 0}
+  tech1Target2DirectDragPosition: {x: 0, y: 0, z: 0}
+  tech1Target1DirectDragResult: 0
+  tech1Target2DirectDragResult: 0
+  tech2Target1HoldTapStatus: 0
+  tech2Target2HoldTapStatus: 0
+  tech3Target1ThrowCatchStatus: 0
+  tech3Target2ThrowCatchStatus: 0
+  tech3Target1ThrowCatchPosition: {x: 0, y: 0, z: 0}
+  tech3Target2ThrowCatchPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &1013705871
 GameObject:
   m_ObjectHideFlags: 0
@@ -2352,7 +2357,7 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1485549974}
         m_MethodName: ChangeLabModeText
         m_Mode: 1
         m_Arguments:

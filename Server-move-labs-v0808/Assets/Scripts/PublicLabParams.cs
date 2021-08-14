@@ -5,18 +5,18 @@ using System;
 
 public class PublicLabParams : MonoBehaviour
 {
-    public const int block_start_index = 1;
-    public const int trial_start_index = 1;
+    public const int BLOCK_START_INDEX = 1;
+    public const int TRIAL_START_INDEX = 1;
 
     public enum LabPhase
     {
-        in_lab0_scene = 0,
+        in_lab_scene = 0,
         check_connection = 1,
         check_client_scene = 2,
         in_experiment = 3,
         end_experiment = 4,
         wait_to_back_to_entry = 5,
-        out_lab0_scene = 6,
+        out_lab_scene = 6,
     }
 
     public struct LabInfos
@@ -66,6 +66,7 @@ public class PublicLabParams : MonoBehaviour
             switch (labName)
             {
                 case LabName.Lab1_move_28:
+                    labMode = LabMode.Test;
                     totalTrialCount = Lab1_move_28.testTrialCount;
                     repetitionCount = Lab1_move_28.testRepetitionCount;
                     break;

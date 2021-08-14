@@ -19,7 +19,7 @@ public class demoDirectDragProcessor : MonoBehaviour
     private Vector3 dragStartTouchPosInWorld;
     private Vector3 dragStartTargetPos;
 
-    private bool directDragSuccess;
+    //private bool directDragSuccess;
 
     private float rightBound;
 
@@ -28,7 +28,7 @@ public class demoDirectDragProcessor : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        directDragSuccess = false;
+        //directDragSuccess = false;
         dragSuccess = false;
         rightBound = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0)).x;
     }

@@ -1,0 +1,17 @@
+
+2021/8/14 0:23:11
+B01;NDH_h0_DH_0i;landscape;concave;90;
+B01;concave;180;
+
+B01-R01;Target1;104;208;201;110;209;
+B01-R01;Target2;204;108;101;211;109;
+B01-R01;AllTargets;(104, 204);(208, 108);(201, 101);(110, 211);(209, 109);
+B01-R01;RamdonSeq;4;22;15;12;23;24;0;6;19;25;1;7;21;17;26;16;10;5;8;3;9;27;20;18;13;11;14;2;
+
+;0;0;0;False;False;False;0;0;0;0;0;0;(0.0, 0.0);(0.0, 0.0);0;0;0;0;0;0;0;0;0;0;T1NoError;T2NoError;concave;180;
+;0;0;0;False;False;False;0;0;0;0;0;0;(0.0, 0.0);(0.0, 0.0);0;0;0;0;0;0;0;0;0;0;T1NoError;T2NoError;concave;180;
+;0;0;0;False;False;False;0;0;0;0;0;0;(0.0, 0.0);(0.0, 0.0);0;0;0;0;0;0;0;0;0;0;T1NoError;T2NoError;concave;180;
+;0;0;0;False;False;False;0;0;0;0;0;0;(0.0, 0.0);(0.0, 0.0);0;0;0;0;0;0;0;0;0;0;T1NoError;T2NoError;concave;180;
+;0;0;0;False;False;False;0;0;0;0;0;0;(0.0, 0.0);(0.0, 0.0);0;0;0;0;0;0;0;0;0;0;T1NoError;T2NoError;concave;180;
+;0;0;0;False;False;False;0;0;0;0;0;0;(0.0, 0.0);(0.0, 0.0);0;0;0;0;0;0;0;0;0;0;T1NoError;T2NoError;concave;180;
+;0;0;0;False;False;False;0;0;0;0;0;0;(0.0, 0.0);(0.0, 0.0);0;0;0;0;0;0;0;0;0;0;T1NoError;T2NoError;concave;180;

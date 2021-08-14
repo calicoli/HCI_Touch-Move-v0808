@@ -18,18 +18,22 @@ public class PublicTrialParams : MonoBehaviour
     // wait to update ↓
     public enum TrialPhase
     {
-        block_start = 0,
-        repeatition_start = 1,
-        repeatition_scheduling = 2,
-        a_trial_set_params = 3,
-        a_trial_ready = 4,
-        a_trial_ongoing_p1 = 51,
-        a_trial_ongoing_p2 = 52,
-        a_trial_ongoing_p3 = 53,
-        a_trial_output_data = 6,
-        a_trial_end = 7,
-        block_end = 9
-    }
+        inactive_phase = 0,
+        block_start = 1,
+        repeatition_start = 2,
+        repeatition_scheduling = 3,
+        a_trial_set_params = 4,
+        s_sent_trial_params = 5,
+        c_received_trial_params = 6,
+        a_trial_start_from_1 = 71,
+        a_trial_start_from_2 = 72,
+        a_trial_ongoing = 8,
+        a_successful_trial = 91,
+        a_failed_trial = 92,
+        a_trial_output_data = 10,
+        a_trial_end = 11,
+        block_end = 12,
+    } 
 
     // wait to update ↓
     public struct InternetTime

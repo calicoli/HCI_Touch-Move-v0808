@@ -23,16 +23,27 @@ public class PublicDragParams : MonoBehaviour
         across_end_from_screen_1 = 16,
         drag_phase2_ongoing_on_screen_2 = 17,
         drag_phase2_end_on_screen_2 = 18,
+        t1tot2_trial_failed = 19,
 
-        inactive_on_screen_2 = 20,
-        drag_phase1_on_screen_2 = 21,
-        across_from_screen_2 = 22,
-        drag_phase1_end_on_screen_2 = 23,
-        wait_for_drag_on_1 = 24,
-        drag_phase2_on_screen_1 = 25,
-        across_end_from_screen_2 = 26,
-        drag_phase2_ongoing_on_screen_1 = 27,
-        drag_phase2_end_on_screen_1 = 28,
+        inactive_on_screen_2 = 30,
+        drag_phase1_on_screen_2 = 31,
+        across_from_screen_2 = 32,
+        drag_phase1_end_on_screen_2 = 33,
+        wait_for_drag_on_1 = 34,
+        drag_phase2_on_screen_1 = 35,
+        across_end_from_screen_2 = 36,
+        drag_phase2_ongoing_on_screen_1 = 37,
+        drag_phase2_end_on_screen_1 = 38,
+        t2tot1_trial_failed = 39,
+    }
+
+    public enum DirectDragResult
+    {
+        direct_drag_success = 0,
+        drag_1_failed_to_arrive_junction = 1,
+        drag_2_failed_to_touch = 2,
+        drag_2_failed_to_leave_junction = 3,
+        drag_2_failed_to_arrive_pos = 4,
     }
 
     public enum HoldTapStatus

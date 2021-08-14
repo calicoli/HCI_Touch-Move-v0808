@@ -48,7 +48,9 @@ public class inUIController : MonoBehaviour
         if (haveSet)
         {
             //txtLabName.text = "in " + GlobalMemory.Instance.getTargetLabName();
-            txtLabName.text = "in Tech " + ((int)GlobalMemory.Instance.targetDragType + 1).ToString() + ": "
+            txtLabName.text = "in " + GlobalMemory.Instance.targetLabMode.ToString() + "Mode"
+                + Environment.NewLine
+                + "of Tech " + ((int)GlobalMemory.Instance.targetDragType + 1).ToString() + ": "
                 + GlobalMemory.Instance.targetDragType.ToString();
         }
 

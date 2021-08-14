@@ -134,12 +134,14 @@ public class ServerCenter : MonoBehaviour
         if (msgType == MessageType.Block)
         {
             string targetLabName = GlobalMemory.Instance.curLabInfos.labName.ToString();
+            string targetLabMode = GlobalMemory.Instance.curLabInfos.labMode.ToString();
             string targetLabScene = GlobalMemory.Instance.getLabSceneToEnter();
-            string targetDragMode = GlobalMemory.Instance.curDragType.ToString();
+            string targetDragType = GlobalMemory.Instance.curDragType.ToString();
             msgContent = msgType.ToString() + paramSeperators
                        + targetLabName + paramSeperators
-                       + targetLabScene + paramSeperators
-                       + targetDragMode + paramSeperators;
+                       + targetLabMode + paramSeperators
+                        + targetLabScene + paramSeperators
+                       + targetDragType + paramSeperators;
         }
         else if (msgType == MessageType.Scene)
         {
@@ -166,25 +168,27 @@ public class ServerCenter : MonoBehaviour
         }
         else if (msgType == MessageType.DirectDragInfo)
         {
-            string targetOutBound = GlobalMemory.Instance.lab1Target1DirectDragStatus.ToString();
-            string targetPosX = GlobalMemory.Instance.lab1Target1DirectDragPosition.x.ToString();
-            string targetPosY = GlobalMemory.Instance.lab1Target1DirectDragPosition.y.ToString();
+            string t1Status = GlobalMemory.Instance.tech1Target1DirectDragStatus.ToString();
+            string t1PosX = GlobalMemory.Instance.tech1Target1DirectDragPosition.x.ToString();
+            string t1PosY = GlobalMemory.Instance.tech1Target1DirectDragPosition.y.ToString();
+            string t1Result = GlobalMemory.Instance.tech1Target1DirectDragResult.ToString();
             msgContent = msgType.ToString() + paramSeperators
-                       + targetOutBound + paramSeperators
-                       + targetPosX + paramSeperators
-                       + targetPosY + paramSeperators;
+                       + t1Status + paramSeperators
+                       + t1PosX + paramSeperators
+                       + t1PosY + paramSeperators
+                       + t1Result + paramSeperators;
         }
         else if (msgType == MessageType.HoldTapInfo)
         {
-            string t1Status = GlobalMemory.Instance.lab1Target1HoldTapStatus.ToString();
+            string t1Status = GlobalMemory.Instance.tech2Target1HoldTapStatus.ToString();
             msgContent = msgType.ToString() + paramSeperators
                        + t1Status + paramSeperators;
         }
         else if (msgType == MessageType.ThrowCatchInfo)
         {
-            string t1Status = GlobalMemory.Instance.lab1Target1ThrowCatchStatus.ToString();
-            string t1PosX = GlobalMemory.Instance.lab1Target1ThrowCatchPosition.x.ToString();
-            string t1PosY = GlobalMemory.Instance.lab1Target1ThrowCatchPosition.y.ToString();
+            string t1Status = GlobalMemory.Instance.tech3Target1ThrowCatchStatus.ToString();
+            string t1PosX = GlobalMemory.Instance.tech3Target1ThrowCatchPosition.x.ToString();
+            string t1PosY = GlobalMemory.Instance.tech3Target1ThrowCatchPosition.y.ToString();
             msgContent = msgType.ToString() + paramSeperators
                        + t1Status + paramSeperators
                        + t1PosX + paramSeperators
@@ -196,7 +200,7 @@ public class ServerCenter : MonoBehaviour
     private void processReceivedMessage()
     {
         string receiveMsg = (string)receivedQueue.Dequeue();
-        Debug.Log("C rcvMsg: " + receiveMsg);
+        Debug.Log("S rcvMsg: " + receiveMsg);
         string[] messages = receiveMsg.Split(';');
         MessageType msgType = (MessageType)Enum.Parse(typeof(MessageType), messages[0]);
         if (msgType == MessageType.Command)
@@ -254,24 +258,17 @@ public class ServerCenter : MonoBehaviour
         GlobalMemory.Instance.accClient = cAcc;
         GlobalMemory.Instance.angleProcessor.setTrialStatus(true);
 
-        int cTrialIndex = Convert.ToInt32(messages[4]);
-        int cRepeatIndex = Convert.ToInt32(messages[5]);
-        int cTarget2id = Convert.ToInt32(messages[6]);
-        string cTrialPhase = messages[7];
-        string cTouch2data = messages[8];
-        bool sendMessageToClientAgain = false;
+        int cTrialNumber = Convert.ToInt32(messages[4]);
+        int cTrialIndex = Convert.ToInt32(messages[5]);
+        int cTarget1id = Convert.ToInt32(messages[6]);
+        int cTarget2id = Convert.ToInt32(messages[7]);
+        string cTrialPhase = messages[8];
+        string cTouch2data = messages[9];
 
-        sendMessageToClientAgain = GlobalMemory.Instance.
-            checkClientTarget2Touch(cTrialIndex, cRepeatIndex, cTarget2id,
-            cTrialPhase, cTouch2data);
-        if (sendMessageToClientAgain)
-        {
-            prepareNewMessage4Client(MessageType.Trial);
-        }
-        else
-        {
-            GlobalMemory.Instance.accClient = cAcc;
-        }
+        GlobalMemory.Instance.receiveTrialInfoFromClient
+            (cTrialNumber, cTrialIndex, cTarget1id, cTarget2id, cTrialPhase, cTouch2data);
+        GlobalMemory.Instance.accClient = cAcc;
+
     }
 
     private void analyzeDirectDragInfo(string[] messages)
@@ -279,7 +276,8 @@ public class ServerCenter : MonoBehaviour
         DirectDragStatus target2Status = (DirectDragStatus)Enum.Parse(typeof(DirectDragStatus), messages[1]);
         float target2PosX = Convert.ToSingle(messages[2]);
         float target2PosY = Convert.ToSingle(messages[3]);
-        GlobalMemory.Instance.receiveDirectDragInfoFromClient(target2Status, target2PosX, target2PosY);
+        DirectDragResult target2Result = (DirectDragResult)Enum.Parse(typeof(DirectDragResult), messages[4]);
+        GlobalMemory.Instance.receiveDirectDragInfoFromClient(target2Status, target2PosX, target2PosY, target2Result);
     }
 
     private void analyzeHoldTapInfo(string[] messages)
@@ -299,16 +297,18 @@ public class ServerCenter : MonoBehaviour
     private string getLabTrialMessage()
     {
         string res;
+        string sTrialNum = GlobalMemory.Instance.curLabTrialNumber.ToString();
         string sTrialid = GlobalMemory.Instance.curLabTrialid.ToString();
-        string sRepetitionid = GlobalMemory.Instance.curLabRepeatid.ToString();
         string sTarget1id = GlobalMemory.Instance.curLabTrial.firstid.ToString();
         string sTarget2id = GlobalMemory.Instance.curLabTrial.secondid.ToString();
-        //string sTrialPhase = GlobalMemory.Instance.curLabTrialPhase.ToString();
-        res = sRepetitionid + paramSeperators
+        string sTrialPhase = GlobalMemory.Instance.curLabTrialPhase.ToString();
+        res = sTrialNum + paramSeperators
             + sTrialid + paramSeperators
+            + sTarget1id + paramSeperators
             + sTarget2id + paramSeperators
-            //+ sTrialPhase + paramSeperators
+            + sTrialPhase + paramSeperators
             ;
+        Debug.Log("LabTrialMsg: " + res);
         return res;
     }
 }
