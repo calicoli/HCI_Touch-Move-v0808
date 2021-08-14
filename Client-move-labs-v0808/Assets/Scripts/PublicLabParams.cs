@@ -87,7 +87,7 @@ public class PublicLabParams : MonoBehaviour
         public const int
             totalBlockCount = 30, // for one technique
             fullTrialCount = 14 * 2,
-            testTrialCount = 5,
+            testTrialCount = 14 * 2,
             fullRepetitionCount = 3,
             testRepetitionCount = 1,
             s1PositionCount = 12,
