@@ -2,9 +2,9 @@
 
 ## Selective options
 1. Demo - Drag Mode
-- Direct Drag (available)
-- Hold and Tap (available)
-- Throw and Catch (available)
+- Direct Drag (aaccessible)
+- Hold and Tap (accessible)
+- Throw and Catch (accessible)
 2. Labs - Drag Mode
 - Direct Drag (accessible)
 - Hold and Tap (inaccessible)
