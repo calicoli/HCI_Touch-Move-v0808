@@ -204,11 +204,15 @@ public class tech1DirectDragProcessor : MonoBehaviour
                                 if (curTarget2DirectDragStatus == DirectDragStatus.drag_phase2_ongoing_on_screen_2
                                     || curTarget2DirectDragStatus == DirectDragStatus.across_end_from_screen_1)
                                 {
-                                    curTarget2DirectDragStatus = DirectDragStatus.drag_phase2_end_on_screen_2;
-                                }
-                                else
-                                {
-                                    curTarget2DirectDragStatus = DirectDragStatus.wait_for_drag_on_2;
+                                    if (checkTouchEndPosCorrect())
+                                    {
+                                        curTarget2DirectDragStatus = DirectDragStatus.drag_phase2_end_on_screen_2;
+                                    }
+                                    else
+                                    {
+                                        curDirectDragResult = DirectDragResult.drag_2_failed_to_arrive_pos;
+                                        curTarget2DirectDragStatus = DirectDragStatus.t1tot2_trial_failed;
+                                    }
                                 }
                             }
                         }

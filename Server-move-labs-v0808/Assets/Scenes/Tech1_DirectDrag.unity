@@ -2274,6 +2274,7 @@ MonoBehaviour:
   target1: {fileID: 5735601466965969591}
   shadow1: {fileID: 1510996451}
   markers: {fileID: 1386432290}
+  renderCamera: {fileID: 963194227}
 --- !u!1 &1386432290
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,6 +7,7 @@ public class tech1TargetVisualizer : MonoBehaviour
     public GameObject target1;
     public GameObject shadow1;
     public GameObject markers;
+    public Camera renderCamera;
 
     private Vector3[] posMarkers;
 
@@ -47,6 +48,9 @@ public class tech1TargetVisualizer : MonoBehaviour
         for ( int i = 0; i < markers.transform.childCount; i++ )
         {
             posMarkers[i] = markers.transform.GetChild(i).position;
+            Debug.Log(i.ToString() + " " + markers.transform.GetChild(i).gameObject.name + " " 
+                + posMarkers[i].ToString() + " "
+                + renderCamera.WorldToScreenPoint(posMarkers[i]).ToString());
         }
     }
 
