@@ -13,7 +13,8 @@ public class tech1TargetVisualizer : MonoBehaviour
     private static Color defaultColor = new Color32(255, 255, 255, 255);
     private static Color activeColor = new Color32(255, 255, 0, 255);
     private static Color shadowColorInFullLab = new Color32(0, 0, 0, 255);
-    private static Color shadowColorInTestLab = new Color32(0, 0, 255, 255);
+    //private static Color shadowColorInTestLab = new Color32(0, 0, 255, 255);
+    private static Color shadowColorInTestLab = new Color32(0, 0, 0, 255);
 
     // Start is called before the first frame update
     void Start()

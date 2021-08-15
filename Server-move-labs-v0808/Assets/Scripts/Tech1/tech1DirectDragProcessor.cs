@@ -49,6 +49,8 @@ public class tech1DirectDragProcessor : MonoBehaviour
             if (curDirectDragResult != DirectDragResult.direct_drag_success
                 || GlobalMemory.Instance.tech1Target2DirectDragResult != DirectDragResult.direct_drag_success)
             {
+                targetVisualizer.hideTarget();
+                targetVisualizer.hideShadow();
                 Debug.Log("Trial s failed: " + curDirectDragResult.ToString());
                 Debug.Log("Trial c failed: " + GlobalMemory.Instance.tech1Target2DirectDragResult.ToString());
                 trialController.switchTrialPhase(PublicTrialParams.TrialPhase.a_failed_trial);
@@ -299,40 +301,46 @@ public class tech1DirectDragProcessor : MonoBehaviour
                     || curTarget1DirectDragStatus == DirectDragStatus.drag_phase2_ongoing_on_screen_1)
                 {
 #if UNITY_ANDROID && UNITY_EDITOR
-                    if (touchSuccess && Input.GetMouseButtonUp(0))
+                    if (Input.GetMouseButtonUp(0))
                     {
-                        Vector3 curTouchPosInWorld = processScreenPosToGetWorldPosAtZeroZ(Input.mousePosition);
-                        Vector3 offset = curTouchPosInWorld - dragStartTouchPosInWorld;
-                        Vector3 intentPos = dragStartTargetPos + offset;
-                        if (intentPos.x < maxX && intentPos.y > minY && intentPos.y < maxY)
-                        {
-                            targetVisualizer.moveTarget(intentPos);
-                        }
                         targetVisualizer.inactiveTarget();
-                        if (curTarget1DirectDragStatus == DirectDragStatus.drag_phase2_on_screen_1)
+                        if (touchSuccess)
                         {
-                            curDirectDragResult = DirectDragResult.drag_2_failed_to_leave_junction;
-                            curTarget1DirectDragStatus = DirectDragStatus.t2tot1_trial_failed;
-                        }
-                        if (curTarget1DirectDragStatus == DirectDragStatus.drag_phase2_ongoing_on_screen_1
-                            || curTarget1DirectDragStatus == DirectDragStatus.across_end_from_screen_2)
-                        {
-                            if(checkTouchEndPosCorrect())
+                            Vector3 curTouchPosInWorld = processScreenPosToGetWorldPosAtZeroZ(Input.mousePosition);
+                            Vector3 offset = curTouchPosInWorld - dragStartTouchPosInWorld;
+                            Vector3 intentPos = dragStartTargetPos + offset;
+                            if (intentPos.x > minX && intentPos.y > minY && intentPos.y < maxY)
                             {
-                                curTarget1DirectDragStatus = DirectDragStatus.drag_phase2_end_on_screen_1;
-                            } else
+                                targetVisualizer.moveTarget(intentPos);
+                            }
+
+                            if (curTarget1DirectDragStatus == DirectDragStatus.drag_phase2_on_screen_1)
                             {
-                                curDirectDragResult = DirectDragResult.drag_2_failed_to_arrive_pos;
+                                curDirectDragResult = DirectDragResult.drag_2_failed_to_leave_junction;
                                 curTarget1DirectDragStatus = DirectDragStatus.t2tot1_trial_failed;
                             }
+                            else if (curTarget1DirectDragStatus == DirectDragStatus.drag_phase2_ongoing_on_screen_1
+                                  || curTarget1DirectDragStatus == DirectDragStatus.across_end_from_screen_2)
+                            {
+                                if (checkTouchEndPosCorrect())
+                                {
+                                    curTarget1DirectDragStatus = DirectDragStatus.drag_phase2_end_on_screen_1;
+                                }
+                                else
+                                {
+                                    curDirectDragResult = DirectDragResult.drag_2_failed_to_arrive_pos;
+                                    curTarget1DirectDragStatus = DirectDragStatus.t2tot1_trial_failed;
+                                }
+                            }
                         }
+                        
                     }
                     else if (touchSuccess && Input.GetMouseButton(0))
                     {
                         Vector3 curTouchPosInWorld = processScreenPosToGetWorldPosAtZeroZ(Input.mousePosition);
                         Vector3 offset = curTouchPosInWorld - dragStartTouchPosInWorld;
                         Vector3 intentPos = dragStartTargetPos + offset;
-                        if (intentPos.x < maxX && intentPos.y > minY && intentPos.y < maxY)
+                        if (intentPos.x > minX && intentPos.y > minY && intentPos.y < maxY)
                         {
                             targetVisualizer.moveTarget(intentPos);
                         }
@@ -351,6 +359,7 @@ public class tech1DirectDragProcessor : MonoBehaviour
                         Touch touch = Input.GetTouch(0);
                         if (touch.phase == TouchPhase.Ended)
                         {
+                            targetVisualizer.inactiveTarget();
                             if (touchSuccess)
                             {
                                 Vector3 curTouchPosInWorld = processScreenPosToGetWorldPosAtZeroZ(touch.position);
@@ -360,9 +369,14 @@ public class tech1DirectDragProcessor : MonoBehaviour
                                 {
                                     targetVisualizer.moveTarget(intentPos);
                                 }
-                                targetVisualizer.inactiveTarget();
-                                if (curTarget1DirectDragStatus == DirectDragStatus.drag_phase2_ongoing_on_screen_1
-                                    || curTarget1DirectDragStatus == DirectDragStatus.across_end_from_screen_2)
+                                //targetVisualizer.inactiveTarget();
+                                if (curTarget1DirectDragStatus == DirectDragStatus.drag_phase2_on_screen_1)
+                                {
+                                    curDirectDragResult = DirectDragResult.drag_2_failed_to_leave_junction;
+                                    curTarget1DirectDragStatus = DirectDragStatus.t2tot1_trial_failed;
+                                }
+                                else if (curTarget1DirectDragStatus == DirectDragStatus.drag_phase2_ongoing_on_screen_1
+                                      || curTarget1DirectDragStatus == DirectDragStatus.across_end_from_screen_2)
                                 {
                                     if (checkTouchEndPosCorrect())
                                     {
