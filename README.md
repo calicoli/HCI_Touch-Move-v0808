@@ -2,12 +2,12 @@
 
 ## Selective options
 1. Demo - Drag Mode
-- Direct Drag (aaccessible)
+- Direct Drag (accessible)
 - Hold and Tap (accessible)
 - Throw and Catch (accessible)
 2. Labs - Drag Mode
 - Direct Drag (accessible)
-- Hold and Tap (inaccessible)
+- Hold and Tap (accessible)
 - Throw and Catch (inaccessible)
 3. Labs - Lab Mode
 - Full mode (accessible)
@@ -24,8 +24,8 @@
 - Both device turns to black background if connected successfully
 2. Input user and lab infomation
 - Server device: input User ID
-- Server device: choose drag type
-- Server device: choose lab mode
+- Server device: select drag type
+- Server device: select lab mode
 - Server device: tap "Confirm" button
 3. Adjust both devices to fullfil requirements
 - Addjust conditions to fullfil requirements showed on the server screen
