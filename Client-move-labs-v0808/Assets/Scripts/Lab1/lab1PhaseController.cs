@@ -4,10 +4,10 @@ using static PublicInfo;
 using static PublicLabParams;
 
 
-public class tech1PhaseController : MonoBehaviour
+public class lab1PhaseController : MonoBehaviour
 {
-    public tech1UIController uiController;
-    public tech1TrialController trialController;
+    public lab1UIController uiController;
+    public lab1TrialController trialController;
 
     private ClientCenter sender;
 

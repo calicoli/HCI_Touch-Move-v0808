@@ -5,12 +5,12 @@ using static PublicLabParams;
 using static PublicTrialParams;
 using static PublicDragParams;
 
-public class tech1TrialController : MonoBehaviour
+public class lab1TrialController : MonoBehaviour
 {
-    public tech1UIController uiController;
-    public tech1TargetVisualizer targetController;
+    public lab1UIController uiController;
+    public lab1TargetVisualizer targetController;
+    public lab1PhaseController phaseController;
 
-    public tech1PhaseController phaseController;
     public tech1DirectDragProcessor directDragProcessor;
     public tech2HoldTapProcessor holdTapProcessor;
     public tech3ThrowCatchProcessor throwCatchProcessor;
@@ -106,6 +106,8 @@ public class tech1TrialController : MonoBehaviour
                             holdTapProcessor.GetComponent<tech2HoldTapProcessor>().enabled = true;
                             break;
                         case DragType.throw_catch:
+                            throwCatchProcessor.initParamsWhenTargetOnScreen1(curTrial.secondid);
+                            throwCatchProcessor.GetComponent<tech3ThrowCatchProcessor>().enabled = true;
                             break;
                     }
                     
@@ -125,6 +127,8 @@ public class tech1TrialController : MonoBehaviour
                             holdTapProcessor.GetComponent<tech2HoldTapProcessor>().enabled = true;
                             break;
                         case DragType.throw_catch:
+                            throwCatchProcessor.initParamsWhenTargetOnScreen2(curTrial.firstid);
+                            throwCatchProcessor.GetComponent<tech3ThrowCatchProcessor>().enabled = true;
                             break;
                     }
                     //curTrialPhase = TrialPhase.a_trial_start_from_2;

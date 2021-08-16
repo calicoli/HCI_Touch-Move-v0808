@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class tech1TouchVisualizer : MonoBehaviour
+public class lab1TouchVisualizer : MonoBehaviour
 {
     public GameObject frameLineLoop;
 

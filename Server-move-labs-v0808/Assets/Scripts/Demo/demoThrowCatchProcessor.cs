@@ -64,7 +64,7 @@ public class demoThrowCatchProcessor : MonoBehaviour
 #if UNITY_ANDROID && UNITY_EDITOR
                     if (Input.GetMouseButtonDown(0))
                     {
-                        throwResult = ThrowCatchPhase1Result.tc_throw_drag;
+                        //throwResult = ThrowCatchPhase1Result.tc_throw_drag;
                         touchSuccess = process1Touch4Target1(Input.mousePosition, 0);
                         if (touchSuccess)
                         {
@@ -120,12 +120,12 @@ public class demoThrowCatchProcessor : MonoBehaviour
                             if ( throwTouchDistance > FLING_MIN_DISTANCE
                                 && throwTouchVelocity > FLING_MIN_VELOCITY)
                             {
-                                throwResult = ThrowCatchPhase1Result.tc_throw_flick;
+                                //throwResult = ThrowCatchPhase1Result.tc_throw_flick;
                                 curTarget1ThrowCatchStatus = ThrowCatchStatus.throw_flicked_on_screen_1;
                             } else
                             {
                                 targetVisualizer.inactiveTarget();
-                                throwResult = ThrowCatchPhase1Result.tc_throw_drag;
+                                //throwResult = ThrowCatchPhase1Result.tc_throw_drag;
                                 curTarget1ThrowCatchStatus = ThrowCatchStatus.throw_dragged_on_screen_1;
                             }
                         }

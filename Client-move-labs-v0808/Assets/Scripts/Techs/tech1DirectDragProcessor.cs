@@ -7,10 +7,10 @@ using static PublicDragParams;
 
 public class tech1DirectDragProcessor : MonoBehaviour
 {
-    public tech1UIController uiController;
-    public tech1TrialController trialController;
-    public tech1TouchVisualizer touchVisualizer;
-    public tech1TargetVisualizer targetVisualizer;
+    public lab1UIController uiController;
+    public lab1TrialController trialController;
+    public lab1TouchVisualizer touchVisualizer;
+    public lab1TargetVisualizer targetVisualizer;
 
     private int firstid, secondid;
 

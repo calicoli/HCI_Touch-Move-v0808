@@ -191,10 +191,12 @@ public class ServerCenter : MonoBehaviour
             string t1Status = GlobalMemory.Instance.tech3Target1ThrowCatchStatus.ToString();
             string t1PosX = GlobalMemory.Instance.tech3Target1ThrowCatchPosition.x.ToString();
             string t1PosY = GlobalMemory.Instance.tech3Target1ThrowCatchPosition.y.ToString();
+            string t1Result = GlobalMemory.Instance.tech3Target1ThrowCatchResult.ToString();
             msgContent = msgType.ToString() + paramSeperators
                        + t1Status + paramSeperators
                        + t1PosX + paramSeperators
-                       + t1PosY + paramSeperators;
+                       + t1PosY + paramSeperators
+                       + t1Result + paramSeperators;
         }
         sendMessage(msgContent);
     }
@@ -294,7 +296,8 @@ public class ServerCenter : MonoBehaviour
         ThrowCatchStatus target2Status = (ThrowCatchStatus)Enum.Parse(typeof(ThrowCatchStatus), messages[1]);
         float target2PosX = Convert.ToSingle(messages[2]);
         float target2PosY = Convert.ToSingle(messages[3]);
-        GlobalMemory.Instance.receiveThrowCatchInfoFromClinet(target2Status, target2PosX, target2PosY);
+        ThrowCatchResult target2Result = (ThrowCatchResult)Enum.Parse(typeof(ThrowCatchResult), messages[4]);
+        GlobalMemory.Instance.receiveThrowCatchInfoFromClinet(target2Status, target2PosX, target2PosY, target2Result);
     }
 
     private string getLabTrialMessage()

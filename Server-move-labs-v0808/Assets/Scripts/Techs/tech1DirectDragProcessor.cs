@@ -550,7 +550,7 @@ public class tech1DirectDragProcessor : MonoBehaviour
         targetVisualizer.hideShadow();
         prevTarget1DirectDragStatus = curTarget1DirectDragStatus = DirectDragStatus.inactive_on_screen_1;
         prevTarget1Pos = curTarget1Pos = targetVisualizer.getTargetPosition();
-        curDirectDragResult = DirectDragResult.direct_drag_success;
+        
         if (GlobalMemory.Instance)
         {
             GlobalMemory.Instance.tech1Target1DirectDragStatus
@@ -567,7 +567,7 @@ public class tech1DirectDragProcessor : MonoBehaviour
         targetVisualizer.hideTarget();
         targetVisualizer.showShadow();
         prevTarget1DirectDragStatus = curTarget1DirectDragStatus = DirectDragStatus.inactive_on_screen_2;
-        curDirectDragResult = DirectDragResult.direct_drag_success;
+        
         if (GlobalMemory.Instance)
         {
             GlobalMemory.Instance.tech1Target1DirectDragStatus

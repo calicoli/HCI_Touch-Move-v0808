@@ -82,6 +82,7 @@ public class PublicDragParams : MonoBehaviour
         t1_move_phase2_ongoing = 18,
         t1_move_phase2_acrossing_over = 19,
         catch_end_on_screen_2 = 20,
+        t1tot2_trial_failed = 21,
 
         inactive_on_screen_2 = 30,
         throw_flicked_on_screen_2 = 31,
@@ -94,6 +95,7 @@ public class PublicDragParams : MonoBehaviour
         t2_move_phase2_ongoing = 38,
         t2_move_phase2_acrossing_over = 39,
         catch_end_on_screen_1 = 40,
+        t2tot1_trial_failed = 41,
     }
 
     public enum ThrowCatchPhase1Result
@@ -105,9 +107,11 @@ public class PublicDragParams : MonoBehaviour
     public enum ThrowCatchResult
     {
         throw_catch_success = 0,
-        throw_downgraded_to_drag = 1,
-        throw_to_wrong_dir = 2,
-        catch_failed_to_arrive_pos = 3,
+        throw_downgraded_to_drag_due_d = 1,
+        throw_downgraded_to_drag_due_v = 2,
+        throw_downgraded_to_drag_due_dv = 3,
+        throw_to_wrong_dir = 4,
+        catch_failed_to_arrive_pos = 5,
     }
 
 }

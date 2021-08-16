@@ -179,6 +179,8 @@ public class lab1TrialController : MonoBehaviour
                                 holdTapProcessor.GetComponent<tech2HoldTapProcessor>().enabled = true;
                                 break;
                             case DragType.throw_catch:
+                                throwCatchProcessor.initParamsWhenTargetOnScreen1(curTrial.firstid);
+                                throwCatchProcessor.GetComponent<tech3ThrowCatchProcessor>().enabled = true;
                                 break;
                         }
                         //curTrialPhase = TrialPhase.a_trial_start_from_1;
@@ -197,6 +199,8 @@ public class lab1TrialController : MonoBehaviour
                                 holdTapProcessor.GetComponent<tech2HoldTapProcessor>().enabled = true;
                                 break;
                             case DragType.throw_catch:
+                                throwCatchProcessor.initParamsWhenTargetOnScreen2(curTrial.secondid);
+                                throwCatchProcessor.GetComponent<tech3ThrowCatchProcessor>().enabled = true;
                                 break;
                         }
                         //curTrialPhase = TrialPhase.a_trial_start_from_2;

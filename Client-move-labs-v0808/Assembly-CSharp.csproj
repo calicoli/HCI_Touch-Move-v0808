@@ -80,11 +80,12 @@
     <Compile Include="Assets\Scripts\GlobalMemory.cs" />
     <Compile Include="Assets\Scripts\Index\inPhaseController.cs" />
     <Compile Include="Assets\Scripts\Index\inUIController.cs" />
-    <Compile Include="Assets\Scripts\Lab1\tech1PhaseController.cs" />
-    <Compile Include="Assets\Scripts\Lab1\tech1TargetVisualizer.cs" />
-    <Compile Include="Assets\Scripts\Lab1\tech1TouchVisualizer.cs" />
-    <Compile Include="Assets\Scripts\Lab1\tech1TrialController.cs" />
-    <Compile Include="Assets\Scripts\Lab1\tech1UIController.cs" />
+    <Compile Include="Assets\Scripts\Lab1\lab1FlickerVisualizer.cs" />
+    <Compile Include="Assets\Scripts\Lab1\lab1PhaseController.cs" />
+    <Compile Include="Assets\Scripts\Lab1\lab1TargetVisualizer.cs" />
+    <Compile Include="Assets\Scripts\Lab1\lab1TouchVisualizer.cs" />
+    <Compile Include="Assets\Scripts\Lab1\lab1TrialController.cs" />
+    <Compile Include="Assets\Scripts\Lab1\lab1UIController.cs" />
     <Compile Include="Assets\Scripts\PublicBlockPramas.cs" />
     <Compile Include="Assets\Scripts\PublicDragParams.cs" />
     <Compile Include="Assets\Scripts\PublicInfo.cs" />

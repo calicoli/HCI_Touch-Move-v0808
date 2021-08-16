@@ -7,9 +7,9 @@ using System;
 
 public class tech2HoldTapProcessor : MonoBehaviour
 {
-    public tech1UIController uiController;
-    public tech1TrialController trialController;
-    public tech1TargetVisualizer targetVisualizer;
+    public lab1UIController uiController;
+    public lab1TrialController trialController;
+    public lab1TargetVisualizer targetVisualizer;
 
     private HoldTapStatus curTarget2HoldTapStatus, prevTarget2HoldTapStatus;
     private bool touchSuccess;

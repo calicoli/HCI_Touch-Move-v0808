@@ -271,9 +271,10 @@ public class GlobalMemory: MonoBehaviour
         tech2Target2HoldTapResult = t2result;
     }
 
-    public void receiveThrowCatchInfoFromClinet(ThrowCatchStatus t2tc, float t2px, float t2py)
+    public void receiveThrowCatchInfoFromClinet(ThrowCatchStatus t2tc, float t2px, float t2py, ThrowCatchResult t2result)
     {
         tech3Target2ThrowCatchStatus = t2tc;
+        tech3Target2ThrowCatchResult = t2result;
         if (t2tc == ThrowCatchStatus.throw_successed_on_screen_2)
         {
             float rightBound = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0)).x;

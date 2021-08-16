@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using static PublicInfo;
 
-public class tech1UIController : MonoBehaviour
+public class lab1UIController : MonoBehaviour
 {
     public Camera renderCamera;
     public Text txtFinishLab;

@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static PublicLabFactors;
 using static PublicDragParams;
 
 public class lab1FlickerVisualizer : MonoBehaviour
@@ -47,7 +46,7 @@ public class lab1FlickerVisualizer : MonoBehaviour
     private void changeFlickerStatus()
     {
         flickerOn = !flickerOn;
-        if (GlobalController.Instance.demoTarget1Status == TargetStatus.total_on_screen_1)
+        if (GlobalMemory.Instance.lab1Target1Status == TargetStatus.total_on_screen_1)
         {
             if (flickerOn)
             {
@@ -58,7 +57,7 @@ public class lab1FlickerVisualizer : MonoBehaviour
                 targetVisualizer.hideTarget();
             }
         }
-        else if (GlobalController.Instance.demoTarget1Status == TargetStatus.total_on_screen_2)
+        else if (GlobalMemory.Instance.lab1Target1Status == TargetStatus.total_on_screen_2)
         {
             if (flickerOn)
             {
@@ -75,21 +74,21 @@ public class lab1FlickerVisualizer : MonoBehaviour
     {
         resetFlickerStatus();
         resetRemainTime();
-        this.gameObject.GetComponent<demoFlickerVisualizer>().enabled = true;
+        this.gameObject.GetComponent<lab1FlickerVisualizer>().enabled = true;
     }
 
     public void stopFlicker()
     {
-        this.gameObject.GetComponent<demoFlickerVisualizer>().enabled = false;
+        this.gameObject.GetComponent<lab1FlickerVisualizer>().enabled = false;
     }
 
     public void showFlickerObjects()
     {
-        if (GlobalController.Instance && GlobalController.Instance.demoTarget1Status == TargetStatus.total_on_screen_1)
+        if (GlobalMemory.Instance && GlobalMemory.Instance.lab1Target1Status == TargetStatus.total_on_screen_1)
         {
             targetVisualizer.showTarget();
         }
-        else if (GlobalController.Instance && GlobalController.Instance.demoTarget1Status == TargetStatus.total_on_screen_2)
+        else if (GlobalMemory.Instance && GlobalMemory.Instance.lab1Target1Status == TargetStatus.total_on_screen_2)
         {
             touchVisualizer.showFrameLineLoop();
         }
@@ -97,11 +96,11 @@ public class lab1FlickerVisualizer : MonoBehaviour
 
     public void hideFlickerObjects()
     {
-        if (GlobalController.Instance && GlobalController.Instance.demoTarget1Status == TargetStatus.total_on_screen_1)
+        if (GlobalMemory.Instance && GlobalMemory.Instance.lab1Target1Status == TargetStatus.total_on_screen_1)
         {
             targetVisualizer.hideTarget();
         }
-        else if (GlobalController.Instance && GlobalController.Instance.demoTarget1Status == TargetStatus.total_on_screen_2)
+        else if (GlobalMemory.Instance && GlobalMemory.Instance.lab1Target1Status == TargetStatus.total_on_screen_2)
         {
             touchVisualizer.hideFrameLineLoop();
         }

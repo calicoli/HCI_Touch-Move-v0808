@@ -8,12 +8,13 @@ ScriptsOnlyBuild:
     - GlobalMemory
     - inPhaseController
     - inUIController
+    - lab1FlickerVisualizer
+    - lab1PhaseController
+    - lab1TargetVisualizer
+    - lab1TouchVisualizer
+    - lab1TrialController
+    - lab1UIController
     - tech1DirectDragProcessor
-    - tech1PhaseController
-    - tech1TargetVisualizer
-    - tech1TouchVisualizer
-    - tech1TrialController
-    - tech1UIController
     - tech2HoldTapProcessor
     - tech3ThrowCatchProcessor
     Unity.Rider.Editor.dll:
@@ -148,6 +149,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 13108}
     - Class: 114
       Script: {instanceID: 13118}
+    - Class: 114
+      Script: {instanceID: 13854}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 120
@@ -295,10 +298,10 @@ ScriptsOnlyBuild:
     className: GridLayoutGroup
   - hash:
       serializedVersion: 2
-      Hash: b7705c07ab0ee09a27a43b386e9507ac
+      Hash: 7cd4d87caf20af6a9852089fefb4973e
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: tech1PhaseController
+    className: lab1PhaseController
   - hash:
       serializedVersion: 2
       Hash: 86a64c50034aa264d67f470f23e73eee
@@ -409,7 +412,7 @@ ScriptsOnlyBuild:
     className: FileProcessor
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+      Hash: c80b4d303403aae049ff7020c9bad0c6
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: tech3ThrowCatchProcessor
@@ -526,7 +529,7 @@ ScriptsOnlyBuild:
       Hash: 30b205fac43ab96827173ce006c6c3e6
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: tech1TargetVisualizer
+    className: lab1TargetVisualizer
   - hash:
       serializedVersion: 2
       Hash: 5ad4aa237d47ac2bab17bacb672edf7a
@@ -607,7 +610,7 @@ ScriptsOnlyBuild:
     className: TextMeshProUGUI
   - hash:
       serializedVersion: 2
-      Hash: 381e2b3f8445dd2819b6b6e49e473eb5
+      Hash: d0295ae80ef6e87010757ca64a39e14c
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: tech1DirectDragProcessor
@@ -616,10 +619,10 @@ ScriptsOnlyBuild:
       Hash: 1daf48e20980f3f05aa5da52efdd7094
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: tech1UIController
+    className: lab1UIController
   - hash:
       serializedVersion: 2
-      Hash: acdf559fb365609936c1d41983eeba27
+      Hash: 9438f8c7dba2df95fe3acaef5a8584eb
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: tech2HoldTapProcessor
@@ -640,7 +643,7 @@ ScriptsOnlyBuild:
       Hash: d484b8009fa7ad145fed11ac21310624
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: tech1TouchVisualizer
+    className: lab1TouchVisualizer
   - hash:
       serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
@@ -715,7 +718,7 @@ ScriptsOnlyBuild:
     className: Outline
   - hash:
       serializedVersion: 2
-      Hash: 4ee2c439244c1911351bc648b214ff8d
+      Hash: eddca9da9fd1f2d71798cddb416e797d
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: GlobalMemory
@@ -751,10 +754,10 @@ ScriptsOnlyBuild:
     className: Dropdown
   - hash:
       serializedVersion: 2
-      Hash: f1e8d5a2662bc63fd7e6eba8e54b1bd3
+      Hash: 7c963c3d774febc6c9449124ce19a303
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: tech1TrialController
+    className: lab1TrialController
   - hash:
       serializedVersion: 2
       Hash: 748dd2a2a28da4e618912da5ac45684b
@@ -791,6 +794,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
+  - hash:
+      serializedVersion: 2
+      Hash: fa09d90ae055830a2d96cdf2f0acfa7b
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: lab1FlickerVisualizer
   platform: 13
   scenePathNames:
   - Assets/Scenes/Index_scene.unity

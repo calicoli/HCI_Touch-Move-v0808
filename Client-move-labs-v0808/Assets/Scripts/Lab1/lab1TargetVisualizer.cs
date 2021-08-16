@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class tech1TargetVisualizer : MonoBehaviour
+public class lab1TargetVisualizer : MonoBehaviour
 {
     public GameObject target2;
     public GameObject shadow2;

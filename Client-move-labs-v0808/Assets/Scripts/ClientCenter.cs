@@ -227,7 +227,8 @@ public class ClientCenter : MonoBehaviour
         ThrowCatchStatus target1Status = (ThrowCatchStatus)Enum.Parse(typeof(ThrowCatchStatus), messages[1]);
         float target1PosX = Convert.ToSingle(messages[2]);
         float target1PosY = Convert.ToSingle(messages[3]);
-        GlobalMemory.Instance.receiveThrowCatchInfoFromServer(target1Status, target1PosX, target1PosY);
+        ThrowCatchResult target1Result = (ThrowCatchResult)Enum.Parse(typeof(ThrowCatchResult), messages[4]);
+        GlobalMemory.Instance.receiveThrowCatchInfoFromServer(target1Status, target1PosX, target1PosY, target1Result);
     }
 
     public void connect(string address)
@@ -301,10 +302,12 @@ public class ClientCenter : MonoBehaviour
             string t2Status = GlobalMemory.Instance.tech3Target2ThrowCatchStatus.ToString();
             string t2PosX = GlobalMemory.Instance.tech3Target2ThrowCatchPosition.x.ToString();
             string t2PosY = GlobalMemory.Instance.tech3Target2ThrowCatchPosition.y.ToString();
+            string t2Result = GlobalMemory.Instance.tech3Target2ThrowCatchResult.ToString();
             msgContent = msgType.ToString() + paramSeperators
                        + t2Status + paramSeperators
                        + t2PosX + paramSeperators
-                       + t2PosY + paramSeperators;
+                       + t2PosY + paramSeperators
+                       + t2Result + paramSeperators;
         }
         sendMessage(msgContent);
     }

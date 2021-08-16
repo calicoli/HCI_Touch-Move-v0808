@@ -85,6 +85,8 @@ public class GlobalMemory : MonoBehaviour
     public ThrowCatchStatus tech3Target1ThrowCatchStatus, tech3Target2ThrowCatchStatus;
     [HideInInspector]
     public Vector3 tech3Target1ThrowCatchPosition, tech3Target2ThrowCatchPosition;
+    [HideInInspector]
+    public ThrowCatchResult tech3Target1ThrowCatchResult, tech3Target2ThrowCatchResult;
 
     private bool isConnecting;
 
@@ -211,10 +213,11 @@ public class GlobalMemory : MonoBehaviour
         tech2Target1HoldTapResult = t1result;
     }
 
-    public void receiveThrowCatchInfoFromServer(ThrowCatchStatus t1tc, float t1px, float t1py)
+    public void receiveThrowCatchInfoFromServer(ThrowCatchStatus t1tc, float t1px, float t1py, ThrowCatchResult t1result)
     {
         tech3Target1ThrowCatchStatus = t1tc;
         tech3Target1ThrowCatchPosition = new Vector3(t1px, t1py, 0f);
+        tech3Target1ThrowCatchResult = t1result;
 
         if (t1tc == ThrowCatchStatus.throw_successed_on_screen_1)
         {
