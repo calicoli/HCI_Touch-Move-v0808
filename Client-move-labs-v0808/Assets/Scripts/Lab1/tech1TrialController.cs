@@ -139,11 +139,13 @@ public class tech1TrialController : MonoBehaviour
                 || curTrialPhase == TrialPhase.a_failed_trial)
             {
                 disableAllTechniques();
-                curTrialPhase = TrialPhase.inactive_phase;
+                curTrialPhase = TrialPhase.a_trial_end;
+                GlobalMemory.Instance.curLabTrialPhase = TrialPhase.a_trial_end;
+                sender.prepareNewMessage4Server(MessageType.Trial);
             }
             else if (curTrialPhase == TrialPhase.a_trial_end)
             {
-                // omit this phase
+                curTrialPhase = TrialPhase.inactive_phase;
             }
             else if (curTrialPhase == TrialPhase.block_end)
             {

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using static PublicInfo;
-using static PublicLabParams;
 using static PublicDragParams;
 using System;
 

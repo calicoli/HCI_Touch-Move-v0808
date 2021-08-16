@@ -233,16 +233,19 @@ public class lab1TrialController : MonoBehaviour
             }
             else if (curTrialPhase == TrialPhase.a_trial_end)
             {
-                if (curTrialNumber >= totalTrialsPerRepeatition && retryTrialQueue.Count == 0)
+                if (GlobalMemory.Instance.clientLabTrialPhase == TrialPhase.a_trial_end)
                 {
-                    retryTrialCount = 0;
-                    retryTrialQueue.Clear();
-                    curTrialPhase = TrialPhase.repeatition_start;
-                    Debug.Log("Repetition end.");
-                }
-                else
-                {
-                    curTrialPhase = TrialPhase.a_trial_set_params;
+                    if (curTrialNumber >= totalTrialsPerRepeatition && retryTrialQueue.Count == 0)
+                    {
+                        retryTrialCount = 0;
+                        retryTrialQueue.Clear();
+                        curTrialPhase = TrialPhase.repeatition_start;
+                        Debug.Log("Repetition end.");
+                    }
+                    else
+                    {
+                        curTrialPhase = TrialPhase.a_trial_set_params;
+                    }
                 }
             }
             else if (curTrialPhase == TrialPhase.block_end)
