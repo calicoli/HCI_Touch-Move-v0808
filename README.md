@@ -8,7 +8,7 @@
 2. Labs - Drag Mode
 - Direct Drag (accessible)
 - Hold and Tap (accessible)
-- Throw and Catch (inaccessible)
+- Throw and Catch (accessible)
 3. Labs - Lab Mode
 - Full mode (accessible)
   - 3 repetitions * 28 trials per block
