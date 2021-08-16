@@ -41,9 +41,11 @@ public class PublicDragParams : MonoBehaviour
     {
         direct_drag_success = 0,
         drag_1_failed_to_arrive_junction = 1,
-        drag_2_failed_to_touch = 2,
-        drag_2_failed_to_leave_junction = 3,
-        drag_2_failed_to_arrive_pos = 4,
+        drag_1_left_junction_after_arrive = 2,
+        drag_2_failed_to_touch = 3,
+        drag_2_failed_to_leave_junction = 4,
+        drag_2_rearrived_junction_after_leave = 5,
+        drag_2_failed_to_arrive_pos = 6,
     }
 
     public enum HoldTapStatus
@@ -51,9 +53,20 @@ public class PublicDragParams : MonoBehaviour
         inactive_on_screen_1 = 10,
         holding_on_screen_1 = 11,
         tapped_on_screen_2 = 12,
+        t1tot2_trial_failed = 13,
+
         inactive_on_screen_2 = 20,
         holding_on_screen_2 = 21,
         tapped_on_screen_1 = 22,
+        t2tot1_trial_failed = 23,
+    }
+
+    public enum HoldTapResult
+    {
+        hold_tap_success = 0,
+        hold_released_before_tap = 1,
+        hold_outside_before_tap = 2,
+        tap_failed_to_arrive_pos = 3,
     }
 
     public enum ThrowCatchStatus
@@ -87,5 +100,13 @@ public class PublicDragParams : MonoBehaviour
     {
         tc_throw_drag = 0,
         tc_throw_flick = 1,
+    }
+
+    public enum ThrowCatchResult
+    {
+        throw_catch_success = 0,
+        throw_downgraded_to_drag = 1,
+        throw_to_wrong_dir = 2,
+        catch_failed_to_arrive_pos = 3,
     }
 }

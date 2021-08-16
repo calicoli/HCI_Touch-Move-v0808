@@ -9,6 +9,6 @@ EditorBuildSettings:
     path: Assets/Scenes/Index_scene.unity
     guid: 7c6725ae8f80b844f96721bc9cfab0c3
   - enabled: 1
-    path: Assets/Scenes/Tech1_DirectDrag.unity
+    path: Assets/Scenes/Lab1_move_3techs.unity
     guid: 4c89bbac2e0c7b146876e3ad4de682d1
   m_configObjects: {}

@@ -79,6 +79,9 @@ public class GlobalMemory : MonoBehaviour
     [HideInInspector]
     public HoldTapStatus tech2Target1HoldTapStatus, tech2Target2HoldTapStatus;
     [HideInInspector]
+    public HoldTapResult tech2Target1HoldTapResult, tech2Target2HoldTapResult;
+
+    [HideInInspector]
     public ThrowCatchStatus tech3Target1ThrowCatchStatus, tech3Target2ThrowCatchStatus;
     [HideInInspector]
     public Vector3 tech3Target1ThrowCatchPosition, tech3Target2ThrowCatchPosition;
@@ -202,9 +205,10 @@ public class GlobalMemory : MonoBehaviour
     }
 
 
-    public void receiveHoldTapInfoFromServer(HoldTapStatus t1ht)
+    public void receiveHoldTapInfoFromServer(HoldTapStatus t1ht, HoldTapResult t1result)
     {
         tech2Target1HoldTapStatus = t1ht;
+        tech2Target1HoldTapResult = t1result;
     }
 
     public void receiveThrowCatchInfoFromServer(ThrowCatchStatus t1tc, float t1px, float t1py)

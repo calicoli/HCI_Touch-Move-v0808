@@ -218,7 +218,8 @@ public class ClientCenter : MonoBehaviour
     private void analyzeHoldTapInfo(string[] messages)
     {
         HoldTapStatus target1Status = (HoldTapStatus)Enum.Parse(typeof(HoldTapStatus), messages[1]);
-        GlobalMemory.Instance.receiveHoldTapInfoFromServer(target1Status);
+        HoldTapResult target1Result = (HoldTapResult)Enum.Parse(typeof(HoldTapResult), messages[2]);
+        GlobalMemory.Instance.receiveHoldTapInfoFromServer(target1Status, target1Result);
     }
 
     private void analyzeThrowCatchInfo(string[] messages)
@@ -289,9 +290,11 @@ public class ClientCenter : MonoBehaviour
         }
         else if (msgType == MessageType.HoldTapInfo)
         {
-            string targetStatus = GlobalMemory.Instance.tech2Target2HoldTapStatus.ToString();
+            string t2Status = GlobalMemory.Instance.tech2Target2HoldTapStatus.ToString();
+            string t2Result = GlobalMemory.Instance.tech2Target2HoldTapResult.ToString();
             msgContent = msgType.ToString() + paramSeperators
-                       + targetStatus.ToString();
+                       + t2Status + paramSeperators
+                       + t2Result + paramSeperators;
         }
         else if (msgType == MessageType.ThrowCatchInfo)
         {

@@ -7,9 +7,7 @@ public class PublicInfo : MonoBehaviour
     public enum LabScene
     {
         Index_scene = 0,
-        Tech1_DirectDrag = 1,
-        Tech2_HoldTap = 2,
-        Tech3_ThrowCatch = 3,
+        Lab1_move_3techs = 1,
     }
 
     public enum LabName

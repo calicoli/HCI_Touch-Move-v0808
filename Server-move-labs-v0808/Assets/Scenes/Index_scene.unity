@@ -522,10 +522,14 @@ MonoBehaviour:
   tech1Target2DirectDragResult: 0
   tech2Target1HoldTapStatus: 0
   tech2Target2HoldTapStatus: 0
+  tech2Target1HoldTapResult: 0
+  tech2Target2HoldTapResult: 0
   tech3Target1ThrowCatchStatus: 0
   tech3Target2ThrowCatchStatus: 0
   tech3Target1ThrowCatchPosition: {x: 0, y: 0, z: 0}
   tech3Target2ThrowCatchPosition: {x: 0, y: 0, z: 0}
+  tech3Target1ThrowCatchResult: 0
+  tech3Target2ThrowCatchResult: 0
 --- !u!1 &1013705871
 GameObject:
   m_ObjectHideFlags: 0
@@ -2407,7 +2411,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: 0, y: 2}
-  m_SizeDelta: {x: 0, y: 200}
+  m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &8973411754715256092
 MonoBehaviour:
@@ -2976,7 +2980,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 8973411756113984907}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.6666668
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4234,7 +4238,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 0.6666668}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -4345,6 +4349,6 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000038146973}
+  m_AnchoredPosition: {x: 0, y: 0.000015258789}
   m_SizeDelta: {x: 0, y: 100}
   m_Pivot: {x: 0.5, y: 1}

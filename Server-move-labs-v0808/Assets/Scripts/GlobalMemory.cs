@@ -78,9 +78,14 @@ public class GlobalMemory: MonoBehaviour
     [HideInInspector]
     public HoldTapStatus tech2Target1HoldTapStatus, tech2Target2HoldTapStatus;
     [HideInInspector]
+    public HoldTapResult tech2Target1HoldTapResult, tech2Target2HoldTapResult;
+
+    [HideInInspector]
     public ThrowCatchStatus tech3Target1ThrowCatchStatus, tech3Target2ThrowCatchStatus;
     [HideInInspector]
     public Vector3 tech3Target1ThrowCatchPosition, tech3Target2ThrowCatchPosition;
+    [HideInInspector]
+    public ThrowCatchResult tech3Target1ThrowCatchResult, tech3Target2ThrowCatchResult;
 
     private bool isConnecting;
     private BlockSequence seqBlocks;
@@ -190,13 +195,9 @@ public class GlobalMemory: MonoBehaviour
         switch (curDragType)
         {
             case DragType.direct_drag:
-                targetScene = LabScene.Tech1_DirectDrag.ToString();
-                break;
             case DragType.hold_tap:
-                targetScene = LabScene.Tech2_HoldTap.ToString();
-                break;
             case DragType.throw_catch:
-                targetScene = LabScene.Tech3_ThrowCatch.ToString();
+                targetScene = LabScene.Lab1_move_3techs.ToString();
                 break;
         }
         return targetScene;
@@ -264,9 +265,10 @@ public class GlobalMemory: MonoBehaviour
         tech1Target2DirectDragResult = t2result;
     }
 
-    public void receiveHoldTapInfoFromClient(HoldTapStatus t2hp)
+    public void receiveHoldTapInfoFromClient(HoldTapStatus t2hp, HoldTapResult t2result)
     {
         tech2Target2HoldTapStatus = t2hp;
+        tech2Target2HoldTapResult = t2result;
     }
 
     public void receiveThrowCatchInfoFromClinet(ThrowCatchStatus t2tc, float t2px, float t2py)
