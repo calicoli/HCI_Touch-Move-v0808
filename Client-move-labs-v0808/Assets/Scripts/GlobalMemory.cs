@@ -17,6 +17,9 @@ public class GlobalMemory : MonoBehaviour
     public AngleProcessor angleProcessor;
     public FileProcessor fileProcssor;
 
+    [HideInInspector]
+    public string sendInfo, rcvInfo;
+
     // entry params
     [HideInInspector]
     public string serverip;

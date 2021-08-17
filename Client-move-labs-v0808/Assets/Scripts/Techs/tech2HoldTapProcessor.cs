@@ -15,6 +15,13 @@ public class tech2HoldTapProcessor : MonoBehaviour
     private bool touchSuccess;
     private HoldTapResult curHoldTapResult;
 
+    private const int layerMask = 1 << 8;
+
+    private int hitCnt = 0;
+
+    private float timer = 0f;
+    private const float wait_time_before_vanish = 0.2f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,6 +30,7 @@ public class tech2HoldTapProcessor : MonoBehaviour
 
     void resetHoldTapParams()
     {
+        timer = wait_time_before_vanish;
         touchSuccess = false;
         curHoldTapResult = HoldTapResult.hold_tap_success;
         if (GlobalMemory.Instance)
@@ -38,6 +46,7 @@ public class tech2HoldTapProcessor : MonoBehaviour
     {
         if (GlobalMemory.Instance && GlobalMemory.Instance.targetDragType == DragType.hold_tap)
         {
+            uiController.updateDragMode("");
             if (curHoldTapResult != HoldTapResult.hold_tap_success
                 || GlobalMemory.Instance.tech2Target1HoldTapResult != HoldTapResult.hold_tap_success)
             {
@@ -105,18 +114,26 @@ public class tech2HoldTapProcessor : MonoBehaviour
                 }
                 else if (GlobalMemory.Instance.tech2Target1HoldTapStatus == HoldTapStatus.tapped_on_screen_2)
                 {
-                    targetVisualizer.showTarget();
-                    //targetVisualizer.hideTarget();
-                    targetVisualizer.hideShadow();
-
-                    if (checkTouchEndPosCorrect())
+                    if (timer > 0f)
                     {
-                        trialController.switchTrialPhase(PublicTrialParams.TrialPhase.a_successful_trial);
+                        timer -= Time.deltaTime;
+                        targetVisualizer.showTarget();
                     }
                     else
                     {
-                        curHoldTapResult = HoldTapResult.tap_failed_to_arrive_pos;
-                        curTarget2HoldTapStatus = HoldTapStatus.t1tot2_trial_failed;
+                        targetVisualizer.hideTarget();
+                        targetVisualizer.hideShadow();
+
+                        if (checkTouchEndPosCorrect())
+                        {
+                            uiController.updatePosInfo(curHoldTapResult.ToString());
+                            trialController.switchTrialPhase(PublicTrialParams.TrialPhase.a_successful_trial);
+                        }
+                        else
+                        {
+                            curHoldTapResult = HoldTapResult.tap_failed_to_arrive_pos;
+                            curTarget2HoldTapStatus = HoldTapStatus.t1tot2_trial_failed;
+                        }
                     }
                 }
             }
@@ -124,15 +141,20 @@ public class tech2HoldTapProcessor : MonoBehaviour
             {
                 if (curTarget2HoldTapStatus == HoldTapStatus.inactive_on_screen_2)
                 {
-                    targetVisualizer.showTarget();
                     if (Input.touchCount == 1)
                     {
+                        //uiController.updateDragMode("t2-pos: " + targetVisualizer.getTargetColliderEnabled() 
+                        //    + targetVisualizer.getTargetPosition().ToString()
+                        //    + targetVisualizer.getShadowPosition().ToString());
                         Touch touch = Input.GetTouch(0);
                         touchSuccess = process1Touch4Target2(touch.position, 0);
-                        if (touchSuccess && touch.phase == TouchPhase.Began)
+                        if (touchSuccess)
                         {
-                            targetVisualizer.activeTarget();
-                            curTarget2HoldTapStatus = HoldTapStatus.holding_on_screen_2;
+                            if (touch.phase == TouchPhase.Began)
+                            {
+                                targetVisualizer.activeTarget();
+                                curTarget2HoldTapStatus = HoldTapStatus.holding_on_screen_2;
+                            }
                         }
                     }
                     else
@@ -181,6 +203,7 @@ public class tech2HoldTapProcessor : MonoBehaviour
                 {
                     targetVisualizer.hideTarget();
                     targetVisualizer.hideShadow();
+                    uiController.updatePosInfo(curHoldTapResult.ToString());
                     trialController.switchTrialPhase(PublicTrialParams.TrialPhase.a_successful_trial);
                 }
             }
@@ -203,21 +226,42 @@ public class tech2HoldTapProcessor : MonoBehaviour
 
     private bool process1Touch4Target2(Vector2 pos, int targetid)
     {
+        /*
         int hitid = -1;
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(pos);
-        if (Physics.Raycast(ray, out hit))
+        uiController.updatePosInfo(ray.origin.ToString() + " " + Camera.main.transform.position.ToString());
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
         {
-            hitid = Convert.ToInt32(hit.collider.gameObject.name.Substring(7, 2));
-            Debug.Log("info: " + hitid.ToString() + " " + hit.collider.gameObject.name);
-            Debug.DrawLine(ray.origin, hit.point, Color.yellow);
+            
+            //uiController.updatePosInfo("t2-pos: " + targetVisualizer.getTargetPosition().ToString());
+            if (hit.collider.gameObject.name.Length >= 9)
+            {
+                hitid = Convert.ToInt32(hit.collider.gameObject.name.Substring(7, 2));
+                Debug.Log("info: " + hitid.ToString() + " " + hit.collider.gameObject.name);
+                Debug.DrawLine(ray.origin, hit.point, Color.yellow);
+                hitCnt++;
+                //uiController.updatePosInfo("hit-1: " + hitCnt.ToString() + " " + hitid.ToString() + " " + hit.collider.gameObject.name);
+            }
+            else
+            {
+                hitCnt += 2;
+                //uiController.updatePosInfo("hit-2: " + hitCnt.ToString() + " " + hit.collider.gameObject.name);
+            }
         }
-
         if (hitid == targetid)
             return true;
         else
             return false;
-
+            */
+        float distance = Vector3.Distance(targetVisualizer.getTargetPosition(), processScreenPosToGetWorldPosAtZeroZ(pos));
+        if (distance <= targetVisualizer.getShadowLocalScale().x / 2)
+        {
+            return true;
+        } else
+        {
+            return false;
+        }
     }
 
     private Vector3 processScreenPosToGetWorldPosAtZeroZ(Vector2 tp)
@@ -246,7 +290,6 @@ public class tech2HoldTapProcessor : MonoBehaviour
         targetVisualizer.hideTarget();
         targetVisualizer.showShadow();
         prevTarget2HoldTapStatus = curTarget2HoldTapStatus = HoldTapStatus.inactive_on_screen_1;
-        
         if (GlobalMemory.Instance)
         {
             GlobalMemory.Instance.tech2Target1HoldTapStatus

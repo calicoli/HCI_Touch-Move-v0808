@@ -107,6 +107,7 @@ public class ClientCenter : MonoBehaviour
                 byte[] clientMessageAsByteArray = Encoding.ASCII.GetBytes(clientMessage);
                 stream.Write(clientMessageAsByteArray, 0, clientMessageAsByteArray.Length);
                 Debug.Log("C sendMsg: " + clientMessage);
+                GlobalMemory.Instance.sendInfo = clientMessage;
             }
         }
         catch (SocketException socketException)
@@ -132,6 +133,7 @@ public class ClientCenter : MonoBehaviour
     {
         string receiveMsg = (string)receivedQueue.Dequeue();
         Debug.Log("C rcvMsg: " + receiveMsg);
+        GlobalMemory.Instance.rcvInfo = receiveMsg;
         string[] messages = receiveMsg.Split(';');
         MessageType msgType = (MessageType)Enum.Parse(typeof(MessageType), messages[0]);
         if (msgType == MessageType.Command)

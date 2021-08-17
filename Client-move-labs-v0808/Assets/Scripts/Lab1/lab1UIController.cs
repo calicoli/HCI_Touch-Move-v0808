@@ -11,6 +11,8 @@ public class lab1UIController : MonoBehaviour
     public Text txtFinishLab;
 
     public Text txtDragMode;
+    public Text txtSendInfo;
+    public Text txtRcvInfo;
     public Text txtPhaseInfo;
     public Text txtDebugInfo;
     public Text txtStatusInfo;
@@ -41,6 +43,8 @@ public class lab1UIController : MonoBehaviour
     {
         isConnecting = GlobalMemory.Instance.getConnectionStatus();
         renderCamera.backgroundColor = (isConnecting ? connectColor : disconnectColor);
+        updateSendInfo(GlobalMemory.Instance.sendInfo);
+        updateRcvInfo(GlobalMemory.Instance.rcvInfo);
     }
 
     public void SwitchToIndexScene()
@@ -51,6 +55,8 @@ public class lab1UIController : MonoBehaviour
     public void setDebugUIVisibility(bool debugging)
     {
         txtDragMode.gameObject.SetActive(debugging);
+        txtSendInfo.gameObject.SetActive(false);
+        txtRcvInfo.gameObject.SetActive(false);
         txtPhaseInfo.gameObject.SetActive(debugging);
         txtDebugInfo.gameObject.SetActive(debugging);
         txtStatusInfo.gameObject.SetActive(debugging);
@@ -69,9 +75,18 @@ public class lab1UIController : MonoBehaviour
         txtFinishLab.gameObject.SetActive(true);
     }
 
-    public void updateDragMode()
+    public void updateDragMode(string str)
     {
-        txtDragMode.text = "Mode: " + GlobalMemory.Instance.targetDragType.ToString();
+        txtDragMode.text = str;
+    }
+
+    public void updateSendInfo(string str)
+    {
+        txtSendInfo.text = str;
+    }
+    public void updateRcvInfo(string str)
+    {
+        txtRcvInfo.text = str;
     }
 
     public void updateDebugInfo(string str)

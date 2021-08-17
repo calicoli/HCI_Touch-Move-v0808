@@ -525,7 +525,7 @@ ScriptsOnlyBuild:
     className: demoTouchVisualizer
   - hash:
       serializedVersion: 2
-      Hash: 6ff4d3c9658676c243c666b7b076eb03
+      Hash: bf23a7c36644de4a5397b6d7c2e31174
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: lab1UIController
@@ -765,7 +765,7 @@ ScriptsOnlyBuild:
     className: TestRunCallbackListener
   - hash:
       serializedVersion: 2
-      Hash: 2ec253bf4ccdc3d37d938cf70a7c1cda
+      Hash: 6e093fa8fafe0d8a711dca985c2c9848
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: GlobalMemory

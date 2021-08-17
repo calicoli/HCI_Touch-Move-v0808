@@ -29,7 +29,7 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
 
     private float leftBound;
 
-    private const float unitMoveDuration = 0.3f; // The time the target moves one screen width as the unit time
+    private const float unitMoveDuration = 0.25f; // The time the target moves one screen width as the unit time
 
     private const float minX = DRAG_MIN_X, maxX = DRAG_MAX_X, minY = DRAG_MIN_Y, maxY = DRAG_MAX_Y;
     private const float minFlickDistance = 60f;
@@ -38,6 +38,9 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
     private const float FLING_FRICTION = 1.1f;
     private const float FLING_MIN_VELOCITY = 200f; // ios 200
     private const float FLING_MIN_DISTANCE = 6f;  // ios 120
+
+    private float delayTimer = 0f;
+    private const float wait_time_before_vanish = 0.15f;
 
     // Start is called before the first frame update
     void Start()
@@ -49,6 +52,7 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
 
     void resetDirectDragParams()
     {
+        delayTimer = wait_time_before_vanish;
         touchSuccess = false;
         curThrowCatchResult = ThrowCatchResult.throw_catch_success;
         if (GlobalMemory.Instance)
@@ -171,18 +175,29 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
                 else if (curTarget2ThrowCatchStatus == ThrowCatchStatus.catch_end_on_screen_2)
                 {
                     flickerVisualizer.hideFlickerObjects();
-                    targetVisualizer.inactiveTarget();
-                    targetVisualizer.hideShadow();
 
-                    if (checkTouchEndPosCorrect())
+                    if (delayTimer > 0f)
                     {
-                        trialController.switchTrialPhase(PublicTrialParams.TrialPhase.a_successful_trial);
+                        delayTimer -= Time.deltaTime;
+                        targetVisualizer.showTarget();
                     }
                     else
                     {
-                        curThrowCatchResult = ThrowCatchResult.catch_failed_to_arrive_pos;
-                        curTarget2ThrowCatchStatus = ThrowCatchStatus.t1tot2_trial_failed;
+                        targetVisualizer.inactiveTarget();
+                        targetVisualizer.hideShadow();
+
+                        if (checkTouchEndPosCorrect())
+                        {
+                            uiController.updatePosInfo(curThrowCatchResult.ToString());
+                            trialController.switchTrialPhase(PublicTrialParams.TrialPhase.a_successful_trial);
+                        }
+                        else
+                        {
+                            curThrowCatchResult = ThrowCatchResult.catch_failed_to_arrive_pos;
+                            curTarget2ThrowCatchStatus = ThrowCatchStatus.t1tot2_trial_failed;
+                        }
                     }
+                        
                 }
             }
             else if (GlobalMemory.Instance.lab1Target2Status == TargetStatus.total_on_screen_2)
@@ -432,6 +447,7 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
                     flickerVisualizer.hideFlickerObjects();
                     targetVisualizer.hideTarget();
                     targetVisualizer.hideShadow();
+                    uiController.updatePosInfo(curThrowCatchResult.ToString());
                     trialController.switchTrialPhase(PublicTrialParams.TrialPhase.a_successful_trial);
                 }
             }

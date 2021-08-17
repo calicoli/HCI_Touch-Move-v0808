@@ -45,7 +45,7 @@ public class PublicDragParams : MonoBehaviour
         drag_2_failed_to_touch = 3,
         drag_2_failed_to_leave_junction = 4,
         drag_2_rearrived_junction_after_leave = 5,
-        drag_2_failed_to_arrive_pos = 6,
+        drag_2_failed_to_arrive_pos = 6,        // delay vanish
     }
 
     public enum HoldTapStatus

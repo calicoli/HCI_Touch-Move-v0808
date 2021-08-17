@@ -98,6 +98,7 @@ public class ServerCenter : MonoBehaviour
                 stream.Write(serverMessageAsByteArray, 0, serverMessageAsByteArray.Length);
                 //Debug.Log("Server sent his message - should be received by client");
                 Debug.Log("S sendMsg: " + serverMessage);
+                GlobalMemory.Instance.sendInfo = serverMessage;
             }
         }
         catch (SocketException socketException)
@@ -205,6 +206,7 @@ public class ServerCenter : MonoBehaviour
     {
         string receiveMsg = (string)receivedQueue.Dequeue();
         Debug.Log("S rcvMsg: " + receiveMsg);
+        GlobalMemory.Instance.rcvInfo = receiveMsg;
         string[] messages = receiveMsg.Split(';');
         MessageType msgType = (MessageType)Enum.Parse(typeof(MessageType), messages[0]);
         if (msgType == MessageType.Command)

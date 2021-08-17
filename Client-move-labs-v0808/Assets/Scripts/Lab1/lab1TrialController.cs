@@ -66,7 +66,7 @@ public class lab1TrialController : MonoBehaviour
 
             if (curTrialPhase == TrialPhase.inactive_phase)
             {
-                if (GlobalMemory.Instance.serverLabTrialPhase == TrialPhase.a_trial_set_params)
+                if (GlobalMemory.Instance.serverLabTrialPhase == TrialPhase.s_sent_trial_params)
                 {
                     curTrialNumber = GlobalMemory.Instance.curLabTrialNumber;
                     curTrialIndex = GlobalMemory.Instance.curLabTrialid;

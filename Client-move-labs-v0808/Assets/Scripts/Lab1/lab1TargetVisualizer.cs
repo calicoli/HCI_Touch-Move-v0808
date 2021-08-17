@@ -133,6 +133,11 @@ public class lab1TargetVisualizer : MonoBehaviour
         return target2.GetComponent<MeshRenderer>().enabled;
     }
 
+    public bool getTargetColliderEnabled()
+    {
+        return target2.GetComponent<SphereCollider>().enabled;
+    }
+
     public Vector3 getTargetPosition()
     {
         return target2.transform.position;

@@ -21,8 +21,10 @@ public class tech1DirectDragProcessor : MonoBehaviour
     private DirectDragResult curDirectDragResult;
 
     private float rightBound;
-
     private const float minX = DRAG_MIN_X, maxX = DRAG_MAX_X, minY = DRAG_MIN_Y, maxY = DRAG_MAX_Y;
+
+    private float delayTimer = 0f;
+    private const float wait_time_before_vanish = 0.15f;
 
     // Start is called before the first frame update
     void Start()
@@ -34,6 +36,7 @@ public class tech1DirectDragProcessor : MonoBehaviour
 
     void resetDirectDragParams()
     {
+        delayTimer = wait_time_before_vanish;
         touchSuccess = false;
         curDirectDragResult = DirectDragResult.direct_drag_success;
         if (GlobalMemory.Instance)
@@ -413,14 +416,9 @@ public class tech1DirectDragProcessor : MonoBehaviour
                                 curDirectDragResult = DirectDragResult.drag_2_rearrived_junction_after_leave;
                                 curTarget1DirectDragStatus = DirectDragStatus.t2tot1_trial_failed;
                             }
-                            else if (checkTouchEndPosCorrect())
-                            {
-                                curTarget1DirectDragStatus = DirectDragStatus.drag_phase2_end_on_screen_1;
-                            }
                             else
                             {
-                                curDirectDragResult = DirectDragResult.drag_2_failed_to_arrive_pos;
-                                curTarget1DirectDragStatus = DirectDragStatus.t2tot1_trial_failed;
+                                curTarget1DirectDragStatus = DirectDragStatus.drag_phase2_end_on_screen_1;
                             }
                         }
                     }
@@ -455,15 +453,10 @@ public class tech1DirectDragProcessor : MonoBehaviour
                                     curDirectDragResult = DirectDragResult.drag_2_rearrived_junction_after_leave;
                                     curTarget1DirectDragStatus = DirectDragStatus.t2tot1_trial_failed;
                                 }
-                                else if (checkTouchEndPosCorrect())
+                                else
                                 {
                                     curTarget1DirectDragStatus = DirectDragStatus.drag_phase2_end_on_screen_1;
                                 }
-                                else
-                                {
-                                    curDirectDragResult = DirectDragResult.drag_2_failed_to_arrive_pos;
-                                    curTarget1DirectDragStatus = DirectDragStatus.t2tot1_trial_failed;
-                                } 
                             }
                         }
                     }
@@ -475,9 +468,25 @@ public class tech1DirectDragProcessor : MonoBehaviour
                 }
                 else if (curTarget1DirectDragStatus == DirectDragStatus.drag_phase2_end_on_screen_1)
                 {
-                    targetVisualizer.hideTarget();
-                    targetVisualizer.hideShadow();
-                    trialController.switchTrialPhase(PublicTrialParams.TrialPhase.a_successful_trial);
+                    if (delayTimer > 0f)
+                    {
+                        delayTimer -= Time.deltaTime;
+                    }
+                    else
+                    {
+                        targetVisualizer.hideTarget();
+                        targetVisualizer.hideShadow();
+
+                        if (checkTouchEndPosCorrect())
+                        {
+                            trialController.switchTrialPhase(PublicTrialParams.TrialPhase.a_successful_trial);
+                        }
+                        else
+                        {
+                            curDirectDragResult = DirectDragResult.drag_2_failed_to_arrive_pos;
+                            curTarget1DirectDragStatus = DirectDragStatus.t2tot1_trial_failed;
+                        }
+                    }
                 }
             }
 

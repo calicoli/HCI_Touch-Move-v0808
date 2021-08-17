@@ -20,7 +20,7 @@ public class lab1PhaseController : MonoBehaviour
     {
         sender = GlobalMemory.Instance.client;
         GlobalMemory.Instance.curClientScene = LabScene.Lab1_move_3techs;
-        uiController.updateDragMode();
+        uiController.updateDragMode("Mode: " + GlobalMemory.Instance.targetDragType.ToString());
         updatedSceneToServer = false;
         if (GlobalMemory.Instance.getConnectionStatus())
         {

@@ -17,6 +17,8 @@ public class lab1UIController : MonoBehaviour
     public Text txtFinishLab;
 
     public Text txtDragMode;
+    public Text txtSendInfo;
+    public Text txtRcvInfo;
     public Text txtPhaseInfo;
     public Text txtDebugInfo;
     public Text txtStatusInfo;
@@ -50,6 +52,8 @@ public class lab1UIController : MonoBehaviour
         isConnecting = GlobalMemory.Instance.getConnectionStatus();
         renderCamera.backgroundColor = (isConnecting ? connectColor : disconnectColor);
         txtAngle.text = "Angle: " + Math.Round(GlobalMemory.Instance.curAngle, 1).ToString() + "°";
+        updateSendInfo(GlobalMemory.Instance.sendInfo);
+        updateRcvInfo(GlobalMemory.Instance.rcvInfo);
     }
 
     public void BackToEntrySceneSoon()
@@ -66,11 +70,16 @@ public class lab1UIController : MonoBehaviour
     public void setDebugUIVisibility(bool debugging)
     {
         txtDragMode.gameObject.SetActive(debugging);
+        txtSendInfo.gameObject.SetActive(false);
+        txtRcvInfo.gameObject.SetActive(false);
+        txtDragMode.gameObject.SetActive(debugging);
+        txtPhaseInfo.gameObject.SetActive(debugging);
         txtDebugInfo.gameObject.SetActive(debugging);
         txtStatusInfo.gameObject.SetActive(debugging);
         txtPosInfo.gameObject.SetActive(debugging);
         txtAngle.gameObject.SetActive(debugging);
         txtTrial.gameObject.SetActive(debugging);
+        txtDragInfo.gameObject.SetActive(debugging);
     }
 
     public void setTrialInfo(string prefix, int id1, int id2)
@@ -82,6 +91,15 @@ public class lab1UIController : MonoBehaviour
     public void updateDragMode(string str)
     {
         txtDragMode.text = str;
+    }
+
+    public void updateSendInfo(string str)
+    {
+        txtSendInfo.text = str;
+    }
+    public void updateRcvInfo(string str)
+    {
+        txtRcvInfo.text = str;
     }
 
     public void updateDebugInfo(string str)

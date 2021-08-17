@@ -152,12 +152,13 @@ public class lab1TrialController : MonoBehaviour
                 int tid = curTrialIndex;
                 int nid = curTrialNumber;
                 string prefix = string.Format("B{0:D2}-R{1:D2}-T{2:D2}-N{3:D2}", bid, rid, tid, nid);
-                //GlobalMemory.Instance.curLabTrialData.setPrefix(prefix);
+                GlobalMemory.Instance.curLabTrialData.setPrefix(prefix);
 
                 // test mode show params
                 uiController.setTrialInfo(prefix, curTrial.firstid, curTrial.secondid);
 
                 curTrialPhase = TrialPhase.s_sent_trial_params;
+                GlobalMemory.Instance.curLabTrialPhase = TrialPhase.s_sent_trial_params;
                 sender.prepareNewMessage4Client(MessageType.Trial);
 
             }

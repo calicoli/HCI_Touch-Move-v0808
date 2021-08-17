@@ -16,6 +16,9 @@ public class GlobalMemory: MonoBehaviour
     public FileProcessor fileProcessor;
     public AngleProcessor angleProcessor;
 
+    [HideInInspector]
+    public string sendInfo, rcvInfo;
+
     // index scene params
     [HideInInspector]
     public int userid;

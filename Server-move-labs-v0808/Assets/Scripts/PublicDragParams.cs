@@ -65,8 +65,8 @@ public class PublicDragParams : MonoBehaviour
     {
         hold_tap_success = 0,
         hold_released_before_tap = 1,
-        hold_outside_before_tap = 2,
-        tap_failed_to_arrive_pos = 3,
+        hold_outside_before_tap = 2,    // delay vanish
+        tap_failed_to_arrive_pos = 3,   // delay vanish
     }
 
     public enum ThrowCatchStatus
@@ -111,6 +111,6 @@ public class PublicDragParams : MonoBehaviour
         throw_downgraded_to_drag_due_v = 2,
         throw_downgraded_to_drag_due_dv = 3,
         throw_to_wrong_dir = 4,
-        catch_failed_to_arrive_pos = 5,
+        catch_failed_to_arrive_pos = 5,     // delay vanish
     }
 }
