@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class PublicTrialParams : MonoBehaviour
 {
+    private static char paramSeperators = ';';
+    private static char trialSeperators = '#';
     public static (int firstid, int secondid)[] TrialPositionPairs = new[] {
         (100, 200), (101, 201), (102, 202), (103, 203), (104, 204),
         (105, 205), (106, 206), (107, 207), (108, 208), (109, 209),
@@ -35,6 +37,13 @@ public class PublicTrialParams : MonoBehaviour
         block_end = 12,
     } 
 
+    public enum TrialResult
+    {
+        not_complete = 0,
+        success = 1,
+        fail = 2,
+    }
+
     // wait to update ↓
     public struct InternetTime
     {
@@ -47,10 +56,13 @@ public class PublicTrialParams : MonoBehaviour
     // wait to update ↓
     public struct LocalTime
     {
-        public long t1ShowupStamp, tp1SuccessStamp;     // server
-        public long t2ShowupStamp, tp2SuccessStamp;     // client
-        public long serverSendDataStamp, serverReceiveDataStamp;    // server
-        public long clientReceiveDataStamp, clientSendDataStamp;    // client
+        // time stamp
+        //public long targetShowupStamp;
+        public long touch1StartStamp, touch1EndStamp;
+        public long touch2StartStamp, touch2EndStamp;
+        public long targetReachMidpointStamp, targetReachEndStamp;
+        //public long serverSendDataStamp, serverReceiveDataStamp;    // server
+        //public long clientReceiveDataStamp, clientSendDataStamp;    // client
     }
 
     // wait to update ↓
@@ -60,32 +72,41 @@ public class PublicTrialParams : MonoBehaviour
         int trialid;
         int firstid, secondid;
         string prefix;
-        // raw
-        public int tp1Count, tp2Count;
-        public Vector2 tp1SuccessPosition, tp2SuccessPosition;
-        public ArrayList tp1FailPositions;
-        public string tp2FailPositions;
-        //public InternetTime interTime;
-        public LocalTime localTime;
-        // calculate
-        public bool isTrialSuccessWithNoError;
-        public bool isTarget1SuccessWithNoError, isTarget2SuccessWithNoError;
-        public long loCompleteTime, loServerIntervalTime, loClientIntervalTime, loDataTransferForthBackTime;
-        public long loTarget1CompleteTime;
-        public long loTarget2CompleteTime;
-        public long loTarget1ShowTime; // tp1SuccessStamp - t1ShowupStamp
-        public long loTarget2ShowTime; // tp2SuccessStamp - t2ShowupStamp
+
+        // two-phase
+        Vector2 moveStartPos, moveDestination;
+        TrialPhase1RawData phase1Data;
+        TrialPhase2RawData phase2Data;
+        
+        // final-accuracy
+        bool isTrialSuccess, isPhase1Success, isPhase2Success;
+        public string techResult;
+        // final-time
+        long loTargetMoveSpan, loMovePhase1Span, loMovePhase2Span;
+        long loTouch1Span, loTouch2Span;
+        long loDevice1IntervalSpan, loDevice2IntervalSpan, loDataFetchSpan;
+        // final-pos
+        Vector2 touch1StartPos, touch1EndPos;
+        Vector2 touch2StartPos, touch2EndPos;
+        Vector2 targetPhase1StartPos, targetPhase1EndPos, targetPhase2StartPos, targetPhase2EndPos;
+        // final-tech specific data
+        public string techData;
 
         public void init(int idx, int id1, int id2)
         {
             trialid = idx;
             firstid = id1;
             secondid = id2;
-            tp1Count = 0;
-            tp2Count = 0;
-            tp1FailPositions = new ArrayList(); tp1FailPositions.Clear();
-            tp2FailPositions = null;
-            localTime = new LocalTime();
+            phase1Data = new TrialPhase1RawData();
+            phase1Data.init(idx, id1, id2);
+            phase2Data = new TrialPhase2RawData();
+            phase2Data.init(idx, id1, id2);
+            moveStartPos = moveDestination = Vector2.zero;
+            isTrialSuccess = isPhase1Success = isPhase2Success = false;
+            touch1StartPos = touch1EndPos = Vector2.zero;
+            touch2StartPos = touch2EndPos = Vector2.zero;
+            targetPhase1StartPos = targetPhase1EndPos = targetPhase2StartPos = targetPhase2EndPos = Vector2.zero;
+            techData = "None";
         }
 
         public long calTimeSpan(long later, long earlier)
@@ -93,21 +114,45 @@ public class PublicTrialParams : MonoBehaviour
             return later - earlier;
         }
 
-        public void calMoreData()
+        public void setTrialAccuracy(bool p1success, bool p2success)
         {
             // trial success
-            isTarget1SuccessWithNoError = tp1Count == 1 ? true : false;
-            isTarget2SuccessWithNoError = tp2Count == 1 ? true : false;
-            isTrialSuccessWithNoError = isTarget1SuccessWithNoError && isTarget2SuccessWithNoError;
+            isPhase1Success = p1success;
+            isPhase2Success = p2success;
+            isTrialSuccess = isPhase1Success && isPhase2Success;
+        }
+
+        public void conveyPhase1Data(TrialPhase1RawData rawdata1)
+        {
+            phase1Data = rawdata1;
+            moveStartPos = phase1Data.moveStartPos;
+            touch1StartPos = phase1Data.touch1StartPos;
+            touch1EndPos = phase1Data.touch1EndPos;
+            targetPhase1StartPos = phase1Data.movePhase1StartPos;
+            targetPhase1EndPos = phase1Data.movePhase1EndPos;
+    }
+
+        public void conveyPhase2Data(TrialPhase2RawData rawdata2)
+        {
+            phase2Data = rawdata2;
+            moveDestination = phase2Data.moveDestination;
+            touch2StartPos = phase2Data.touch2StartPos;
+            touch2EndPos = phase2Data.touch2EndPos;
+            targetPhase2StartPos = phase2Data.movePhase2StartPos;
+            targetPhase2EndPos = phase2Data.movePhase2EndPos;
+        }
+
+        public void calMoreData()
+        {
             // trial time
-            loCompleteTime = calTimeSpan(localTime.serverReceiveDataStamp, localTime.t1ShowupStamp);
-            loServerIntervalTime = calTimeSpan(localTime.serverReceiveDataStamp, localTime.serverSendDataStamp);
-            loClientIntervalTime = calTimeSpan(localTime.clientSendDataStamp, localTime.clientReceiveDataStamp);
-            loDataTransferForthBackTime = calTimeSpan(loServerIntervalTime, loClientIntervalTime);
-            //loTarget1CompleteTime = calTimeSpan(localTime.tp1SuccessStamp, localTime.t1ShowupStamp);
-            //loTarget2CompleteTime = calTimeSpan(localTime.tp2SuccessStamp, localTime.clientReceivedDataStamp);
-            loTarget1ShowTime = calTimeSpan(localTime.tp1SuccessStamp, localTime.t1ShowupStamp);
-            loTarget2ShowTime = calTimeSpan(localTime.tp2SuccessStamp, localTime.t2ShowupStamp);
+            loTargetMoveSpan = calTimeSpan(phase1Data.targetReachEndpointInfoReceivedStamp, phase1Data.touch1StartStamp);
+            loDevice1IntervalSpan = calTimeSpan(phase1Data.targetReachEndpointInfoReceivedStamp, phase1Data.targetReachMidpointStamp);
+            loDevice2IntervalSpan = calTimeSpan(phase2Data.targetReachEndpointStamp, phase2Data.targetReachMidpointInfoReceivedStamp);
+            loDataFetchSpan = calTimeSpan(loDevice1IntervalSpan, loDevice2IntervalSpan);
+            loMovePhase1Span = calTimeSpan(phase1Data.targetReachMidpointStamp, phase1Data.touch1StartStamp);
+            loMovePhase2Span = calTimeSpan(phase2Data.targetReachEndpointStamp, phase2Data.touch2StartStamp);
+            loTouch1Span = calTimeSpan(phase1Data.touch1EndStamp, phase1Data.touch1StartStamp);
+            loTouch2Span = calTimeSpan(phase2Data.touch2EndStamp, phase2Data.touch2StartStamp);
         }
 
         public void setPrefix(string pre)
@@ -120,39 +165,113 @@ public class PublicTrialParams : MonoBehaviour
             calMoreData();
             string str;
             // assign
-            str = prefix + ";"
-                + trialid.ToString() + ";" + firstid.ToString() + ";" + secondid.ToString() + ";"
-                // calculate
-                + isTrialSuccessWithNoError.ToString() + ";"
-                + isTarget1SuccessWithNoError.ToString() + ";" + isTarget2SuccessWithNoError.ToString() + ";"
-                + loCompleteTime.ToString() + ";" + loDataTransferForthBackTime.ToString() + ";"
-                + loServerIntervalTime.ToString() + ";" + loClientIntervalTime.ToString() + ";"
-                //+ loTarget1CompleteTime.ToString() + ";" + loTarget2CompleteTime.ToString() + ";"
-                + loTarget1ShowTime.ToString() + ";" + loTarget2ShowTime.ToString() + ";"
-                // raw: success position
-                + tp1SuccessPosition.ToString() + ";" + tp2SuccessPosition.ToString() + ";"
-                // raw: other data
-                + localTime.serverSendDataStamp.ToString() + ";" + localTime.clientReceiveDataStamp.ToString() + ";"
-                + localTime.clientSendDataStamp.ToString() + ";" + localTime.serverReceiveDataStamp.ToString() + ";"
-                + tp1Count.ToString() + ";"
-                + localTime.t1ShowupStamp.ToString() + ";" + localTime.tp1SuccessStamp.ToString() + ";"
-                + tp2Count.ToString() + ";"
-                + localTime.t2ShowupStamp.ToString() + ";" + localTime.tp2SuccessStamp.ToString() + ";"
-                ;
-            if (tp1Count > 1)
-            {
-                for (int i = 0; i < tp1FailPositions.Count; i++)
-                {
-                    str += tp1FailPositions[i].ToString() + "*";
-                }
-            }
-            else
-            {
-                str += "T1NoError";
-            }
-            str += ";";
-            str += (tp2Count > 1) ? tp2FailPositions : "T2NoError";
-            str += ";";
+            str = prefix + paramSeperators
+                + trialid.ToString() + paramSeperators + firstid.ToString() + paramSeperators + secondid.ToString() + paramSeperators
+                + isTrialSuccess.ToString() + paramSeperators + isPhase1Success.ToString() + paramSeperators + isPhase2Success.ToString() + paramSeperators
+                + techResult.ToString() + paramSeperators
+                // final-time
+                + loTargetMoveSpan.ToString() + paramSeperators
+                + loMovePhase1Span.ToString() + paramSeperators
+                + loMovePhase2Span.ToString() + paramSeperators
+                + loTouch1Span.ToString() + paramSeperators
+                + loTouch2Span.ToString() + paramSeperators
+                + loDevice1IntervalSpan.ToString() + paramSeperators
+                + loDevice2IntervalSpan.ToString() + paramSeperators
+                + loDataFetchSpan.ToString() + paramSeperators
+                // final-pos
+                + touch1StartPos.ToString() + paramSeperators
+                + touch1EndPos.ToString() + paramSeperators
+                + touch2StartPos.ToString() + paramSeperators
+                + touch2EndPos.ToString() + paramSeperators
+                + targetPhase1StartPos.ToString() + paramSeperators
+                + targetPhase1EndPos.ToString() + paramSeperators
+                + targetPhase2StartPos.ToString() + paramSeperators
+                + targetPhase2EndPos.ToString() + paramSeperators
+                // final-tech specific data
+                + techData.ToString() + paramSeperators
+                + phase1Data.getAllData()
+                + phase2Data.getAllData();
+
+            return str;
+        }
+    }
+
+    public struct TrialPhase1RawData
+    {
+        int trialid;
+        int firstid, secondid;
+        public Vector2 moveStartPos;
+        // time
+        public long touch1StartStamp, touch1EndStamp;
+        public long targetReachMidpointStamp, targetReachEndpointInfoReceivedStamp;
+        // final-pos
+        public Vector2 touch1StartPos, touch1EndPos;
+        public Vector2 movePhase1StartPos, movePhase1EndPos;
+
+        public void init (int tid, int id1, int id2)
+        {
+            trialid = tid;
+            firstid = id1;
+            secondid = id2;
+            moveStartPos = Vector2.zero;
+            touch1StartStamp = touch1EndStamp = targetReachMidpointStamp = targetReachEndpointInfoReceivedStamp = 0;
+            touch1StartPos = touch1EndPos = movePhase1StartPos = movePhase1EndPos = Vector2.zero;
+        }
+
+        public string getAllData()
+        {
+            string str;
+            str = trialid.ToString() + trialSeperators
+                + firstid.ToString() + trialSeperators + secondid.ToString() + trialSeperators
+                + moveStartPos.x.ToString() + trialSeperators + moveStartPos.y.ToString() + trialSeperators
+                + touch1StartStamp.ToString() + trialSeperators
+                + touch1EndStamp.ToString() + trialSeperators
+                + targetReachMidpointStamp.ToString() + trialSeperators
+                + targetReachEndpointInfoReceivedStamp.ToString() + trialSeperators
+                + touch1StartPos.x.ToString() + trialSeperators + touch1StartPos.y.ToString() + trialSeperators
+                + touch1EndPos.x.ToString() + trialSeperators + touch1EndPos.y.ToString() + trialSeperators
+                + movePhase1StartPos.x.ToString() + trialSeperators + movePhase1StartPos.y.ToString() + trialSeperators
+                + movePhase1EndPos.x.ToString() + trialSeperators + movePhase1EndPos.y.ToString() + trialSeperators;
+            return str;
+        }
+    }
+
+    public struct TrialPhase2RawData
+    {
+        int trialid;
+        int firstid, secondid;
+        public Vector2 moveDestination;
+        // time
+        public long touch2StartStamp, touch2EndStamp;
+        public long targetReachMidpointInfoReceivedStamp, targetReachEndpointStamp;
+        // final-pos
+        public Vector2 touch2StartPos, touch2EndPos;
+        public Vector2 movePhase2StartPos, movePhase2EndPos;
+
+        public void init(int tid, int id1, int id2)
+        {
+            trialid = tid;
+            firstid = id1;
+            secondid = id2;
+            moveDestination = Vector2.zero;
+            touch2StartStamp = touch2EndStamp = targetReachMidpointInfoReceivedStamp = targetReachEndpointStamp = 0;
+            touch2StartPos = touch2EndPos = movePhase2StartPos = movePhase2EndPos = Vector2.zero;
+        }
+
+        public string getAllData()
+        {
+            string str;
+            str = trialid.ToString() + trialSeperators
+                + firstid.ToString() + trialSeperators + secondid.ToString() + trialSeperators
+                + moveDestination.x.ToString() + trialSeperators + moveDestination.y.ToString() + trialSeperators
+                + touch2StartStamp.ToString() + trialSeperators
+                + touch2EndStamp.ToString() + trialSeperators
+                + targetReachMidpointInfoReceivedStamp.ToString() + trialSeperators
+                + targetReachEndpointStamp.ToString() + trialSeperators
+                + touch2StartPos.x.ToString() + trialSeperators + touch2StartPos.y.ToString() + trialSeperators
+                + touch2EndPos.x.ToString() + trialSeperators + touch2EndPos.y.ToString() + trialSeperators
+                + movePhase2StartPos.x.ToString() + trialSeperators + movePhase2StartPos.y.ToString() + trialSeperators
+                + movePhase2EndPos.x.ToString() + trialSeperators + movePhase2EndPos.y.ToString() + trialSeperators;
             return str;
         }
     }

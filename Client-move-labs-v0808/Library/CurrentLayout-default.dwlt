@@ -14,14 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PixelRect:
     serializedVersion: 2
-    x: 350.4
-    y: 88.8
+    x: 514.4
+    y: 94.4
     width: 993.60004
     height: 766.4
   m_ShowMode: 4
   m_Title: 
   m_RootView: {fileID: 2}
-  m_MinSize: {x: 875, y: 542}
+  m_MinSize: {x: 875, y: 392}
   m_MaxSize: {x: 10000, y: 10000}
   m_Maximized: 0
 --- !u!114 &2
@@ -112,8 +112,8 @@ MonoBehaviour:
     y: 30
     width: 994
     height: 717
-  m_MinSize: {x: 677, y: 492}
-  m_MaxSize: {x: 14001, y: 14042}
+  m_MinSize: {x: 678, y: 342}
+  m_MaxSize: {x: 12003, y: 8042}
   vertical: 0
   controlID: 34
 --- !u!114 &6
@@ -137,8 +137,8 @@ MonoBehaviour:
     y: 0
     width: 682
     height: 717
-  m_MinSize: {x: 402, y: 492}
-  m_MaxSize: {x: 10001, y: 14042}
+  m_MinSize: {x: 403, y: 342}
+  m_MaxSize: {x: 8003, y: 8042}
   vertical: 1
   controlID: 35
 --- !u!114 &7
@@ -162,8 +162,8 @@ MonoBehaviour:
     y: 0
     width: 682
     height: 421
-  m_MinSize: {x: 402, y: 221}
-  m_MaxSize: {x: 8002, y: 4021}
+  m_MinSize: {x: 403, y: 221}
+  m_MaxSize: {x: 8003, y: 4021}
   vertical: 0
   controlID: 36
 --- !u!114 &8
@@ -230,7 +230,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 1
   m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: ProjectBrowser
+  m_Name: ConsoleWindow
   m_EditorClassIdentifier: 
   m_Children: []
   m_Position:
@@ -239,14 +239,14 @@ MonoBehaviour:
     y: 421
     width: 682
     height: 296
-  m_MinSize: {x: 231, y: 271}
-  m_MaxSize: {x: 10001, y: 10021}
-  m_ActualView: {fileID: 16}
+  m_MinSize: {x: 100, y: 100}
+  m_MaxSize: {x: 4000, y: 4000}
+  m_ActualView: {fileID: 17}
   m_Panes:
   - {fileID: 16}
   - {fileID: 17}
-  m_Selected: 0
-  m_LastSelected: 1
+  m_Selected: 1
+  m_LastSelected: 0
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -294,8 +294,8 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 606.4
-    y: 119.200005
+    x: 770.4
+    y: 124.8
     width: 424
     height: 400
   m_ViewDataDictionary: {fileID: 0}
@@ -386,8 +386,8 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 350.4
-    y: 119.200005
+    x: 514.4
+    y: 124.8
     width: 255
     height: 400
   m_ViewDataDictionary: {fileID: 0}
@@ -396,7 +396,7 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: dcb6fffff4b6ffffc4b7ffffccb7fffff2b8ffff9cb9ffffb4b9ffff70baffff8abaffff46bbffff5ebbffff1abcffff34bcffff42bdffff5abdffff16beffff30befffff8beffff10bfffffc8bfffffdebfffff84c0ffff9cc0ffff54c1ffff6ac1ffff28c3ffff40c3fffff8c3ffff0ec4ffffb2c4ffffcac4ffff82c5ffff98c5ffff4cc6ffff64c6ffff66c6ffff6ac6ffff32c7ffff4ac7ffff02c8ffff18c8ffffc0c8ffffd8c8ffff90c9ffffa6c9fffff6caffff0ecbffffcacbffffe4cbffff00cdffff18cdffffd0cdffffe6cdffff92cfffffaacfffff62d0ffff78d0fffffcdeffff14dfffffccdfffffe2dfffffe6e0fffffee0ffffb6e1ffffcce1ffffcee5ffffe6e5ffffa2e6ffffbce6ffff24e8ffff3ce8ffff3ee8ffff42e8ffff7ae8ffff92e8ffff4ae9ffff60e9ffff42eaffff5aeaffff5ceaffff60eafffff8f1ffff10f2ffffccf2ffffe6f2ffffd4faffff6afbffff46360000663600007a3600004a3d00006a3d0000863d00009a3d0000c24d0000d84d00002e4e0000605e000056690000646900009269000094820000a2820000d082000048880000848d0000928d0000c08d0000b0980000f4ab000060ac000064ac0000
+      m_ExpandedIDs: 68f3ffffdef3fffffaf3ffff84f4ffff5ef7ffff76f7ffff2ef8ffff44f8ffffd0faffff6afbffff06360000323600005c3600006036000076440000cc44000002460000184600006e460000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -582,8 +582,8 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 0
-    y: 440
+    x: 683.2
+    y: 528.8
     width: 681
     height: 275
   m_ViewDataDictionary: {fileID: 0}
@@ -600,19 +600,19 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Scripts/Lab1
+    - Assets/Scenes
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Scripts/Lab1
+  - Assets/Scenes
   m_LastFoldersGridSize: -1
   m_LastProjectPath: F:\GitHub\HCI_Touch-Move-v0808\Client-move-labs-v0808
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 10350000
-    m_LastClickedID: 13584
+    m_SelectedIDs: 06350000
+    m_LastClickedID: 13574
     m_ExpandedIDs: 00000000fc340000fe340000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -718,8 +718,8 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 604
-    y: 542.4
+    x: 514.4
+    y: 545.60004
     width: 681
     height: 275
   m_ViewDataDictionary: {fileID: 0}
@@ -744,8 +744,8 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 683
-    y: 19
+    x: 1196.8
+    y: 124.8
     width: 310
     height: 696
   m_ViewDataDictionary: {fileID: 0}

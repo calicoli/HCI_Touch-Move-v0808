@@ -94,6 +94,8 @@ public class lab1TrialController : MonoBehaviour
             {
                 if (curTrial.firstid < curTrial.secondid)
                 {
+                    GlobalMemory.Instance.curLabPhase2RawData = new TrialPhase2RawData();
+                    GlobalMemory.Instance.curLabPhase2RawData.init(curTrial.index, curTrial.firstid, curTrial.secondid);
                     GlobalMemory.Instance.lab1Target2Status = TargetStatus.total_on_screen_1;
                     switch (GlobalMemory.Instance.targetDragType)
                     {
@@ -115,6 +117,8 @@ public class lab1TrialController : MonoBehaviour
                 }
                 else
                 {
+                    GlobalMemory.Instance.curLabPhase1RawData = new TrialPhase1RawData();
+                    GlobalMemory.Instance.curLabPhase1RawData.init(curTrial.index, curTrial.firstid, curTrial.secondid);
                     GlobalMemory.Instance.lab1Target2Status = TargetStatus.total_on_screen_2;
                     switch (GlobalMemory.Instance.targetDragType)
                     {

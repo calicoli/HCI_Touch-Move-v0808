@@ -63,10 +63,12 @@ public class GlobalMemory : MonoBehaviour
     [HideInInspector]
     public TrialPhase curLabTrialPhase, serverLabTrialPhase;
     [HideInInspector]
-    public TrialDataWithLocalTime curLabTrialData;
-    // ↑ wait to update
+    //public TrialDataWithLocalTime curLabTrialData;
+    public TrialPhase1RawData curLabPhase1RawData;
+    [HideInInspector]
+    public TrialPhase2RawData curLabPhase2RawData;
 
-    
+
     [HideInInspector]
     public bool refreshTarget2 = false;
 
@@ -177,7 +179,14 @@ public class GlobalMemory : MonoBehaviour
         switch (targetLabName)
         {
             case LabName.Lab1_move_28:
-                res = curLabTrialData.getAllData();
+                //res = curLabTrialData.getAllData();
+                if (lab1Target2Status == TargetStatus.total_on_screen_1)
+                {
+                    res = curLabPhase2RawData.getAllData();
+                } else if (lab1Target2Status == TargetStatus.total_on_screen_2)
+                {
+                    res = curLabPhase1RawData.getAllData();
+                }
                 break;
             default:
                 break;

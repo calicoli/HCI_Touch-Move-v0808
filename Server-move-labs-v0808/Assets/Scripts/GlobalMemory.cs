@@ -62,7 +62,17 @@ public class GlobalMemory: MonoBehaviour
     public TrialSequence curLabTrialSequence;
     [HideInInspector]
     public TrialDataWithLocalTime curLabTrialData;
-    // ↑ wait for update
+    [HideInInspector]
+    public TrialPhase1RawData curLabPhase1RawData;
+    [HideInInspector]
+    public TrialPhase2RawData curLabPhase2RawData;
+    /*
+    [HideInInspector]
+    public tech1DirectDragTrialData tech1TrialData;
+    [HideInInspector]
+    public tech2HoldTapTrialData tech2TrialData;
+    [HideInInspector]
+    public tech3ThrowCatchTrialData tech3TrialData;*/
 
     [HideInInspector]
     public DragType curDragType;
@@ -238,18 +248,59 @@ public class GlobalMemory: MonoBehaviour
     }
 
     public void receiveTrialInfoFromClient(int cTrialNumber, int cTrialIndex,
-       int cTarget1id, int cTarget2id, string cTrialPhase, string cTouch2data)
+       int cTarget1id, int cTarget2id, string cTrialPhase, string cTouchData)
     {
         switch (curLabInfos.labName)
         {
             case LabName.Lab1_move_28:
                 if (cTrialNumber == curLabTrialNumber && cTrialIndex == curLabTrialid)
                 {
-                    //parseLabTouch2DataString(cTouch2data);
-                    //clientRefreshedTrialData = true;
+                    clientRefreshedTrialData = true;
                     clientLabTrialPhase = (TrialPhase)Enum.Parse(typeof(TrialPhase), cTrialPhase);
+                    if ( clientLabTrialPhase == TrialPhase.a_trial_end)
+                    {
+                        parseLabTouchDataString(cTouchData);
+                    }
                 }
                 break;
+        }
+    }
+
+    public void parseLabTouchDataString (string touchData)
+    {
+        Debug.Log("Befor parse: " + touchData);
+        string[] messages = touchData.Split('#');
+        int cTrialIndex = Convert.ToInt32(messages[0]);
+        int cTarget1id = Convert.ToInt32(messages[1]);
+        int cTarget2id = Convert.ToInt32(messages[2]);
+
+        if (cTrialIndex == curLabTrial.index 
+            && cTarget1id == curLabTrial.firstid && cTarget2id == curLabTrial.secondid)
+        {
+            if (lab1Target1Status == TargetStatus.total_on_screen_1)
+            {
+                curLabPhase1RawData.moveStartPos = new Vector2(Convert.ToSingle(messages[3]), Convert.ToSingle(messages[4]));
+                curLabPhase1RawData.touch1StartStamp = Convert.ToInt64(messages[5]);
+                curLabPhase1RawData.touch1EndStamp = Convert.ToInt64(messages[6]);
+                curLabPhase1RawData.targetReachMidpointStamp = Convert.ToInt64(messages[7]);
+                curLabPhase1RawData.targetReachEndpointInfoReceivedStamp = Convert.ToInt64(messages[8]);
+                curLabPhase1RawData.touch1StartPos = new Vector2(Convert.ToSingle(messages[9]), Convert.ToSingle(messages[10]));
+                curLabPhase1RawData.touch1EndPos = new Vector2(Convert.ToSingle(messages[11]), Convert.ToSingle(messages[12]));
+                curLabPhase1RawData.movePhase1StartPos = new Vector2(Convert.ToSingle(messages[13]), Convert.ToSingle(messages[14]));
+                curLabPhase1RawData.movePhase1EndPos = new Vector2(Convert.ToSingle(messages[15]), Convert.ToSingle(messages[16]));
+            }
+            else if (lab1Target1Status == TargetStatus.total_on_screen_2)
+            {
+                curLabPhase2RawData.moveDestination = new Vector2(Convert.ToSingle(messages[3]), Convert.ToSingle(messages[4]));
+                curLabPhase2RawData.touch2StartStamp = Convert.ToInt64(messages[5]);
+                curLabPhase2RawData.touch2EndStamp = Convert.ToInt64(messages[6]);
+                curLabPhase2RawData.targetReachMidpointInfoReceivedStamp = Convert.ToInt64(messages[7]);
+                curLabPhase2RawData.targetReachEndpointStamp = Convert.ToInt64(messages[8]);
+                curLabPhase2RawData.touch2StartPos = new Vector2(Convert.ToSingle(messages[9]), Convert.ToSingle(messages[10]));
+                curLabPhase2RawData.touch2EndPos = new Vector2(Convert.ToSingle(messages[11]), Convert.ToSingle(messages[12]));
+                curLabPhase2RawData.movePhase2StartPos = new Vector2(Convert.ToSingle(messages[13]), Convert.ToSingle(messages[14]));
+                curLabPhase2RawData.movePhase2EndPos = new Vector2(Convert.ToSingle(messages[15]), Convert.ToSingle(messages[16]));
+            }
         }
     }
 
@@ -314,6 +365,7 @@ public class GlobalMemory: MonoBehaviour
     public void writeCurrentBlockConditionToFile()
     {
         string userFilename = curLabInfos.labName.ToString() + "-"
+            + curDragType.ToString() + "-"
             + curLabInfos.labMode.ToString() + "-"
             + "User" + userid.ToString() + ".txt";
         string strContent = Environment.NewLine + DateTime.Now.ToString() + Environment.NewLine;
@@ -332,6 +384,7 @@ public class GlobalMemory: MonoBehaviour
     public void writeCurrentRepeatIndexTrialSequenceToFile()
     {
         string userFilename = curLabInfos.labName.ToString() + "-"
+            + curDragType.ToString() + "-"
             + curLabInfos.labMode.ToString() + "-"
             + "User" + userid.ToString() + ".txt";
         string strContent = "";
@@ -349,12 +402,15 @@ public class GlobalMemory: MonoBehaviour
     public void writeCurrentTrialDataToFile(out bool finishedWrite)
     {
         string userFilename = curLabInfos.labName.ToString() + "-"
+            + curDragType.ToString() + "-"
             + curLabInfos.labMode.ToString() + "-"
             + "User" + userid.ToString() + ".txt";
         string strContent = "";
         switch (curLabInfos.labName)
         {
             case LabName.Lab1_move_28:
+                curLabTrialData.conveyPhase1Data(curLabPhase1RawData);
+                curLabTrialData.conveyPhase2Data(curLabPhase2RawData);
                 strContent = curLabTrialData.getAllDataForFile();
                 break;
             default:
@@ -369,6 +425,7 @@ public class GlobalMemory: MonoBehaviour
     public void writeAllBlocksFinishedFlagToFile()
     {
         string userFilename = curLabInfos.labName.ToString() + "-"
+            + curDragType.ToString() + "-"
             + curLabInfos.labMode.ToString() + "-"
             + "User" + userid.ToString() + ".txt";
         string strContent = Environment.NewLine + DateTime.Now.ToString()

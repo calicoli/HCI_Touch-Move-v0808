@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class PublicTrialParams : MonoBehaviour
 {
+    //private static char paramSeperators = ';';
+    private static char trialSeperators = '#';
+
     public static (int firstid, int secondid)[] TrialPositionPairs = new[] {
         (100, 200), (101, 201), (102, 202), (103, 203), (104, 204),
         (105, 205), (106, 206), (107, 207), (108, 208), (109, 209),
@@ -99,6 +102,86 @@ public class PublicTrialParams : MonoBehaviour
             }
             str += "#";
             Debug.Log("cTrialData: " + str);
+            return str;
+        }
+    }
+
+    public struct TrialPhase1RawData
+    {
+        int trialid;
+        int firstid, secondid;
+        public Vector2 moveStartPos;
+        // time
+        public long touch1StartStamp, touch1EndStamp;
+        public long targetReachMidpointStamp, targetReachEndpointInfoReceivedStamp;
+        // final-pos
+        public Vector2 touch1StartPos, touch1EndPos;
+        public Vector2 movePhase1StartPos, movePhase1EndPos;
+
+        public void init(int tid, int id1, int id2)
+        {
+            trialid = tid;
+            firstid = id1;
+            secondid = id2;
+            moveStartPos = Vector2.zero;
+            touch1StartStamp = touch1EndStamp = targetReachMidpointStamp = targetReachEndpointInfoReceivedStamp = 0;
+            touch1StartPos = touch1EndPos = movePhase1StartPos = movePhase1EndPos = Vector2.zero;
+        }
+
+        public string getAllData()
+        {
+            string str;
+            str = trialid.ToString() + trialSeperators
+                + firstid.ToString() + trialSeperators + secondid.ToString() + trialSeperators
+                + moveStartPos.x.ToString() + trialSeperators + moveStartPos.y.ToString() + trialSeperators
+                + touch1StartStamp.ToString() + trialSeperators
+                + touch1EndStamp.ToString() + trialSeperators
+                + targetReachMidpointStamp.ToString() + trialSeperators
+                + targetReachEndpointInfoReceivedStamp.ToString() + trialSeperators
+                + touch1StartPos.x.ToString() + trialSeperators + touch1StartPos.y.ToString() + trialSeperators
+                + touch1EndPos.x.ToString() + trialSeperators + touch1EndPos.y.ToString() + trialSeperators
+                + movePhase1StartPos.x.ToString() + trialSeperators + movePhase1StartPos.y.ToString() + trialSeperators
+                + movePhase1EndPos.x.ToString() + trialSeperators + movePhase1EndPos.y.ToString() + trialSeperators;
+            return str;
+        }
+    }
+
+    public struct TrialPhase2RawData
+    {
+        int trialid;
+        int firstid, secondid;
+        public Vector2 moveDestination;
+        // time
+        public long touch2StartStamp, touch2EndStamp;
+        public long targetReachMidpointInfoReceivedStamp, targetReachEndpointStamp;
+        // final-pos
+        public Vector2 touch2StartPos, touch2EndPos;
+        public Vector2 movePhase2StartPos, movePhase2EndPos;
+
+        public void init(int tid, int id1, int id2)
+        {
+            trialid = tid;
+            firstid = id1;
+            secondid = id2;
+            moveDestination = Vector2.zero;
+            touch2StartStamp = touch2EndStamp = targetReachMidpointInfoReceivedStamp = targetReachEndpointStamp = 0;
+            touch2StartPos = touch2EndPos = movePhase2StartPos = movePhase2EndPos = Vector2.zero;
+        }
+
+        public string getAllData()
+        {
+            string str;
+            str = trialid.ToString() + trialSeperators
+                + firstid.ToString() + trialSeperators + secondid.ToString() + trialSeperators
+                + moveDestination.x.ToString() + trialSeperators + moveDestination.y.ToString() + trialSeperators
+                + touch2StartStamp.ToString() + trialSeperators
+                + touch2EndStamp.ToString() + trialSeperators
+                + targetReachMidpointInfoReceivedStamp.ToString() + trialSeperators
+                + targetReachEndpointStamp.ToString() + trialSeperators
+                + touch2StartPos.x.ToString() + trialSeperators + touch2StartPos.y.ToString() + trialSeperators
+                + touch2EndPos.x.ToString() + trialSeperators + touch2EndPos.y.ToString() + trialSeperators
+                + movePhase2StartPos.x.ToString() + trialSeperators + movePhase2StartPos.y.ToString() + trialSeperators
+                + movePhase2EndPos.x.ToString() + trialSeperators + movePhase2EndPos.y.ToString() + trialSeperators;
             return str;
         }
     }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class lab1TargetVisualizer : MonoBehaviour
 {
+    public Camera renderCamera;
     public GameObject target2;
     public GameObject shadow2;
     public GameObject markers;
@@ -148,6 +149,11 @@ public class lab1TargetVisualizer : MonoBehaviour
         return target2.transform.localScale;
     }
 
+    public Vector2 getTargetScreenPosition()
+    {
+        return renderCamera.WorldToScreenPoint(getTargetPosition());
+    }
+
     public void showShadow()
     {
         updateShadowVisibility(true);
@@ -182,6 +188,11 @@ public class lab1TargetVisualizer : MonoBehaviour
     public Vector3 getShadowLocalScale()
     {
         return shadow2.transform.GetChild(0).transform.localScale;
+    }
+
+    public Vector2 getShadowScreenPosition()
+    {
+        return renderCamera.WorldToScreenPoint(getShadowPosition());
     }
     #endregion
 }

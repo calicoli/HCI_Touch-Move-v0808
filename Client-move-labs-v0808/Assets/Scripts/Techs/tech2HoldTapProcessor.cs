@@ -234,26 +234,26 @@ public class tech2HoldTapProcessor : MonoBehaviour
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
         {
             
-            //uiController.updatePosInfo("t2-pos: " + targetVisualizer.getTargetPosition().ToString());
+            uiController.updatePosInfo("t2-pos: " + targetVisualizer.getTargetPosition().ToString());
             if (hit.collider.gameObject.name.Length >= 9)
             {
                 hitid = Convert.ToInt32(hit.collider.gameObject.name.Substring(7, 2));
                 Debug.Log("info: " + hitid.ToString() + " " + hit.collider.gameObject.name);
                 Debug.DrawLine(ray.origin, hit.point, Color.yellow);
                 hitCnt++;
-                //uiController.updatePosInfo("hit-1: " + hitCnt.ToString() + " " + hitid.ToString() + " " + hit.collider.gameObject.name);
+                uiController.updatePosInfo("hit-1: " + hitCnt.ToString() + " " + hitid.ToString() + " " + hit.collider.gameObject.name);
             }
             else
             {
                 hitCnt += 2;
-                //uiController.updatePosInfo("hit-2: " + hitCnt.ToString() + " " + hit.collider.gameObject.name);
+                uiController.updatePosInfo("hit-2: " + hitCnt.ToString() + " " + hit.collider.gameObject.name);
             }
         }
         if (hitid == targetid)
             return true;
         else
             return false;
-            */
+        */
         float distance = Vector3.Distance(targetVisualizer.getTargetPosition(), processScreenPosToGetWorldPosAtZeroZ(pos));
         if (distance <= targetVisualizer.getShadowLocalScale().x / 2)
         {

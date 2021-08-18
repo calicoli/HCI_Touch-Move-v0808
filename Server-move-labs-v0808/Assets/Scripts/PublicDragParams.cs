@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PublicDragParams : MonoBehaviour
 {
+    //private static char paramSeperators = ';';
+    //private static char posSeperator = '*';
     public const float DRAG_MIN_X = -4f, DRAG_MAX_X = 4f, DRAG_MIN_Y = -10f, DRAG_MAX_Y = 10f;
 
     public enum TargetStatus
@@ -113,4 +115,54 @@ public class PublicDragParams : MonoBehaviour
         throw_to_wrong_dir = 4,
         catch_failed_to_arrive_pos = 5,     // delay vanish
     }
+    /*
+    public struct tech1DirectDragTrialData
+    {
+        int techid;
+
+        public void init()
+        {
+            techid = 1;
+        }
+
+        public string getAllData()
+        {
+            string str = "";
+            return str;
+        }
+    }
+
+    public struct tech2HoldTapTrialData
+    {
+        int techid;
+        Vector2 holdStartPosition, holdEndPosition, holdMovedPositions;
+
+        public void init()
+        {
+            techid = 1;
+        }
+
+        public string getAllData()
+        {
+            string str = "";
+            return str;
+        }
+    }
+
+    public struct tech3ThrowCatchTrialData
+    {
+        int techid;
+
+        public void init()
+        {
+            techid = 1;
+        }
+
+        public string getAllData()
+        {
+            string str = "";
+            return str;
+        }
+    }
+    */
 }

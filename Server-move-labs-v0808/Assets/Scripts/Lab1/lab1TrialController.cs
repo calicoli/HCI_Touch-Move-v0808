@@ -50,8 +50,6 @@ public class lab1TrialController : MonoBehaviour
         totalTrialsPerRepeatition = GlobalMemory.Instance.curLabInfos.totalTrialCount;
         repeatTimes = GlobalMemory.Instance.curLabInfos.labMode == LabMode.Full ?
             Lab1_move_28.fullRepetitionCount: Lab1_move_28.testRepetitionCount;
-        //inProtraitBlock = (GlobalMemory.Instance.curLab0BlockCondition.getOrientation()
-        //    == Lab1_move_28.Orientation.protrait);
         blockPosture = GlobalMemory.Instance.curBlockCondition.getPosture();
         curRepeatTime = 0;
         curTrialIndex = TRIAL_START_INDEX;
@@ -103,11 +101,12 @@ public class lab1TrialController : MonoBehaviour
             }
             else if (curTrialPhase == TrialPhase.repeatition_scheduling)
             {
-                //targetVisualizer.hideTarget();
-
+                int techid = (int)GlobalMemory.Instance.curDragType;
                 int bid = GlobalMemory.Instance.curBlockid;
                 int rid = curRepeatTime;
-                string prefix = string.Format("B{0:D2}-R{1:D2}", bid, rid);
+                string prefix = string.Format("Tech{0:D2}-B{1:D2}-R{2:D2}", techid, bid, rid);
+
+
 
                 curSequence.setTrialLength(GlobalMemory.Instance.curLabInfos.totalTrialCount);
                 curSequence.setPrefix(prefix);
@@ -126,7 +125,6 @@ public class lab1TrialController : MonoBehaviour
                 GlobalMemory.Instance.curLabTrialNumber = curTrialNumber;
                 if (curTrialNumber <= GlobalMemory.Instance.curLabInfos.totalTrialCount)
                 {
-                    // trial index
                     curTrialIndex++;
                 }
                 else
@@ -145,14 +143,20 @@ public class lab1TrialController : MonoBehaviour
                 GlobalMemory.Instance.curLabTrial = curTrial;
 
                 // set trial data
-                //GlobalMemory.Instance.curLabTrialData = new TrialDataWithLocalTime();
-                //GlobalMemory.Instance.curLabTrialData.init(curTrial.index, curTrial.firstid, curTrial.secondid);
+                GlobalMemory.Instance.curLabTrialData = new TrialDataWithLocalTime();
+                GlobalMemory.Instance.curLabTrialData.init(curTrial.index, curTrial.firstid, curTrial.secondid);
+                int techid = (int)GlobalMemory.Instance.curDragType;
                 int bid = GlobalMemory.Instance.curBlockid;
                 int rid = curRepeatTime;
                 int tid = curTrialIndex;
                 int nid = curTrialNumber;
-                string prefix = string.Format("B{0:D2}-R{1:D2}-T{2:D2}-N{3:D2}", bid, rid, tid, nid);
+                string prefix = string.Format("Tech{0:D2}-B{1:D2}-R{2:D2}-T{3:D2}-N{4:D2}", techid, bid, rid, tid, nid);
                 GlobalMemory.Instance.curLabTrialData.setPrefix(prefix);
+
+                GlobalMemory.Instance.curLabPhase1RawData = new TrialPhase1RawData();
+                GlobalMemory.Instance.curLabPhase1RawData.init(curTrial.index, curTrial.firstid, curTrial.secondid);
+                GlobalMemory.Instance.curLabPhase2RawData = new TrialPhase2RawData();
+                GlobalMemory.Instance.curLabPhase2RawData.init(curTrial.index, curTrial.firstid, curTrial.secondid);
 
                 // test mode show params
                 uiController.setTrialInfo(prefix, curTrial.firstid, curTrial.secondid);
@@ -168,6 +172,7 @@ public class lab1TrialController : MonoBehaviour
                 {
                     if (curTrial.firstid < curTrial.secondid)
                     {
+                        
                         GlobalMemory.Instance.lab1Target1Status = TargetStatus.total_on_screen_1;
                         switch (GlobalMemory.Instance.curDragType)
                         {
@@ -188,6 +193,7 @@ public class lab1TrialController : MonoBehaviour
                     }
                     else
                     {
+                        
                         GlobalMemory.Instance.lab1Target1Status = TargetStatus.total_on_screen_2;
                         switch (GlobalMemory.Instance.curDragType)
                         {
@@ -229,28 +235,28 @@ public class lab1TrialController : MonoBehaviour
             }
             else if (curTrialPhase == TrialPhase.a_trial_output_data)
             {
-                bool writeFinished = false;
-                GlobalMemory.Instance.writeCurrentTrialDataToFile(out writeFinished);
-                if (writeFinished)
+                if (GlobalMemory.Instance.clientLabTrialPhase == TrialPhase.a_trial_end)
                 {
-                    curTrialPhase = TrialPhase.a_trial_end;
+                    bool writeFinished = false;
+                    GlobalMemory.Instance.writeCurrentTrialDataToFile(out writeFinished);
+                    if (writeFinished)
+                    {
+                        curTrialPhase = TrialPhase.a_trial_end;
+                    }
                 }
             }
             else if (curTrialPhase == TrialPhase.a_trial_end)
             {
-                if (GlobalMemory.Instance.clientLabTrialPhase == TrialPhase.a_trial_end)
+                if (curTrialNumber >= totalTrialsPerRepeatition && retryTrialQueue.Count == 0)
                 {
-                    if (curTrialNumber >= totalTrialsPerRepeatition && retryTrialQueue.Count == 0)
-                    {
-                        retryTrialCount = 0;
-                        retryTrialQueue.Clear();
-                        curTrialPhase = TrialPhase.repeatition_start;
-                        Debug.Log("Repetition end.");
-                    }
-                    else
-                    {
-                        curTrialPhase = TrialPhase.a_trial_set_params;
-                    }
+                    retryTrialCount = 0;
+                    retryTrialQueue.Clear();
+                    curTrialPhase = TrialPhase.repeatition_start;
+                    Debug.Log("Repetition end.");
+                }
+                else
+                {
+                    curTrialPhase = TrialPhase.a_trial_set_params;
                 }
             }
             else if (curTrialPhase == TrialPhase.block_end)

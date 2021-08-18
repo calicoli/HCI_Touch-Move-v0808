@@ -443,7 +443,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5d3b73efa678c649a4b688770056d7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugOnPC: 0
+  debugOnPC: 1
   uiController: {fileID: 1485549974}
 --- !u!1 &915337434
 GameObject:
@@ -494,6 +494,8 @@ MonoBehaviour:
   server: {fileID: 319132218}
   fileProcessor: {fileID: 1013705873}
   angleProcessor: {fileID: 1293937285}
+  sendInfo: 
+  rcvInfo: 
   userid: 0
   serverip: 
   accClient: {x: 0, y: 0, z: 0}

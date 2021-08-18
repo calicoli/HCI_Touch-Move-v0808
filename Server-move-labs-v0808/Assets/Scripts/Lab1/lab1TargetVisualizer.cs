@@ -152,6 +152,11 @@ public class lab1TargetVisualizer : MonoBehaviour
         return target1.transform.localScale;
     }
 
+    public Vector2 getTargetScreenPosition()
+    {
+        return renderCamera.WorldToScreenPoint(getTargetPosition());
+    }
+
     public void showShadow()
     {
         updateShadowVisibility(true);
@@ -186,6 +191,11 @@ public class lab1TargetVisualizer : MonoBehaviour
     public Vector3 getShadowLocalScale()
     {
         return shadow1.transform.GetChild(0).transform.localScale;
+    }
+
+    public Vector2 getShadowScreenPosition()
+    {
+        return renderCamera.WorldToScreenPoint(getShadowPosition());
     }
     #endregion
 }
