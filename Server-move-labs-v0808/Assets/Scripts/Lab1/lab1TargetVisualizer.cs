@@ -49,9 +49,21 @@ public class lab1TargetVisualizer : MonoBehaviour
     private void setPosMarkers()
     {
         posMarkers = new Vector3[markers.transform.childCount];
+        Debug.Log(renderCamera.ScreenToWorldPoint(new Vector2(1440f - 1300f, 1600f)));
+        Debug.Log(renderCamera.ScreenToWorldPoint(new Vector2(1440f - 650f, 1600f)));
+        Debug.Log(renderCamera.ScreenToWorldPoint(new Vector2(1440f - 1300f, 160f)));
+        Debug.Log(renderCamera.WorldToScreenPoint(
+            new Vector3(getTargetPosition().x + getTargetLocalScale().x / 2, getTargetPosition().y, 0f)));
+        Debug.Log(renderCamera.WorldToScreenPoint(
+           new Vector3(getTargetPosition().x - getTargetLocalScale().x / 2, getTargetPosition().y, 0f)));
+        Debug.Log(renderCamera.WorldToScreenPoint(
+            new Vector3(getTargetPosition().x, getTargetPosition().y + getTargetLocalScale().y / 2, 0f)));
+        Debug.Log(renderCamera.WorldToScreenPoint(
+            new Vector3(getTargetPosition().x, getTargetPosition().y - getTargetLocalScale().y / 2, 0f)));
         for ( int i = 0; i < markers.transform.childCount; i++ )
         {
             posMarkers[i] = markers.transform.GetChild(i).position;
+            
             Debug.Log(i.ToString() + " " + markers.transform.GetChild(i).gameObject.name + " " 
                 + posMarkers[i].ToString() + " "
                 + renderCamera.WorldToScreenPoint(posMarkers[i]).ToString());

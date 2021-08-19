@@ -228,6 +228,7 @@ public class tech2HoldTapProcessor : MonoBehaviour
                                 targetVisualizer.inactiveTarget();
                                 if (GlobalMemory.Instance.tech2Target1HoldTapStatus == HoldTapStatus.tapped_on_screen_1)
                                 {
+                                    targetVisualizer.hideTarget();
                                     curTarget2HoldTapStatus = HoldTapStatus.tapped_on_screen_1;
                                 }
                                 else

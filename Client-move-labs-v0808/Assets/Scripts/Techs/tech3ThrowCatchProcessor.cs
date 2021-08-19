@@ -207,11 +207,10 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
                     if (delayTimer > 0f)
                     {
                         delayTimer -= Time.deltaTime;
-                        targetVisualizer.showTarget();
                     }
                     else
                     {
-                        targetVisualizer.inactiveTarget();
+                        targetVisualizer.hideTarget();
                         targetVisualizer.hideShadow();
                         uiController.updatePosInfo(curThrowCatchResult.ToString());
                         trialController.switchTrialPhase(PublicTrialParams.TrialPhase.a_successful_trial);

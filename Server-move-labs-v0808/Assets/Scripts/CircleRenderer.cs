@@ -18,6 +18,7 @@ public class CircleRenderer : MonoBehaviour
     private void Start()
     {
         lineMaterial = new Material(Shader.Find("Sprites/Default"));
+        lineMaterial.renderQueue = 3100;
         RotateCircle();
         RenderCircle();
     }
