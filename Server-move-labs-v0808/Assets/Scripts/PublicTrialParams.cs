@@ -179,6 +179,8 @@ public class PublicTrialParams : MonoBehaviour
                 + loDevice2IntervalSpan.ToString() + paramSeperators
                 + loDataFetchSpan.ToString() + paramSeperators
                 // final-pos
+                + moveStartPos.ToString() + paramSeperators
+                + moveDestination.ToString() + paramSeperators
                 + touch1StartPos.ToString() + paramSeperators
                 + touch1EndPos.ToString() + paramSeperators
                 + touch2StartPos.ToString() + paramSeperators
@@ -189,8 +191,8 @@ public class PublicTrialParams : MonoBehaviour
                 + targetPhase2EndPos.ToString() + paramSeperators
                 // final-tech specific data
                 + techData.ToString() + paramSeperators
-                + phase1Data.getAllData()
-                + phase2Data.getAllData();
+                + phase1Data.getAllData() + paramSeperators
+                + phase2Data.getAllData() + paramSeperators;
 
             return str;
         }

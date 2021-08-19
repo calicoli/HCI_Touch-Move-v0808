@@ -61,12 +61,20 @@ public class tech1DirectDragProcessor : MonoBehaviour
             if (curDirectDragResult != DirectDragResult.direct_drag_success
                 || GlobalMemory.Instance.tech1Target1DirectDragResult != DirectDragResult.direct_drag_success)
             {
-                targetVisualizer.hideTarget();
-                targetVisualizer.hideShadow();
                 Debug.Log("Trial c failed: " + curDirectDragResult.ToString());
                 Debug.Log("Trial s failed: " + GlobalMemory.Instance.tech1Target1DirectDragResult.ToString());
                 uiController.updatePosInfo(curDirectDragResult.ToString());
-                trialController.switchTrialPhase(PublicTrialParams.TrialPhase.a_failed_trial);
+                
+                if (delayTimer > 0f)
+                {
+                    delayTimer -= Time.deltaTime;
+                }
+                else
+                {
+                    targetVisualizer.hideTarget();
+                    targetVisualizer.hideShadow();
+                    trialController.switchTrialPhase(PublicTrialParams.TrialPhase.a_failed_trial);
+                }
             }
 
             if (GlobalMemory.Instance.lab1Target2Status == TargetStatus.total_on_screen_1)
@@ -79,13 +87,6 @@ public class tech1DirectDragProcessor : MonoBehaviour
                         targetVisualizer.moveTarget(GlobalMemory.Instance.tech1Target2DirectDragPosition);
                         targetVisualizer.activeTarget();
                         targetVisualizer.showTarget();
-                    }
-
-                    if (!haveRecordedStamp)
-                    {
-                        GlobalMemory.Instance.curLabPhase2RawData.targetReachMidpointInfoReceivedStamp = CurrentTimeMillis();
-                        GlobalMemory.Instance.curLabPhase2RawData.movePhase2StartPos = targetVisualizer.getTargetScreenPosition();
-                        haveRecordedStamp = true;
                     }
                 }
                 else if (curTarget2DirectDragStatus == DirectDragStatus.inactive_on_screen_1
@@ -176,6 +177,7 @@ public class tech1DirectDragProcessor : MonoBehaviour
                         {
                             GlobalMemory.Instance.curLabPhase2RawData.touch2EndStamp = CurrentTimeMillis();
                             GlobalMemory.Instance.curLabPhase2RawData.touch2EndPos = Input.mousePosition;
+                            GlobalMemory.Instance.curLabPhase2RawData.movePhase2StartPos = targetVisualizer.getTargetScreenPosition();
                             targetVisualizer.inactiveTarget();
                             curDirectDragResult = DirectDragResult.drag_2_failed_to_leave_junction;
                             curTarget2DirectDragStatus = DirectDragStatus.t1tot2_trial_failed;
@@ -199,6 +201,7 @@ public class tech1DirectDragProcessor : MonoBehaviour
                             {
                                 GlobalMemory.Instance.curLabPhase2RawData.touch2EndStamp = CurrentTimeMillis();
                                 GlobalMemory.Instance.curLabPhase2RawData.touch2EndPos = touch.position;
+                                GlobalMemory.Instance.curLabPhase2RawData.movePhase2StartPos = targetVisualizer.getTargetScreenPosition();
                                 targetVisualizer.inactiveTarget();
                                 curDirectDragResult = DirectDragResult.drag_2_failed_to_leave_junction;
                                 curTarget2DirectDragStatus = DirectDragStatus.t1tot2_trial_failed;
@@ -243,7 +246,15 @@ public class tech1DirectDragProcessor : MonoBehaviour
                             }
                             else
                             {
-                                curTarget2DirectDragStatus = DirectDragStatus.drag_phase2_end_on_screen_2;
+                                if (checkTouchEndPosCorrect())
+                                {
+                                    curTarget2DirectDragStatus = DirectDragStatus.drag_phase2_end_on_screen_2;
+                                }
+                                else
+                                {
+                                    curDirectDragResult = DirectDragResult.drag_2_failed_to_arrive_pos;
+                                    curTarget2DirectDragStatus = DirectDragStatus.t1tot2_trial_failed;
+                                }
                             }
                         }
                     }
@@ -284,7 +295,15 @@ public class tech1DirectDragProcessor : MonoBehaviour
                                 }
                                 else
                                 {
-                                    curTarget2DirectDragStatus = DirectDragStatus.drag_phase2_end_on_screen_2;
+                                    if (checkTouchEndPosCorrect())
+                                    {
+                                        curTarget2DirectDragStatus = DirectDragStatus.drag_phase2_end_on_screen_2;
+                                    }
+                                    else
+                                    {
+                                        curDirectDragResult = DirectDragResult.drag_2_failed_to_arrive_pos;
+                                        curTarget2DirectDragStatus = DirectDragStatus.t1tot2_trial_failed;
+                                    }
                                 }
                             }
                         }
@@ -305,16 +324,8 @@ public class tech1DirectDragProcessor : MonoBehaviour
                     {
                         targetVisualizer.hideTarget();
                         targetVisualizer.hideShadow();
-                        if (checkTouchEndPosCorrect())
-                        {
-                            uiController.updatePosInfo(curDirectDragResult.ToString());
-                            trialController.switchTrialPhase(PublicTrialParams.TrialPhase.a_successful_trial);
-                        }
-                        else
-                        {
-                            curDirectDragResult = DirectDragResult.drag_2_failed_to_arrive_pos;
-                            curTarget2DirectDragStatus = DirectDragStatus.t1tot2_trial_failed;
-                        }
+                        uiController.updatePosInfo(curDirectDragResult.ToString());
+                        trialController.switchTrialPhase(PublicTrialParams.TrialPhase.a_successful_trial);
                     }
                 }
             }
@@ -380,6 +391,7 @@ public class tech1DirectDragProcessor : MonoBehaviour
                         {
                             GlobalMemory.Instance.curLabPhase1RawData.touch1EndStamp = CurrentTimeMillis();
                             GlobalMemory.Instance.curLabPhase1RawData.touch1EndPos = Input.mousePosition;
+                            GlobalMemory.Instance.curLabPhase1RawData.movePhase1EndPos = targetVisualizer.getTargetScreenPosition();
                             targetVisualizer.inactiveTarget();
                             // record wrong touch position
                             curDirectDragResult = DirectDragResult.drag_1_failed_to_arrive_junction;
@@ -413,6 +425,7 @@ public class tech1DirectDragProcessor : MonoBehaviour
                             {
                                 GlobalMemory.Instance.curLabPhase1RawData.touch1EndStamp = CurrentTimeMillis();
                                 GlobalMemory.Instance.curLabPhase1RawData.touch1EndPos = touch.position;
+                                GlobalMemory.Instance.curLabPhase1RawData.movePhase1EndPos = targetVisualizer.getTargetScreenPosition();
                                 targetVisualizer.inactiveTarget();
                                 // record wrong touch position
                                 curDirectDragResult = DirectDragResult.drag_1_failed_to_arrive_junction;
@@ -454,6 +467,7 @@ public class tech1DirectDragProcessor : MonoBehaviour
                             GlobalMemory.Instance.curLabPhase1RawData.movePhase1EndPos = targetVisualizer.getTargetScreenPosition();
                             if ((targetVisualizer.getTargetPosition().x - targetVisualizer.getTargetLocalScale().x / 2) < leftBound)
                             {
+                                GlobalMemory.Instance.curLabPhase1RawData.targetReachMidpointStamp = CurrentTimeMillis();
                                 curTarget2DirectDragStatus = DirectDragStatus.drag_phase1_end_on_screen_2;
                             }
                             else
@@ -467,15 +481,17 @@ public class tech1DirectDragProcessor : MonoBehaviour
                     {
                         touchSuccess = false;
                         targetVisualizer.inactiveTarget();
+                        /*
                         if ((targetVisualizer.getTargetPosition().x - targetVisualizer.getTargetLocalScale().x / 2) < leftBound)
                         {
+                            GlobalMemory.Instance.curLabPhase1RawData.targetReachMidpointStamp = CurrentTimeMillis();
                             curTarget2DirectDragStatus = DirectDragStatus.drag_phase1_end_on_screen_2;
                         }
                         else
                         {
                             curDirectDragResult = DirectDragResult.drag_1_left_junction_after_arrive;
                             curTarget2DirectDragStatus = DirectDragStatus.t2tot1_trial_failed;
-                        }
+                        }*/
                     }
 #elif UNITY_IOS || UNITY_ANDROID
                     if (touchSuccess && Input.touchCount == 1)
@@ -499,6 +515,7 @@ public class tech1DirectDragProcessor : MonoBehaviour
                                 GlobalMemory.Instance.curLabPhase1RawData.movePhase1EndPos = targetVisualizer.getTargetScreenPosition();
                                 if ((targetVisualizer.getTargetPosition().x - targetVisualizer.getTargetLocalScale().x / 2) < leftBound)
                                 {
+                                    GlobalMemory.Instance.curLabPhase1RawData.targetReachMidpointStamp = CurrentTimeMillis();
                                     curTarget2DirectDragStatus = DirectDragStatus.drag_phase1_end_on_screen_2;
                                 }
                                 else
@@ -513,15 +530,17 @@ public class tech1DirectDragProcessor : MonoBehaviour
                     {
                         touchSuccess = false;
                         targetVisualizer.inactiveTarget();
+                    /*
                         if ((targetVisualizer.getTargetPosition().x - targetVisualizer.getTargetLocalScale().x / 2) < leftBound)
                         {
+                            GlobalMemory.Instance.curLabPhase1RawData.targetReachMidpointStamp = CurrentTimeMillis();
                             curTarget2DirectDragStatus = DirectDragStatus.drag_phase1_end_on_screen_2;
                         }
                         else
                         {
                             curDirectDragResult = DirectDragResult.drag_1_left_junction_after_arrive;
                             curTarget2DirectDragStatus = DirectDragStatus.t2tot1_trial_failed;
-                        }
+                        }*/
                     }
 #endif
                 }

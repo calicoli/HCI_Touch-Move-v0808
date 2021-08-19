@@ -22,6 +22,7 @@ public class inPhaseController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        debugOnPC = false;
         uiController.setStartUIInvisible();
         sender = GlobalMemory.Instance.server;
         GlobalMemory.Instance.curServerScene = LabScene.Index_scene;
