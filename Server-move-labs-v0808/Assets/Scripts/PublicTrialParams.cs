@@ -146,13 +146,13 @@ public class PublicTrialParams : MonoBehaviour
         {
             // trial time
             loTargetMoveSpan = calTimeSpan(phase1Data.targetReachEndpointInfoReceivedStamp, phase1Data.touch1StartStamp);
-            loDevice1IntervalSpan = calTimeSpan(phase1Data.targetReachEndpointInfoReceivedStamp, phase1Data.targetReachMidpointStamp);
-            loDevice2IntervalSpan = calTimeSpan(phase2Data.targetReachEndpointStamp, phase2Data.targetReachMidpointInfoReceivedStamp);
-            loDataFetchSpan = calTimeSpan(loDevice1IntervalSpan, loDevice2IntervalSpan);
             loMovePhase1Span = calTimeSpan(phase1Data.targetReachMidpointStamp, phase1Data.touch1StartStamp);
             loMovePhase2Span = calTimeSpan(phase2Data.targetReachEndpointStamp, phase2Data.touch2StartStamp);
             loTouch1Span = calTimeSpan(phase1Data.touch1EndStamp, phase1Data.touch1StartStamp);
             loTouch2Span = calTimeSpan(phase2Data.touch2EndStamp, phase2Data.touch2StartStamp);
+            loDevice1IntervalSpan = calTimeSpan(phase1Data.targetReachEndpointInfoReceivedStamp, phase1Data.targetReachMidpointStamp);
+            loDevice2IntervalSpan = calTimeSpan(phase2Data.targetReachEndpointStamp, phase2Data.targetReachMidpointInfoReceivedStamp);
+            loDataFetchSpan = calTimeSpan(loDevice1IntervalSpan, loDevice2IntervalSpan);
         }
 
         public void setPrefix(string pre)

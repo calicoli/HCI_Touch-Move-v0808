@@ -574,7 +574,6 @@ public class tech1DirectDragProcessor : MonoBehaviour
                 }
                 else if (curTarget1DirectDragStatus == DirectDragStatus.drag_phase2_end_on_screen_1)
                 {
-                    
                     if (delayTimer > 0f)
                     {
                         delayTimer -= Time.deltaTime;

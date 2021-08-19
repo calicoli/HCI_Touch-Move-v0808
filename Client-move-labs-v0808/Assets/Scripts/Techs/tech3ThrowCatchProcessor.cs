@@ -29,7 +29,7 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
 
     private float leftBound;
 
-    private const float unitMoveDuration = 0.25f; // The time the target moves one screen width as the unit time
+    private const float unitMoveDuration = 0.15f; // The time the target moves one screen width as the unit time
 
     private const float minX = DRAG_MIN_X, maxX = DRAG_MAX_X, minY = DRAG_MIN_Y, maxY = DRAG_MAX_Y;
     private const float minFlickDistance = 60f;
@@ -71,12 +71,20 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
             if (curThrowCatchResult != ThrowCatchResult.throw_catch_success
                 || GlobalMemory.Instance.tech3Target1ThrowCatchResult != ThrowCatchResult.throw_catch_success)
             {
-                targetVisualizer.hideTarget();
-                targetVisualizer.hideShadow();
                 Debug.Log("Trial c failed: " + curThrowCatchResult.ToString());
                 Debug.Log("Trial s failed: " + GlobalMemory.Instance.tech3Target1ThrowCatchResult.ToString());
                 uiController.updatePosInfo(curThrowCatchResult.ToString());
-                trialController.switchTrialPhase(PublicTrialParams.TrialPhase.a_failed_trial);
+                targetVisualizer.wrongTarget();
+                if (delayTimer > 0f)
+                {
+                    delayTimer -= Time.deltaTime;
+                }
+                else
+                {
+                    targetVisualizer.hideTarget();
+                    targetVisualizer.hideShadow();
+                    trialController.switchTrialPhase(PublicTrialParams.TrialPhase.a_failed_trial);
+                }
             }
 
             if (GlobalMemory.Instance.lab1Target2Status == TargetStatus.total_on_screen_1)
@@ -87,6 +95,8 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
                     flickerVisualizer.startFlicker();
                     targetVisualizer.moveTarget(GlobalMemory.Instance.tech3Target2ThrowCatchPosition);
                     uiController.updateStatusInfo(targetVisualizer.getTargetPosition().ToString());
+                    GlobalMemory.Instance.curLabPhase2RawData.targetReachMidpointInfoReceivedStamp = CurrentTimeMillis();
+                    GlobalMemory.Instance.curLabPhase2RawData.movePhase2StartPos = targetVisualizer.getTargetScreenPosition();
                     curTarget2ThrowCatchStatus = ThrowCatchStatus.throw_successed_on_screen_1;
                 }
                 else if ((curTarget2ThrowCatchStatus == ThrowCatchStatus.throw_successed_on_screen_1 ||
@@ -98,6 +108,8 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
                     {
                         flickerVisualizer.stopFlicker();
                         flickerVisualizer.showFlickerObjects();
+                        GlobalMemory.Instance.curLabPhase2RawData.touch2StartStamp = CurrentTimeMillis();
+                        GlobalMemory.Instance.curLabPhase2RawData.touch2StartPos = Input.mousePosition;
                         curTarget2ThrowCatchStatus = ThrowCatchStatus.catch_start_on_screen_2;
                     }
                     else if (Input.GetMouseButton(0))
@@ -107,11 +119,13 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
                     }
                     else if (Input.GetMouseButtonUp(0))
                     {
+                        GlobalMemory.Instance.curLabPhase2RawData.touch2EndStamp = CurrentTimeMillis();
+                        GlobalMemory.Instance.curLabPhase2RawData.touch2EndPos = Input.mousePosition;
                         moveStartPos = targetVisualizer.getTargetPosition();
                         moveEndPos = processScreenPosToGetWorldPosAtZeroZ(Input.mousePosition);
                         catchEndTime = Time.time;
                         thisMoveDuration = (moveEndPos - moveStartPos).magnitude / (maxX - minX) * unitMoveDuration;
-                        uiController.updatePosInfo(thisMoveDuration.ToString());
+                        uiController.updateDebugInfo(thisMoveDuration.ToString());
                         curTarget2ThrowCatchStatus = ThrowCatchStatus.t1_move_phase2_ongoing;
 
                     }
@@ -121,6 +135,8 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
                         Touch touch = Input.GetTouch(0);
                         if (touch.phase == TouchPhase.Began)
                         {
+                            GlobalMemory.Instance.curLabPhase2RawData.touch2StartStamp = CurrentTimeMillis();
+                            GlobalMemory.Instance.curLabPhase2RawData.touch2StartPos = touch.position;
                             flickerVisualizer.stopFlicker();
                             flickerVisualizer.showFlickerObjects();
                             curTarget2ThrowCatchStatus = ThrowCatchStatus.catch_start_on_screen_2;
@@ -132,11 +148,13 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
                         }
                         else if ( touch.phase == TouchPhase.Ended )
                         {
+                            GlobalMemory.Instance.curLabPhase2RawData.touch2EndStamp = CurrentTimeMillis();
+                            GlobalMemory.Instance.curLabPhase2RawData.touch2EndPos = touch.position;
                             moveStartPos = targetVisualizer.getTargetPosition();
                             moveEndPos = processScreenPosToGetWorldPosAtZeroZ(touch.position);
                             catchEndTime = Time.time;
                             thisMoveDuration = (moveEndPos - moveStartPos).magnitude / (maxX - minX) * unitMoveDuration;
-                            uiController.updatePosInfo(thisMoveDuration.ToString());
+                            uiController.updateDebugInfo(thisMoveDuration.ToString());
                             curTarget2ThrowCatchStatus = ThrowCatchStatus.t1_move_phase2_ongoing;
                         }
                     } 
@@ -168,14 +186,24 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
                     else if (curMovingPos == prevMovingPos && curMovingPos.x == moveEndPos.x)
                     {
                         targetVisualizer.inactiveTarget();
-                        curTarget2ThrowCatchStatus = ThrowCatchStatus.catch_end_on_screen_2;
-                        // send message later
+                        flickerVisualizer.hideFlickerObjects();
+                        GlobalMemory.Instance.curLabPhase2RawData.movePhase2EndPos = targetVisualizer.getTargetScreenPosition();
+                        GlobalMemory.Instance.curLabPhase2RawData.targetReachEndpointStamp = CurrentTimeMillis();
+                        if (checkTouchEndPosCorrect())
+                        {
+                            targetVisualizer.correctTarget();
+                            curTarget2ThrowCatchStatus = ThrowCatchStatus.catch_end_on_screen_2;
+                        }
+                        else
+                        {
+                            targetVisualizer.wrongTarget();
+                            curThrowCatchResult = ThrowCatchResult.catch_failed_to_arrive_pos;
+                            curTarget2ThrowCatchStatus = ThrowCatchStatus.t1tot2_trial_failed;
+                        }
                     }
                 }
                 else if (curTarget2ThrowCatchStatus == ThrowCatchStatus.catch_end_on_screen_2)
                 {
-                    flickerVisualizer.hideFlickerObjects();
-
                     if (delayTimer > 0f)
                     {
                         delayTimer -= Time.deltaTime;
@@ -185,17 +213,8 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
                     {
                         targetVisualizer.inactiveTarget();
                         targetVisualizer.hideShadow();
-
-                        if (checkTouchEndPosCorrect())
-                        {
-                            uiController.updatePosInfo(curThrowCatchResult.ToString());
-                            trialController.switchTrialPhase(PublicTrialParams.TrialPhase.a_successful_trial);
-                        }
-                        else
-                        {
-                            curThrowCatchResult = ThrowCatchResult.catch_failed_to_arrive_pos;
-                            curTarget2ThrowCatchStatus = ThrowCatchStatus.t1tot2_trial_failed;
-                        }
+                        uiController.updatePosInfo(curThrowCatchResult.ToString());
+                        trialController.switchTrialPhase(PublicTrialParams.TrialPhase.a_successful_trial);
                     }
                         
                 }
@@ -215,6 +234,8 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
                             throwStartTouchPoint = Input.mousePosition;
                             startTouchPointInWorld = processScreenPosToGetWorldPosAtZeroZ(Input.mousePosition);
                             targetVisualizer.activeTarget();
+                            GlobalMemory.Instance.curLabPhase1RawData.touch1StartStamp = CurrentTimeMillis();
+                            GlobalMemory.Instance.curLabPhase1RawData.touch1StartPos = Input.mousePosition;
                         }
                     }
                     else if (Input.GetMouseButton(0))
@@ -262,6 +283,7 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
                                 && throwTouchVelocity > FLING_MIN_VELOCITY)
                             {
                                 targetVisualizer.inactiveTarget();
+                                targetVisualizer.wrongTarget();
                                 curThrowCatchResult = ThrowCatchResult.throw_downgraded_to_drag_due_d;
                                 curTarget2ThrowCatchStatus = ThrowCatchStatus.t2tot1_trial_failed;
                             }
@@ -269,12 +291,14 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
                                 && throwTouchVelocity <= FLING_MIN_VELOCITY)
                             {
                                 targetVisualizer.inactiveTarget();
+                                targetVisualizer.wrongTarget();
                                 curThrowCatchResult = ThrowCatchResult.throw_downgraded_to_drag_due_v;
                                 curTarget2ThrowCatchStatus = ThrowCatchStatus.t2tot1_trial_failed;
                             }
                             else
                             {
                                 targetVisualizer.inactiveTarget();
+                                targetVisualizer.wrongTarget();
                                 curThrowCatchResult = ThrowCatchResult.throw_downgraded_to_drag_due_dv;
                                 curTarget2ThrowCatchStatus = ThrowCatchStatus.t2tot1_trial_failed;
                             }
@@ -299,6 +323,8 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
                                 throwStartTouchPoint = touch.position;
                                 startTouchPointInWorld = processScreenPosToGetWorldPosAtZeroZ(touch.position);
                                 targetVisualizer.activeTarget();
+                                GlobalMemory.Instance.curLabPhase1RawData.touch1StartStamp = CurrentTimeMillis();
+                                GlobalMemory.Instance.curLabPhase1RawData.touch1StartPos = touch.position;
                             }
                         }
                         else if (touch.phase == TouchPhase.Moved)
@@ -327,6 +353,8 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
                                 {
                                     targetVisualizer.moveTarget(throwStartPos + offset);
                                 }
+                                GlobalMemory.Instance.curLabPhase1RawData.touch1EndStamp = CurrentTimeMillis();
+                                GlobalMemory.Instance.curLabPhase1RawData.touch1EndPos = touch.position;
 
                                 throwEndTime = Time.time;
                                 throwEndPos = targetVisualizer.getTargetPosition();
@@ -348,6 +376,7 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
                                 && throwTouchVelocity > FLING_MIN_VELOCITY)
                                 {
                                     targetVisualizer.inactiveTarget();
+                                    targetVisualizer.wrongTarget();
                                     curThrowCatchResult = ThrowCatchResult.throw_downgraded_to_drag_due_d;
                                     curTarget2ThrowCatchStatus = ThrowCatchStatus.t2tot1_trial_failed;
                                 }
@@ -355,12 +384,14 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
                                     && throwTouchVelocity <= FLING_MIN_VELOCITY)
                                 {
                                     targetVisualizer.inactiveTarget();
+                                    targetVisualizer.wrongTarget();
                                     curThrowCatchResult = ThrowCatchResult.throw_downgraded_to_drag_due_v;
                                     curTarget2ThrowCatchStatus = ThrowCatchStatus.t2tot1_trial_failed;
                                 }
                                 else
                                 {
                                     targetVisualizer.inactiveTarget();
+                                    targetVisualizer.wrongTarget();
                                     curThrowCatchResult = ThrowCatchResult.throw_downgraded_to_drag_due_dv;
                                     curTarget2ThrowCatchStatus = ThrowCatchStatus.t2tot1_trial_failed;
                                 }
@@ -383,7 +414,7 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
                     Vector2 moveEndTouchPoint = uiController.renderCamera.WorldToScreenPoint(moveEndPos);
                     float moveDistance = (moveEndTouchPoint - moveStartTouchPoint).magnitude;
                     thisMoveDuration = calculateMoveTime(-FLING_FRICTION, moveDistance, throwTouchVelocity);
-                    uiController.updatePosInfo(thisMoveDuration.ToString());
+                    uiController.updateDebugInfo(thisMoveDuration.ToString());
                     curTarget2ThrowCatchStatus = ThrowCatchStatus.wait_for_t2_move_phase1;
                 }
                 else if (curTarget2ThrowCatchStatus == ThrowCatchStatus.wait_for_t2_move_phase1)
@@ -400,14 +431,17 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
                     }
                     else
                     {
+                        GlobalMemory.Instance.curLabPhase1RawData.movePhase1EndPos = targetVisualizer.getTargetScreenPosition();
                         if (curMovingPos.x == junctionX)
                         {
+                            GlobalMemory.Instance.curLabPhase1RawData.targetReachMidpointStamp = CurrentTimeMillis();
                             curTarget2ThrowCatchStatus = ThrowCatchStatus.throw_successed_on_screen_2;
                             // send message later
                         }
                         else
                         {
                             targetVisualizer.inactiveTarget();
+                            targetVisualizer.wrongTarget();
                             curThrowCatchResult = ThrowCatchResult.throw_to_wrong_dir;
                             curTarget2ThrowCatchStatus = ThrowCatchStatus.t2tot1_trial_failed;
                         }
@@ -448,11 +482,12 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
                     targetVisualizer.hideTarget();
                     targetVisualizer.hideShadow();
                     uiController.updatePosInfo(curThrowCatchResult.ToString());
+                    GlobalMemory.Instance.curLabPhase1RawData.targetReachEndpointInfoReceivedStamp = CurrentTimeMillis();
                     trialController.switchTrialPhase(PublicTrialParams.TrialPhase.a_successful_trial);
                 }
             }
 
-            uiController.updateDebugInfo(curTarget2ThrowCatchStatus.ToString());
+            //uiController.updateDebugInfo(curTarget2ThrowCatchStatus.ToString());
             //uiController.updateStatusInfo(GlobalMemory.Instance.tech3Target1ThrowCatchStatus.ToString());
             //uiController.updatePosInfo(throwResult.ToString());
             GlobalMemory.Instance.tech3Target2ThrowCatchStatus = curTarget2ThrowCatchStatus;
@@ -484,9 +519,10 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
         prevTarget2ThrowCatchStatus = curTarget2ThrowCatchStatus = ThrowCatchStatus.inactive_on_screen_1;
         if (GlobalMemory.Instance)
         {
+            GlobalMemory.Instance.curLabPhase2RawData.moveDestination = targetVisualizer.getShadowScreenPosition();
             GlobalMemory.Instance.tech3Target1ThrowCatchStatus
-           = GlobalMemory.Instance.tech3Target2ThrowCatchStatus
-           = ThrowCatchStatus.inactive_on_screen_1;
+                = GlobalMemory.Instance.tech3Target2ThrowCatchStatus
+                = ThrowCatchStatus.inactive_on_screen_1;
         }
         resetDirectDragParams();
     }
@@ -499,9 +535,12 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
         prevTarget2ThrowCatchStatus = curTarget2ThrowCatchStatus = ThrowCatchStatus.inactive_on_screen_2;
         if (GlobalMemory.Instance)
         {
+            GlobalMemory.Instance.curLabPhase1RawData.moveStartPos
+                = GlobalMemory.Instance.curLabPhase1RawData.movePhase1StartPos
+                = targetVisualizer.getTargetScreenPosition();
             GlobalMemory.Instance.tech3Target1ThrowCatchStatus
-           = GlobalMemory.Instance.tech3Target2ThrowCatchStatus
-           = ThrowCatchStatus.inactive_on_screen_2;
+                = GlobalMemory.Instance.tech3Target2ThrowCatchStatus
+                = ThrowCatchStatus.inactive_on_screen_2;
         }
         resetDirectDragParams();
     }
@@ -515,6 +554,13 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
             res = true;
         }
         return res;
+    }
+
+    private long CurrentTimeMillis()
+    {
+        DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+        TimeSpan diff = DateTime.Now.ToUniversalTime() - origin;
+        return (long)diff.TotalMilliseconds;
     }
 
     private Vector3 processScreenPosToGetWorldPosAtZeroZ(Vector2 tp)
