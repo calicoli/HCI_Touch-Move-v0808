@@ -55,8 +55,8 @@ public class lab1UIController : MonoBehaviour
     public void setDebugUIVisibility(bool debugging)
     {
         txtDragMode.gameObject.SetActive(debugging);
-        txtSendInfo.gameObject.SetActive(false);
-        txtRcvInfo.gameObject.SetActive(false);
+        txtSendInfo.gameObject.SetActive(debugging);
+        txtRcvInfo.gameObject.SetActive(debugging);
         txtPhaseInfo.gameObject.SetActive(debugging);
         txtDebugInfo.gameObject.SetActive(debugging);
         txtStatusInfo.gameObject.SetActive(debugging);

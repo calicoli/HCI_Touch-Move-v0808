@@ -18,6 +18,8 @@ public class tech2HoldTapProcessor : MonoBehaviour
     private float delayTimer = 0f;
     private const float wait_time_before_vanish = 0.15f;
 
+    private bool haveRecordedStamp = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,6 +29,7 @@ public class tech2HoldTapProcessor : MonoBehaviour
     void resetHoldTapParams()
     {
         delayTimer = wait_time_before_vanish;
+        haveRecordedStamp = false;
         touchSuccess = false;
         curHoldTapResult = HoldTapResult.hold_tap_success;
         if (GlobalMemory.Instance)
@@ -45,12 +48,33 @@ public class tech2HoldTapProcessor : MonoBehaviour
             if (curHoldTapResult != HoldTapResult.hold_tap_success
                 || GlobalMemory.Instance.tech2Target2HoldTapResult != HoldTapResult.hold_tap_success)
             {
-                targetVisualizer.hideTarget();
-                targetVisualizer.hideShadow();
                 Debug.Log("Trial s failed: " + curHoldTapResult.ToString());
                 Debug.Log("Trial c failed: " + GlobalMemory.Instance.tech2Target2HoldTapResult.ToString());
                 uiController.updatePosInfo(curHoldTapResult.ToString());
-                trialController.switchTrialPhase(PublicTrialParams.TrialPhase.a_failed_trial);
+                HoldTapResult thisResult = curHoldTapResult != HoldTapResult.hold_tap_success ?
+                    curHoldTapResult : GlobalMemory.Instance.tech2Target2HoldTapResult;
+                GlobalMemory.Instance.curLabTrialData.techResult = thisResult.ToString();
+                switch (thisResult)
+                {
+                    case HoldTapResult.hold_outside_before_tap:
+                    case HoldTapResult.hold_released_before_tap:
+                        GlobalMemory.Instance.curLabTrialData.setTrialAccuracy(false, false);
+                        break;
+                    case HoldTapResult.tap_failed_to_arrive_pos:
+                        GlobalMemory.Instance.curLabTrialData.setTrialAccuracy(true, false);
+                        break;
+                }
+                targetVisualizer.wrongTarget();
+                if (delayTimer > 0f)
+                {
+                    delayTimer -= Time.deltaTime;
+                }
+                else
+                {
+                    targetVisualizer.hideTarget();
+                    targetVisualizer.hideShadow();
+                    trialController.switchTrialPhase(PublicTrialParams.TrialPhase.a_failed_trial);
+                }
             }
 
 
@@ -64,6 +88,10 @@ public class tech2HoldTapProcessor : MonoBehaviour
                         touchSuccess = process1Touch4Target1(touch.position, 0);
                         if (touchSuccess && touch.phase == TouchPhase.Began)
                         {
+                            
+                            GlobalMemory.Instance.curLabPhase1RawData.touch1StartStamp = CurrentTimeMillis();
+                            GlobalMemory.Instance.curLabPhase1RawData.touch1StartPos = touch.position;
+                            GlobalMemory.Instance.curLabPhase1RawData.targetReachMidpointStamp = CurrentTimeMillis();
                             targetVisualizer.activeTarget();
                             curTarget1HoldTapStatus = HoldTapStatus.holding_on_screen_1;
                         }
@@ -83,13 +111,18 @@ public class tech2HoldTapProcessor : MonoBehaviour
                         {
                             if (touch.phase == TouchPhase.Ended)
                             {
+                                GlobalMemory.Instance.curLabPhase1RawData.touch1EndStamp = CurrentTimeMillis();
+                                GlobalMemory.Instance.curLabPhase1RawData.touch1EndPos = touch.position;
+                                GlobalMemory.Instance.curLabPhase1RawData.movePhase1EndPos = targetVisualizer.getTargetScreenPosition();
                                 targetVisualizer.inactiveTarget();
                                 if (GlobalMemory.Instance.tech2Target2HoldTapStatus == HoldTapStatus.tapped_on_screen_2)
                                 {
+                                    targetVisualizer.hideTarget();
                                     curTarget1HoldTapStatus = HoldTapStatus.tapped_on_screen_2;
                                 }
                                 else
                                 {
+                                    targetVisualizer.wrongTarget();
                                     curHoldTapResult = HoldTapResult.hold_released_before_tap;
                                     curTarget1HoldTapStatus = HoldTapStatus.t1tot2_trial_failed;
                                 }
@@ -97,7 +130,11 @@ public class tech2HoldTapProcessor : MonoBehaviour
                         }
                         else
                         {
+                            GlobalMemory.Instance.curLabPhase1RawData.touch1EndStamp = CurrentTimeMillis();
+                            GlobalMemory.Instance.curLabPhase1RawData.touch1EndPos = touch.position;
+                            GlobalMemory.Instance.curLabPhase1RawData.movePhase1EndPos = targetVisualizer.getTargetScreenPosition();
                             targetVisualizer.inactiveTarget();
+                            targetVisualizer.wrongTarget();
                             curHoldTapResult = HoldTapResult.hold_outside_before_tap;
                             curTarget1HoldTapStatus = HoldTapStatus.t1tot2_trial_failed;
                         }
@@ -106,16 +143,23 @@ public class tech2HoldTapProcessor : MonoBehaviour
                     {
                         targetVisualizer.inactiveTarget();
                         touchSuccess = false;
+                        targetVisualizer.wrongTarget();
                         curHoldTapResult = HoldTapResult.hold_released_before_tap;
                         curTarget1HoldTapStatus = HoldTapStatus.t1tot2_trial_failed;
                     }
                 }
                 else if (curTarget1HoldTapStatus == HoldTapStatus.tapped_on_screen_2)
                 {
-                    targetVisualizer.hideTarget();
-                    targetVisualizer.hideShadow();
-                    uiController.updatePosInfo(curHoldTapResult.ToString());
-                    trialController.switchTrialPhase(PublicTrialParams.TrialPhase.a_successful_trial);
+                    if (GlobalMemory.Instance.tech2Target2HoldTapStatus == HoldTapStatus.tap_correct_on_screen_2)
+                    {
+                        targetVisualizer.hideTarget();
+                        targetVisualizer.hideShadow();
+                        uiController.updatePosInfo(curHoldTapResult.ToString());
+                        GlobalMemory.Instance.curLabPhase1RawData.targetReachEndpointInfoReceivedStamp = CurrentTimeMillis();
+                        GlobalMemory.Instance.curLabTrialData.setTrialAccuracy(true, true);
+                        GlobalMemory.Instance.curLabTrialData.techResult = curHoldTapResult.ToString();
+                        trialController.switchTrialPhase(PublicTrialParams.TrialPhase.a_successful_trial);
+                    }
                 }
             }
             else if (GlobalMemory.Instance.lab1Target1Status == TargetStatus.total_on_screen_2)
@@ -124,22 +168,40 @@ public class tech2HoldTapProcessor : MonoBehaviour
                     && (curTarget1HoldTapStatus == HoldTapStatus.inactive_on_screen_2
                      || curTarget1HoldTapStatus == HoldTapStatus.tapped_on_screen_1))
                 {
+                    if (GlobalMemory.Instance.tech2Target2HoldTapStatus == HoldTapStatus.holding_on_screen_2
+                        && !haveRecordedStamp)
+                    {
+                        GlobalMemory.Instance.curLabPhase2RawData.targetReachMidpointInfoReceivedStamp = CurrentTimeMillis();
+                        haveRecordedStamp = true;
+                    }
+
 #if UNITY_ANDROID && UNITY_EDITOR
                     if (Input.GetMouseButtonDown(0))
                     {
                         Vector3 intentPos = processScreenPosToGetWorldPosAtZeroZ(Input.mousePosition);
                         targetVisualizer.moveTarget(intentPos);
+                        GlobalMemory.Instance.curLabPhase2RawData.touch2StartStamp = CurrentTimeMillis();
+                        GlobalMemory.Instance.curLabPhase2RawData.touch2StartPos = Input.mousePosition;
+                        GlobalMemory.Instance.curLabPhase2RawData.movePhase2StartPos = targetVisualizer.getTargetScreenPosition();
                         curTarget1HoldTapStatus = HoldTapStatus.tapped_on_screen_1;
                     }
                     else if (Input.GetMouseButton(0))
                     {
                         Vector3 intentPos = processScreenPosToGetWorldPosAtZeroZ(Input.mousePosition);
                         targetVisualizer.moveTarget(intentPos);
+                        GlobalMemory.Instance.curLabPhase2RawData.touch2EndStamp = CurrentTimeMillis();
+                        GlobalMemory.Instance.curLabPhase2RawData.touch2EndPos = Input.mousePosition;
+                        GlobalMemory.Instance.curLabPhase2RawData.movePhase2EndPos = targetVisualizer.getTargetScreenPosition();
+                        GlobalMemory.Instance.curLabPhase2RawData.targetReachEndpointStamp = CurrentTimeMillis();
                     }
                     else if (Input.GetMouseButtonUp(0))
                     {
                         Vector3 intentPos = processScreenPosToGetWorldPosAtZeroZ(Input.mousePosition);
                         targetVisualizer.moveTarget(intentPos);
+                        GlobalMemory.Instance.curLabPhase2RawData.touch2EndStamp = CurrentTimeMillis();
+                        GlobalMemory.Instance.curLabPhase2RawData.touch2EndPos = Input.mousePosition;
+                        GlobalMemory.Instance.curLabPhase2RawData.movePhase2EndPos = targetVisualizer.getTargetScreenPosition();
+                        GlobalMemory.Instance.curLabPhase2RawData.targetReachEndpointStamp = CurrentTimeMillis();
                     }
 #elif UNITY_IOS || UNITY_ANDROID
                     if ( Input.touchCount == 1)
@@ -148,53 +210,75 @@ public class tech2HoldTapProcessor : MonoBehaviour
                         if (touch.phase == TouchPhase.Began)
                         {
                             Vector3 intentPos = processScreenPosToGetWorldPosAtZeroZ(touch.position);
-                            targetVisualizer.moveTarget(intentPos);
+                            targetVisualizer.moveTarget(intentPos); 
+                            GlobalMemory.Instance.curLabPhase2RawData.touch2StartStamp = CurrentTimeMillis();
+                            GlobalMemory.Instance.curLabPhase2RawData.touch2StartPos = touch.position;
+                            GlobalMemory.Instance.curLabPhase2RawData.movePhase2StartPos = targetVisualizer.getTargetScreenPosition();
                             curTarget1HoldTapStatus = HoldTapStatus.tapped_on_screen_1;
                         }
                         else if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
                         {
                             Vector3 intentPos = processScreenPosToGetWorldPosAtZeroZ(touch.position);
                             targetVisualizer.moveTarget(intentPos);
+                            GlobalMemory.Instance.curLabPhase2RawData.touch2EndStamp = CurrentTimeMillis();
+                            GlobalMemory.Instance.curLabPhase2RawData.touch2EndPos = touch.position;
+                            GlobalMemory.Instance.curLabPhase2RawData.movePhase2EndPos = targetVisualizer.getTargetScreenPosition();
+                            GlobalMemory.Instance.curLabPhase2RawData.targetReachEndpointStamp = CurrentTimeMillis();
                         }
                         else if (touch.phase == TouchPhase.Ended)
                         {
                             Vector3 intentPos = processScreenPosToGetWorldPosAtZeroZ(touch.position);
                             targetVisualizer.moveTarget(intentPos);
+                            GlobalMemory.Instance.curLabPhase2RawData.touch2EndStamp = CurrentTimeMillis();
+                            GlobalMemory.Instance.curLabPhase2RawData.touch2EndPos = touch.position;
+                            GlobalMemory.Instance.curLabPhase2RawData.movePhase2EndPos = targetVisualizer.getTargetScreenPosition();
+                            GlobalMemory.Instance.curLabPhase2RawData.targetReachEndpointStamp = CurrentTimeMillis();
                         }
                     }
 #endif
                 }
-                else if (GlobalMemory.Instance.tech2Target2HoldTapStatus == HoldTapStatus.tapped_on_screen_1)
+                else if (curTarget1HoldTapStatus == HoldTapStatus.tapped_on_screen_1
+                    && GlobalMemory.Instance.tech2Target2HoldTapStatus == HoldTapStatus.tapped_on_screen_1)
+                {
+                    targetVisualizer.showTarget();
+                    if (checkTouchEndPosCorrect())
+                    {
+                        targetVisualizer.correctTarget();
+                        GlobalMemory.Instance.curLabTrialData.setTrialAccuracy(true, true);
+                        GlobalMemory.Instance.curLabTrialData.techResult = curHoldTapResult.ToString();
+                        curTarget1HoldTapStatus = HoldTapStatus.tap_correct_on_screen_1;
+                    }
+                    else
+                    {
+                        targetVisualizer.wrongTarget();
+                        curHoldTapResult = HoldTapResult.tap_failed_to_arrive_pos;
+                        curTarget1HoldTapStatus = HoldTapStatus.t2tot1_trial_failed;
+                    }
+                }
+                else if (curTarget1HoldTapStatus == HoldTapStatus.tap_correct_on_screen_1)
                 {
                     if (delayTimer > 0f)
                     {
                         delayTimer -= Time.deltaTime;
-                        targetVisualizer.showTarget();
-                    } else
+                    }
+                    else
                     {
                         targetVisualizer.hideTarget();
                         targetVisualizer.hideShadow();
-
-                        if (checkTouchEndPosCorrect())
-                        {
-                            uiController.updatePosInfo(curHoldTapResult.ToString());
-                            trialController.switchTrialPhase(PublicTrialParams.TrialPhase.a_successful_trial);
-                        }
-                        else
-                        {
-                            curHoldTapResult = HoldTapResult.tap_failed_to_arrive_pos;
-                            curTarget1HoldTapStatus = HoldTapStatus.t2tot1_trial_failed;
-                        }
+                        uiController.updatePosInfo(curHoldTapResult.ToString());
+                        trialController.switchTrialPhase(PublicTrialParams.TrialPhase.a_successful_trial);
                     }
-                    
                 }
+                /*
                 else if (GlobalMemory.Instance.tech2Target2HoldTapStatus == HoldTapStatus.t2tot1_trial_failed)
                 {
-                    targetVisualizer.hideTarget();
-                    targetVisualizer.hideShadow();
+                    targetVisualizer.wrongTarget();
+                    //targetVisualizer.hideTarget();
+                    //targetVisualizer.hideShadow();
                     curHoldTapResult = GlobalMemory.Instance.tech2Target2HoldTapResult;
                     curTarget1HoldTapStatus = HoldTapStatus.t2tot1_trial_failed;
                 }
+                */
             }
             GlobalMemory.Instance.tech2Target1HoldTapStatus = curTarget1HoldTapStatus;
             GlobalMemory.Instance.tech2Target1HoldTapResult = curHoldTapResult;
@@ -209,6 +293,13 @@ public class tech2HoldTapProcessor : MonoBehaviour
             uiController.updateStatusInfo(GlobalMemory.Instance.tech2Target2HoldTapStatus.ToString());
             //uiController.updatePosInfo(curHoldTapResult.ToString());
         }
+    }
+
+    private long CurrentTimeMillis()
+    {
+        DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+        TimeSpan diff = DateTime.Now.ToUniversalTime() - origin;
+        return (long)diff.TotalMilliseconds;
     }
 
     private bool process1Touch4Target1(Vector2 pos, int targetid)
@@ -268,6 +359,9 @@ public class tech2HoldTapProcessor : MonoBehaviour
         prevTarget1HoldTapStatus = curTarget1HoldTapStatus = HoldTapStatus.inactive_on_screen_1;
         if (GlobalMemory.Instance)
         {
+            GlobalMemory.Instance.curLabPhase1RawData.moveStartPos
+                = GlobalMemory.Instance.curLabPhase1RawData.movePhase1StartPos
+                = targetVisualizer.getTargetScreenPosition();
             GlobalMemory.Instance.tech2Target1HoldTapStatus
                 = GlobalMemory.Instance.tech2Target2HoldTapStatus
                 = HoldTapStatus.inactive_on_screen_1;
@@ -283,6 +377,7 @@ public class tech2HoldTapProcessor : MonoBehaviour
         prevTarget1HoldTapStatus = curTarget1HoldTapStatus = HoldTapStatus.inactive_on_screen_2;
         if (GlobalMemory.Instance)
         {
+            GlobalMemory.Instance.curLabPhase2RawData.moveDestination = targetVisualizer.getShadowScreenPosition();
             GlobalMemory.Instance.tech2Target1HoldTapStatus
                 = GlobalMemory.Instance.tech2Target2HoldTapStatus
                 = HoldTapStatus.inactive_on_screen_2;

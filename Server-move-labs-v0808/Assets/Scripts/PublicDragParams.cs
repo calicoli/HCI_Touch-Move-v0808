@@ -55,12 +55,14 @@ public class PublicDragParams : MonoBehaviour
         inactive_on_screen_1 = 10,
         holding_on_screen_1 = 11,
         tapped_on_screen_2 = 12,
-        t1tot2_trial_failed = 13,
+        tap_correct_on_screen_2 = 13,
+        t1tot2_trial_failed = 14,
 
         inactive_on_screen_2 = 20,
         holding_on_screen_2 = 21,
         tapped_on_screen_1 = 22,
-        t2tot1_trial_failed = 23,
+        tap_correct_on_screen_1 = 23,
+        t2tot1_trial_failed = 24,
     }
 
     public enum HoldTapResult

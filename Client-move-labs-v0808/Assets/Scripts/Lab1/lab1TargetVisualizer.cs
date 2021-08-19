@@ -13,6 +13,8 @@ public class lab1TargetVisualizer : MonoBehaviour
 
     private static Color defaultColor = new Color32(255, 255, 255, 255);
     private static Color activeColor = new Color32(255, 255, 0, 255);
+    private static Color correctColor = new Color32(0, 255, 0, 255);
+    private static Color wrongColor = new Color32(255, 0, 0, 255);
     private static Color shadowColorInFullLab = new Color32(0, 0, 0, 255);
     //private static Color shadowColorInTestLab = new Color32(0, 0, 255, 255);
     private static Color shadowColorInTestLab = new Color32(0, 0, 0, 255);
@@ -105,6 +107,15 @@ public class lab1TargetVisualizer : MonoBehaviour
     public void inactiveTarget()
     {
         updateTargetColor(defaultColor);
+    }
+
+    public void correctTarget()
+    {
+        updateTargetColor(correctColor);
+    }
+    public void wrongTarget()
+    {
+        updateTargetColor(wrongColor);
     }
 
     public void showTarget()
