@@ -34,6 +34,7 @@ public class lab1UIController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("dy-" + Camera.main.aspect.ToString());
         if (GlobalMemory.Instance && GlobalMemory.Instance.curLabInfos.labMode == LabMode.Full)
         {
             setDebugUIVisibility(false);

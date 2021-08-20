@@ -6,7 +6,7 @@ public class PublicDragParams : MonoBehaviour
 {
     //private static char paramSeperators = ';';
     //private static char posSeperator = '*';
-    public const float DRAG_MIN_X = -4f, DRAG_MAX_X = 4f, DRAG_MIN_Y = -10f, DRAG_MAX_Y = 10f;
+    public const float DRAG_MIN_X = -3.5f, DRAG_MAX_X = 3.5f, DRAG_MIN_Y = -9f, DRAG_MAX_Y = 9f;
 
     public enum TargetStatus
     {
