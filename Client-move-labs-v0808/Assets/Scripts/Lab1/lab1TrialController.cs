@@ -78,6 +78,17 @@ public class lab1TrialController : MonoBehaviour
                     string prefix = string.Format("T{0:D2}-N{1:D2}", tid, nid);
                     //GlobalMemory.Instance.curLabTrialData.setPrefix(prefix);
 
+                    if (GlobalMemory.Instance.targetDragType == DragType.hold_tap)
+                    {
+                        GlobalMemory.Instance.tech2TrialData = new tech2HoldTapTrialData();
+                        GlobalMemory.Instance.tech2TrialData.init(curTrial.index, curTrial.firstid, curTrial.secondid);
+                    }
+                    else if (GlobalMemory.Instance.targetDragType == DragType.throw_catch)
+                    {
+                        GlobalMemory.Instance.tech3TrialData = new tech3ThrowCatchTrialData();
+                        GlobalMemory.Instance.tech3TrialData.init(curTrial.index, curTrial.firstid, curTrial.secondid);
+                    }
+
                     // test mode show params
                     uiController.setTrialInfo(prefix, curTrial.firstid, curTrial.secondid);
 

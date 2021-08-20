@@ -16,6 +16,8 @@ public class inUIController : MonoBehaviour
     public InputField inputUserid;
     public Text txtUserid;
 
+    public InputField inputBlockid;
+
     public Dropdown dpLabOptions;
     public Text txtLabInfo;
 
@@ -54,6 +56,7 @@ public class inUIController : MonoBehaviour
     public void setUserLabInfoVisibility(bool isInfoSet)
     {
         inputUserid.gameObject.SetActive(!isInfoSet);
+        inputBlockid.gameObject.SetActive(!isInfoSet);
         dpLabOptions.gameObject.SetActive(!isInfoSet);
         tgLabMode.gameObject.SetActive(!isInfoSet);
         btnConfirmNameAndLab.gameObject.SetActive(!isInfoSet);
@@ -145,8 +148,11 @@ public class inUIController : MonoBehaviour
     public void ConfirmUserAndLabInfo()
     {
         bool flag = GlobalMemory.Instance.getConnectionStatus();
-        if (flag)
+        int blockid = int.Parse(inputBlockid.text);
+        if (flag && blockid > 0)
         {
+            // block info
+            GlobalMemory.Instance.curBlockid = blockid;
             // user info
             int userid = int.Parse(inputUserid.text);
             phaseController.setUserid(userid);

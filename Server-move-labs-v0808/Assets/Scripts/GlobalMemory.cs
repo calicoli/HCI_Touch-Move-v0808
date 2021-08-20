@@ -22,6 +22,8 @@ public class GlobalMemory: MonoBehaviour
     // index scene params
     [HideInInspector]
     public int userid;
+    //[HideInInspector]
+    //public int userSetStartBlockid;
     [HideInInspector]
     public string serverip;
     [HideInInspector]
@@ -66,13 +68,13 @@ public class GlobalMemory: MonoBehaviour
     public TrialPhase1RawData curLabPhase1RawData;
     [HideInInspector]
     public TrialPhase2RawData curLabPhase2RawData;
-    /*
-    [HideInInspector]
-    public tech1DirectDragTrialData tech1TrialData;
+    
+    //[HideInInspector]
+    //public tech1DirectDragTrialData tech1TrialData;
     [HideInInspector]
     public tech2HoldTapTrialData tech2TrialData;
     [HideInInspector]
-    public tech3ThrowCatchTrialData tech3TrialData;*/
+    public tech3ThrowCatchTrialData tech3TrialData;
 
     [HideInInspector]
     public DragType curDragType;
@@ -248,7 +250,7 @@ public class GlobalMemory: MonoBehaviour
     }
 
     public void receiveTrialInfoFromClient(int cTrialNumber, int cTrialIndex,
-       int cTarget1id, int cTarget2id, string cTrialPhase, string cTouchData)
+       int cTarget1id, int cTarget2id, string cTrialPhase, string cTouchData, string cTechData)
     {
         switch (curLabInfos.labName)
         {
@@ -257,12 +259,23 @@ public class GlobalMemory: MonoBehaviour
                 {
                     clientRefreshedTrialData = true;
                     clientLabTrialPhase = (TrialPhase)Enum.Parse(typeof(TrialPhase), cTrialPhase);
-                    if ( clientLabTrialPhase == TrialPhase.a_trial_end)
+                    if ( clientLabTrialPhase == TrialPhase.a_trial_end )
                     {
                         parseLabTouchDataString(cTouchData);
+                        parseTechDataString(cTechData);
                     }
                 }
                 break;
+        }
+    }
+
+    public void parseTechDataString (string cTechData)
+    {
+        Debug.Log("Befor parse: " + cTechData);
+        if (lab1Target1Status == TargetStatus.total_on_screen_2 && 
+            (curDragType == DragType.hold_tap || curDragType == DragType.throw_catch))
+        {
+            curLabTrialData.techData = cTechData;
         }
     }
 
@@ -397,6 +410,12 @@ public class GlobalMemory: MonoBehaviour
                 break;
         }
         fileProcessor.writeNewDataToFile(userFilename, strContent);
+
+        string seqFilename = "SeqTrial" + "-"
+            + curDragType.ToString() + "-"
+            + curLabInfos.labMode.ToString() + "-"
+            + "User" + userid.ToString() + ".txt";
+        fileProcessor.writeNewDataToFile(seqFilename, strContent);
     }
 
     public void writeCurrentTrialDataToFile(out bool finishedWrite)
@@ -419,6 +438,13 @@ public class GlobalMemory: MonoBehaviour
         strContent += getCurrentShapeAndAngle();
 
         fileProcessor.writeNewDataToFile(userFilename, strContent);
+
+        string trialdataFilename = "DataTrial" + "-"
+            + curLabInfos.labName.ToString() + "-"
+            //+ curDragType.ToString() + "-"
+            + curLabInfos.labMode.ToString() + "-"
+            + "User" + userid.ToString() + ".txt";
+        fileProcessor.writeNewDataToFile(trialdataFilename, strContent);
         finishedWrite = true;
     }
 

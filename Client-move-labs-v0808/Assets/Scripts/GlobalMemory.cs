@@ -68,6 +68,10 @@ public class GlobalMemory : MonoBehaviour
     [HideInInspector]
     public TrialPhase2RawData curLabPhase2RawData;
 
+    [HideInInspector]
+    public tech2HoldTapTrialData tech2TrialData;
+    [HideInInspector]
+    public tech3ThrowCatchTrialData tech3TrialData;
 
     [HideInInspector]
     public bool refreshTarget2 = false;

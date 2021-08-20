@@ -19,6 +19,8 @@ public class tech2HoldTapProcessor : MonoBehaviour
 
     private int hitCnt = 0;
 
+    private Vector2 holdStartPos, holdRealtimePos;
+
     private float delayTimer = 0f;
     private const float wait_time_before_vanish = 0.2f;
 
@@ -33,6 +35,7 @@ public class tech2HoldTapProcessor : MonoBehaviour
     void resetHoldTapParams()
     {
         delayTimer = wait_time_before_vanish;
+        holdStartPos = holdRealtimePos = Vector2.zero;
         haveRecordedStamp = false;
         touchSuccess = false;
         curHoldTapResult = HoldTapResult.hold_tap_success;
@@ -198,10 +201,11 @@ public class tech2HoldTapProcessor : MonoBehaviour
                         {
                             if (touch.phase == TouchPhase.Began)
                             {
-                                
                                 GlobalMemory.Instance.curLabPhase1RawData.touch1StartStamp = CurrentTimeMillis();
                                 GlobalMemory.Instance.curLabPhase1RawData.touch1StartPos = touch.position;
                                 GlobalMemory.Instance.curLabPhase1RawData.targetReachMidpointStamp = CurrentTimeMillis();
+                                holdStartPos = touch.position;
+                                GlobalMemory.Instance.tech2TrialData.holdStartPosition = touch.position;
                                 targetVisualizer.activeTarget();
                                 curTarget2HoldTapStatus = HoldTapStatus.holding_on_screen_2;
                             }
@@ -220,6 +224,8 @@ public class tech2HoldTapProcessor : MonoBehaviour
                         bool touchSuccess = process1Touch4Target2(touch.position, 0);
                         if (touchSuccess)
                         {
+                            holdRealtimePos = touch.position;
+                            calculateHoldOffset();
                             if (touch.phase == TouchPhase.Ended)
                             {
                                 GlobalMemory.Instance.curLabPhase1RawData.touch1EndStamp = CurrentTimeMillis();
@@ -286,6 +292,21 @@ public class tech2HoldTapProcessor : MonoBehaviour
         }
 
 
+    }
+
+    private void calculateHoldOffset()
+    {
+        float distance = Vector2.Distance(holdStartPos, holdRealtimePos);
+        if (distance != 0 && distance > GlobalMemory.Instance.tech2TrialData.maxOffset)
+        {
+            GlobalMemory.Instance.tech2TrialData.maxOffset = distance;
+            GlobalMemory.Instance.tech2TrialData.holdMaxOffsetPosition = holdRealtimePos;
+        }
+        if (distance != 0 && distance < GlobalMemory.Instance.tech2TrialData.minOffset)
+        {
+            GlobalMemory.Instance.tech2TrialData.minOffset = distance;
+            GlobalMemory.Instance.tech2TrialData.holdMinOffsetPosition = holdRealtimePos;
+        }
     }
 
     private bool process1Touch4Target2(Vector2 pos, int targetid)

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PublicDragParams : MonoBehaviour
 {
+    private static char techParamSeperator = '#';
     public const float DRAG_MIN_X = -3.5f, DRAG_MAX_X = 3.5f, DRAG_MIN_Y = -9f, DRAG_MAX_Y = 9f;
 
     public enum TargetStatus
@@ -114,6 +115,66 @@ public class PublicDragParams : MonoBehaviour
         throw_downgraded_to_drag_due_dv = 3,
         throw_to_wrong_dir = 4,
         catch_failed_to_arrive_pos = 5,
+    }
+
+    public struct tech2HoldTapTrialData
+    {
+        int trialid, firstid, secondid;
+        public float maxOffset, minOffset;
+        public Vector2 holdStartPosition, holdMaxOffsetPosition, holdMinOffsetPosition;
+
+        public void init(int tid, int id1, int id2)
+        {
+            tid = trialid;
+            firstid = id1;
+            secondid = id2;
+            maxOffset = 0f;
+            minOffset = float.MaxValue;
+            holdStartPosition = holdMaxOffsetPosition = holdMinOffsetPosition;
+        }
+
+        public string getAllData()
+        {
+            string str = "";
+            str = trialid.ToString() + techParamSeperator
+                + firstid.ToString() + techParamSeperator + secondid.ToString() + techParamSeperator
+                + maxOffset.ToString() + techParamSeperator
+                + minOffset.ToString() + techParamSeperator
+                + holdStartPosition.ToString() + techParamSeperator
+                + holdMaxOffsetPosition.ToString() + techParamSeperator
+                + holdMinOffsetPosition.ToString() + techParamSeperator
+                ;
+            return str;
+        }
+    }
+
+    public struct tech3ThrowCatchTrialData
+    {
+        int trialid, firstid, secondid;
+        public float deltaTime;
+        public float deltaDistance;
+        public float userVelocity;
+
+        public void init(int tid, int id1, int id2)
+        {
+            tid = trialid;
+            firstid = id1;
+            secondid = id2;
+            deltaTime = 0;
+            deltaDistance = userVelocity = 0f;
+        }
+
+        public string getAllData()
+        {
+            string str = "";
+            str = trialid.ToString() + techParamSeperator
+                + firstid.ToString() + techParamSeperator + secondid.ToString() + techParamSeperator
+                + deltaTime.ToString() + techParamSeperator
+                + deltaDistance.ToString() + techParamSeperator
+                + userVelocity.ToString() + techParamSeperator
+                ;
+            return str;
+        }
     }
 
 }

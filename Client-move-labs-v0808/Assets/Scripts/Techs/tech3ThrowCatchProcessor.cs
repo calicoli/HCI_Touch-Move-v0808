@@ -263,6 +263,8 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
                             {
                                 targetVisualizer.moveTarget(throwStartPos + offset);
                             }
+                            GlobalMemory.Instance.curLabPhase1RawData.touch1EndStamp = CurrentTimeMillis();
+                            GlobalMemory.Instance.curLabPhase1RawData.touch1EndPos = Input.mousePosition;
 
                             throwEndTime = Time.time;
                             throwEndPos = targetVisualizer.getTargetPosition();
@@ -270,6 +272,7 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
 
                             throwTouchDistance = Mathf.Abs((throwEndTouchPoint - throwStartTouchPoint).magnitude);
                             throwTouchVelocity = throwTouchDistance / (throwEndTime - throwStartTime);
+                            writeThrowData((throwEndTime - throwStartTime), throwTouchDistance, throwTouchVelocity);
 
                             uiController.updateStatusInfo("PC-D/V:" + throwTouchDistance.ToString() + "/" + throwTouchVelocity.ToString());
 
@@ -363,6 +366,7 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
                                 //throwTouchVelocity = throwTouchDistance / (throwEndTime - throwStartTime);
                                 throwTouchDistance = touch.deltaPosition.magnitude;
                                 throwTouchVelocity = throwTouchDistance / touch.deltaTime;
+                                writeThrowData(touch.deltaTime, throwTouchDistance, throwTouchVelocity);
 
                                 uiController.updateStatusInfo("TD-D/V:" + throwTouchDistance.ToString() + "/" + throwTouchVelocity.ToString());
 
@@ -509,6 +513,14 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
             prevTarget2ThrowCatchStatus = curTarget2ThrowCatchStatus;
         }
     }
+
+    public void writeThrowData(float dt, float dd, float v)
+    {
+        GlobalMemory.Instance.tech3TrialData.deltaTime = dt;
+        GlobalMemory.Instance.tech3TrialData.deltaDistance = dd;
+        GlobalMemory.Instance.tech3TrialData.userVelocity = v;
+    }
+
     public void initParamsWhenTargetOnScreen1(int id2)
     {
         Debug.Log("tech3-initS1()");

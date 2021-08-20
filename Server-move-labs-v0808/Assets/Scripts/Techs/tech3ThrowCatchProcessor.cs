@@ -166,7 +166,7 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
 
                             throwTouchDistance = Mathf.Abs((throwEndTouchPoint - throwStartTouchPoint).magnitude);
                             throwTouchVelocity = throwTouchDistance / (throwEndTime - throwStartTime);
-
+                            writeThrowData((throwEndTime - throwStartTime), throwTouchDistance, throwTouchVelocity);
 
                             uiController.updateStatusInfo("PC-D/V:" + throwTouchDistance.ToString() + "/" + throwTouchVelocity.ToString());
 
@@ -260,6 +260,7 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
                                 //throwTouchVelocity = throwTouchDistance / (throwEndTime - throwStartTime);
                                 throwTouchDistance = touch.deltaPosition.magnitude;
                                 throwTouchVelocity = throwTouchDistance / touch.deltaTime;
+                                writeThrowData(touch.deltaTime, throwTouchDistance, throwTouchVelocity);
 
                                 uiController.updateStatusInfo("TD-D/V:" + throwTouchDistance.ToString() + "/" + throwTouchVelocity.ToString());
 
@@ -540,6 +541,13 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
         prevTarget1ThrowCatchStatus = curTarget1ThrowCatchStatus;
     }
 
+    public void writeThrowData(float dt, float dd, float v)
+    {
+        GlobalMemory.Instance.tech3TrialData.deltaTime = dt;
+        GlobalMemory.Instance.tech3TrialData.deltaDistance = dd;
+        GlobalMemory.Instance.tech3TrialData.userVelocity = v;
+        GlobalMemory.Instance.curLabTrialData.techData = GlobalMemory.Instance.tech3TrialData.getAllData();
+    }
 
     public void initParamsWhenTargetOnScreen1(int id1)
     {

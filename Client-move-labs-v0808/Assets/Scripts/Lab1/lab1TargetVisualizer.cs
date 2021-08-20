@@ -49,6 +49,10 @@ public class lab1TargetVisualizer : MonoBehaviour
         for (int i = 0; i < markers.transform.childCount; i++)
         {
             posMarkers[i] = markers.transform.GetChild(i).position;
+            Debug.Log(i.ToString() + " " + markers.transform.GetChild(i).gameObject.name + " "
+               + posMarkers[i].ToString() + " "
+               + renderCamera.WorldToScreenPoint(posMarkers[i]).ToString() + " "
+               + Vector3.Distance(posMarkers[i], renderCamera.ScreenToWorldPoint(new Vector2(0f, 1600f))).ToString());
         }
     }
 

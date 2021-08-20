@@ -270,9 +270,10 @@ public class ServerCenter : MonoBehaviour
         int cTarget2id = Convert.ToInt32(messages[7]);
         string cTrialPhase = messages[8];
         string cTouch2data = messages[9];
+        string cTechData = messages[10];
 
         GlobalMemory.Instance.receiveTrialInfoFromClient
-            (cTrialNumber, cTrialIndex, cTarget1id, cTarget2id, cTrialPhase, cTouch2data);
+            (cTrialNumber, cTrialIndex, cTarget1id, cTarget2id, cTrialPhase, cTouch2data, cTechData);
         GlobalMemory.Instance.accClient = cAcc;
 
     }

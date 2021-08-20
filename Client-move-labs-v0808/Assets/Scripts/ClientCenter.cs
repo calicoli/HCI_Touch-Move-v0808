@@ -329,6 +329,18 @@ public class ClientCenter : MonoBehaviour
             + cTarget2id + paramSeperators
             + cTrialPhase + paramSeperators
             + cTouch2data + paramSeperators;
+        if (GlobalMemory.Instance.lab1Target2Status == TargetStatus.total_on_screen_2
+            && GlobalMemory.Instance.targetDragType == DragType.hold_tap)
+        {
+            res += GlobalMemory.Instance.tech2TrialData.getAllData() + paramSeperators;
+        } else if (GlobalMemory.Instance.lab1Target2Status == TargetStatus.total_on_screen_2
+            && GlobalMemory.Instance.targetDragType == DragType.throw_catch)
+        {
+            res += GlobalMemory.Instance.tech3TrialData.getAllData() + paramSeperators;
+        } else
+        {
+            res += "None" + paramSeperators;
+        }
         Debug.Log("LabTrialMsg: " + res);
         return res;
     }

@@ -369,7 +369,7 @@ ScriptsOnlyBuild:
     className: AnimationTrack
   - hash:
       serializedVersion: 2
-      Hash: f4b9e98aeb40755372c14059ab431e46
+      Hash: a170889f51aa8c811a7af01d009f29b6
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: inUIController
