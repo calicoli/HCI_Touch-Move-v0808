@@ -77,6 +77,16 @@ public class tech1DirectDragProcessor : MonoBehaviour
                         GlobalMemory.Instance.curLabTrialData.setTrialAccuracy(true, false);
                         break;
                 }
+                if (GlobalMemory.Instance.lab1Target1Status == TargetStatus.total_on_screen_1)
+                {
+                    GlobalMemory.Instance.curLabTrialData.device1TechResult = curDirectDragResult.ToString();
+                    GlobalMemory.Instance.curLabTrialData.device2TechResult = GlobalMemory.Instance.tech1Target2DirectDragResult.ToString();
+                }
+                else if (GlobalMemory.Instance.lab1Target1Status == TargetStatus.total_on_screen_2)
+                {
+                    GlobalMemory.Instance.curLabTrialData.device1TechResult = GlobalMemory.Instance.tech1Target2DirectDragResult.ToString();
+                    GlobalMemory.Instance.curLabTrialData.device2TechResult = curDirectDragResult.ToString();
+                }
                 targetVisualizer.wrongTarget();
                 if (delayTimer > 0f)
                 {

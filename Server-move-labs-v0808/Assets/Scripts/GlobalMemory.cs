@@ -436,6 +436,8 @@ public class GlobalMemory: MonoBehaviour
                 break;
         }
         strContent += getCurrentShapeAndAngle();
+        strContent += CurrentTimeMillis().ToString() + ";";
+        strContent += Time.time.ToString() + ";";
 
         fileProcessor.writeNewDataToFile(userFilename, strContent);
 

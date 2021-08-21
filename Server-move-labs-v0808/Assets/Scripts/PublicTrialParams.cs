@@ -80,7 +80,7 @@ public class PublicTrialParams : MonoBehaviour
         
         // final-accuracy
         bool isTrialSuccess, isPhase1Success, isPhase2Success;
-        public string techResult;
+        public string techResult, device1TechResult, device2TechResult;
         // final-time
         long loTargetMoveSpan, loMovePhase1Span, loMovePhase2Span;
         long loTouch1Span, loTouch2Span;
@@ -169,6 +169,8 @@ public class PublicTrialParams : MonoBehaviour
                 + trialid.ToString() + paramSeperators + firstid.ToString() + paramSeperators + secondid.ToString() + paramSeperators
                 + isTrialSuccess.ToString() + paramSeperators + isPhase1Success.ToString() + paramSeperators + isPhase2Success.ToString() + paramSeperators
                 + techResult.ToString() + paramSeperators
+                + device1TechResult.ToString() + paramSeperators
+                + device2TechResult.ToString() + paramSeperators
                 // final-time
                 + loTargetMoveSpan.ToString() + paramSeperators
                 + loMovePhase1Span.ToString() + paramSeperators

@@ -95,6 +95,16 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
                         GlobalMemory.Instance.curLabTrialData.setTrialAccuracy(true, false);
                         break;
                 }
+                if (GlobalMemory.Instance.lab1Target1Status == TargetStatus.total_on_screen_1)
+                {
+                    GlobalMemory.Instance.curLabTrialData.device1TechResult = curThrowCatchResult.ToString();
+                    GlobalMemory.Instance.curLabTrialData.device2TechResult = GlobalMemory.Instance.tech3Target2ThrowCatchResult.ToString();
+                }
+                else if (GlobalMemory.Instance.lab1Target1Status == TargetStatus.total_on_screen_2)
+                {
+                    GlobalMemory.Instance.curLabTrialData.device1TechResult = GlobalMemory.Instance.tech3Target2ThrowCatchResult.ToString();
+                    GlobalMemory.Instance.curLabTrialData.device2TechResult = curThrowCatchResult.ToString();
+                }
                 targetVisualizer.wrongTarget();
                 if (delayTimer > 0f)
                 {

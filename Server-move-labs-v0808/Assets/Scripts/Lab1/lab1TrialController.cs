@@ -106,8 +106,6 @@ public class lab1TrialController : MonoBehaviour
                 int rid = curRepeatTime;
                 string prefix = string.Format("Tech{0:D2}-B{1:D2}-R{2:D2}", techid, bid, rid);
 
-
-
                 curSequence.setTrialLength(GlobalMemory.Instance.curLabInfos.totalTrialCount);
                 curSequence.setPrefix(prefix);
                 curSequence.setAllQuence(blockPosture);
@@ -234,6 +232,22 @@ public class lab1TrialController : MonoBehaviour
             else if (curTrialPhase == TrialPhase.a_successful_trial)
             {
                 disableAllTechniques();
+                if (GlobalMemory.Instance.curDragType == DragType.direct_drag)
+                {
+                    GlobalMemory.Instance.curLabTrialData.device1TechResult
+                        = GlobalMemory.Instance.curLabTrialData.device2TechResult
+                        = DirectDragResult.direct_drag_success.ToString();
+                } else if (GlobalMemory.Instance.curDragType == DragType.hold_tap)
+                {
+                    GlobalMemory.Instance.curLabTrialData.device1TechResult
+                        = GlobalMemory.Instance.curLabTrialData.device2TechResult
+                        = HoldTapResult.hold_tap_success.ToString();
+                } else if (GlobalMemory.Instance.curDragType == DragType.throw_catch)
+                {
+                    GlobalMemory.Instance.curLabTrialData.device1TechResult
+                        = GlobalMemory.Instance.curLabTrialData.device2TechResult
+                        = ThrowCatchResult.throw_catch_success.ToString();
+                }
                 curTrialPhase = TrialPhase.a_trial_output_data;
             }
             else if (curTrialPhase == TrialPhase.a_failed_trial)
