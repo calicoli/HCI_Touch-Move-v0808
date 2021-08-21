@@ -36,6 +36,8 @@ public class PublicDragParams : MonoBehaviour
         drag_phase2_ongoing_on_screen_1 = 37,
         drag_phase2_end_on_screen_1 = 38,
         t2tot1_trial_failed = 39,
+
+        retry_status_active = 100,
     }
 
     public enum DirectDragResult
@@ -47,6 +49,8 @@ public class PublicDragParams : MonoBehaviour
         drag_2_failed_to_leave_junction = 4,
         drag_2_rearrived_junction_after_leave = 5,
         drag_2_failed_to_arrive_pos = 6,        // delay vanish
+
+        user_skip_current_trial = 100,
     }
 
     public enum HoldTapStatus
@@ -63,7 +67,9 @@ public class PublicDragParams : MonoBehaviour
         tapped_on_screen_1 = 22,
         wait_s2_to_received_tap = 23,
         tap_correct_on_screen_1 = 24,
-        t2tot1_trial_failed = 245,
+        t2tot1_trial_failed = 25,
+
+        retry_status_active = 100,
     }
 
     public enum HoldTapResult
@@ -72,6 +78,8 @@ public class PublicDragParams : MonoBehaviour
         hold_released_before_tap = 1,
         hold_outside_before_tap = 2,
         tap_failed_to_arrive_pos = 3,
+
+        user_skip_current_trial = 100,
     }
 
     public enum ThrowCatchStatus
@@ -101,6 +109,8 @@ public class PublicDragParams : MonoBehaviour
         t2_move_phase2_acrossing_over = 39,
         catch_end_on_screen_1 = 40,
         t2tot1_trial_failed = 41,
+
+        retry_status_active = 100,
     }
 
     public enum ThrowCatchPhase1Result
@@ -117,6 +127,7 @@ public class PublicDragParams : MonoBehaviour
         throw_downgraded_to_drag_due_dv = 3,
         throw_to_wrong_dir = 4,
         catch_failed_to_arrive_pos = 5,
+        user_skip_current_trial = 100,
     }
 
     public struct tech1DirectDragTrialData

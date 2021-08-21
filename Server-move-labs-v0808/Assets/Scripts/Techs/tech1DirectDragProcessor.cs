@@ -28,6 +28,7 @@ public class tech1DirectDragProcessor : MonoBehaviour
 
     private bool haveRecordedStamp = false;
     private bool phase2FirstTouchHappened = false;
+    private bool retryStatusActive = false;
 
     // Start is called before the first frame update
     void Start()
@@ -40,6 +41,7 @@ public class tech1DirectDragProcessor : MonoBehaviour
     void resetDirectDragParams()
     {
         delayTimer = wait_time_before_vanish;
+        retryStatusActive = false;
         haveRecordedStamp = false;
         phase2FirstTouchHappened = false;
         touchSuccess = false;
@@ -57,6 +59,7 @@ public class tech1DirectDragProcessor : MonoBehaviour
     {
         if (GlobalMemory.Instance && GlobalMemory.Instance.curDragType == DragType.direct_drag)
         {
+
             if (curDirectDragResult != DirectDragResult.direct_drag_success
                 || GlobalMemory.Instance.tech1Target2DirectDragResult != DirectDragResult.direct_drag_success)
             {
@@ -70,6 +73,7 @@ public class tech1DirectDragProcessor : MonoBehaviour
                 {
                     case DirectDragResult.drag_1_failed_to_arrive_junction:
                     case DirectDragResult.drag_1_left_junction_after_arrive:
+                    case DirectDragResult.user_skip_current_trial:
                         GlobalMemory.Instance.curLabTrialData.setTrialAccuracy(false, false);
                         break;
                     //case DirectDragResult.drag_2_failed_to_touch:
@@ -101,6 +105,13 @@ public class tech1DirectDragProcessor : MonoBehaviour
                     trialController.switchTrialPhase(PublicTrialParams.TrialPhase.a_failed_trial);
                 }
                
+            }
+
+            if (Input.touchCount == 4)
+            {
+                curDirectDragResult = DirectDragResult.user_skip_current_trial;
+                curTarget1DirectDragStatus = DirectDragStatus.retry_status_active;
+                retryStatusActive = true;
             }
 
             if (GlobalMemory.Instance.lab1Target1Status == TargetStatus.total_on_screen_1)
@@ -664,7 +675,14 @@ public class tech1DirectDragProcessor : MonoBehaviour
             GlobalMemory.Instance.tech1Target1DirectDragPosition = curTarget1Pos;
             GlobalMemory.Instance.tech1Target1DirectDragStatus = curTarget1DirectDragStatus;
             GlobalMemory.Instance.tech1Target1DirectDragResult = curDirectDragResult;
-            if ( curDirectDragResult != DirectDragResult.direct_drag_success
+            if (retryStatusActive
+                && curTarget1DirectDragStatus == DirectDragStatus.retry_status_active
+                && curDirectDragResult == DirectDragResult.user_skip_current_trial)
+            {
+                retryStatusActive = false;
+                GlobalMemory.Instance.server.prepareNewMessage4Client(MessageType.DirectDragInfo);
+            }
+            else if ( curDirectDragResult != DirectDragResult.direct_drag_success
                 || (curTarget1DirectDragStatus == DirectDragStatus.across_from_screen_1 && prevTarget1Pos != curTarget1Pos)
                 || (curTarget1DirectDragStatus == DirectDragStatus.drag_phase2_on_screen_1 && prevTarget1Pos != curTarget1Pos)
                 || ((curTarget1DirectDragStatus != prevTarget1DirectDragStatus) &&
@@ -677,6 +695,8 @@ public class tech1DirectDragProcessor : MonoBehaviour
             {
                 GlobalMemory.Instance.server.prepareNewMessage4Client(MessageType.DirectDragInfo);
             }
+
+
             prevTarget1DirectDragStatus = curTarget1DirectDragStatus;
             prevTarget1Pos = curTarget1Pos;
 

@@ -45,6 +45,7 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
     private const float wait_time_before_vanish = 0.15f;
 
     //private bool haveRecordedStamp = false;
+    private bool retryStatusActive = false;
 
     // Start is called before the first frame update
     void Start()
@@ -57,6 +58,7 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
     void resetDirectDragParams()
     {
         delayTimer = wait_time_before_vanish;
+        retryStatusActive = false;
         //haveRecordedStamp = false;
         touchSuccess = false;
         curThrowCatchResult = ThrowCatchResult.throw_catch_success;
@@ -73,6 +75,8 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
     {
         if (GlobalMemory.Instance && GlobalMemory.Instance.curDragType == DragType.throw_catch)
         {
+            
+
             if (curThrowCatchResult != ThrowCatchResult.throw_catch_success
                 || GlobalMemory.Instance.tech3Target2ThrowCatchResult != ThrowCatchResult.throw_catch_success)
             {
@@ -89,6 +93,7 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
                     case ThrowCatchResult.throw_downgraded_to_drag_due_d:
                     case ThrowCatchResult.throw_downgraded_to_drag_due_v:
                     case ThrowCatchResult.throw_to_wrong_dir:
+                    case ThrowCatchResult.user_skip_current_trial:
                         GlobalMemory.Instance.curLabTrialData.setTrialAccuracy(false, false);
                         break;
                     case ThrowCatchResult.catch_failed_to_arrive_pos:
@@ -116,6 +121,15 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
                     targetVisualizer.hideShadow();
                     trialController.switchTrialPhase(PublicTrialParams.TrialPhase.a_failed_trial);
                 }
+            }
+
+            if (Input.touchCount == 4)
+            {
+                flickerVisualizer.stopFlicker();
+                flickerVisualizer.hideFlickerObjects();
+                curThrowCatchResult = ThrowCatchResult.user_skip_current_trial;
+                curTarget1ThrowCatchStatus = ThrowCatchStatus.retry_status_active;
+                retryStatusActive = true;
             }
 
 
@@ -535,8 +549,16 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
         GlobalMemory.Instance.tech3Target1ThrowCatchPosition = targetVisualizer.getTargetPosition();
         GlobalMemory.Instance.tech3Target1ThrowCatchResult = curThrowCatchResult;
         // keep with t1 st-status
-        if (curTarget1ThrowCatchStatus == ThrowCatchStatus.t2_move_phase2_ongoing
-            || (curTarget1ThrowCatchStatus != prevTarget1ThrowCatchStatus &&
+        if (retryStatusActive
+            && curTarget1ThrowCatchStatus == ThrowCatchStatus.retry_status_active
+            && curThrowCatchResult == ThrowCatchResult.user_skip_current_trial)
+        {
+            retryStatusActive = false;
+            GlobalMemory.Instance.server.prepareNewMessage4Client(MessageType.ThrowCatchInfo);
+        }
+        else if (curTarget1ThrowCatchStatus == ThrowCatchStatus.t2_move_phase2_ongoing
+            || (curTarget1ThrowCatchStatus != ThrowCatchStatus.retry_status_active &&
+                curTarget1ThrowCatchStatus != prevTarget1ThrowCatchStatus &&
                  (curTarget1ThrowCatchStatus == ThrowCatchStatus.throw_successed_on_screen_1
                 || curTarget1ThrowCatchStatus == ThrowCatchStatus.catch_start_on_screen_1
                 || curTarget1ThrowCatchStatus == ThrowCatchStatus.t2_move_phase2_acrossing_over
@@ -562,6 +584,8 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
     public void initParamsWhenTargetOnScreen1(int id1)
     {
         Debug.Log("tech3-initS1()");
+        flickerVisualizer.stopFlicker();
+        flickerVisualizer.hideFlickerObjects();
         targetVisualizer.moveTargetWithPosID(id1);
         targetVisualizer.showTarget();
         targetVisualizer.hideShadow();
@@ -580,6 +604,8 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
     public void initParamsWhenTargetOnScreen2(int id2)
     {
         Debug.Log("tech3-initS2()");
+        flickerVisualizer.stopFlicker();
+        flickerVisualizer.hideFlickerObjects();
         targetVisualizer.moveShadowWithPosID(id2);
         targetVisualizer.hideTarget();
         targetVisualizer.showShadow();

@@ -68,6 +68,7 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
     {
         if (GlobalMemory.Instance.targetDragType == DragType.throw_catch)
         {
+
             if (curThrowCatchResult != ThrowCatchResult.throw_catch_success
                 || GlobalMemory.Instance.tech3Target1ThrowCatchResult != ThrowCatchResult.throw_catch_success)
             {
@@ -524,6 +525,8 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
     public void initParamsWhenTargetOnScreen1(int id2)
     {
         Debug.Log("tech3-initS1()");
+        flickerVisualizer.stopFlicker();
+        flickerVisualizer.hideFlickerObjects();
         targetVisualizer.moveShadowWithPosID(id2);
         targetVisualizer.hideTarget();
         targetVisualizer.showShadow();
@@ -540,6 +543,8 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
     public void initParamsWhenTargetOnScreen2(int id1)
     {
         Debug.Log("tech3-initS2()");
+        flickerVisualizer.stopFlicker();
+        flickerVisualizer.hideFlickerObjects();
         targetVisualizer.moveTargetWithPosID(id1);
         targetVisualizer.showTarget();
         targetVisualizer.hideShadow();

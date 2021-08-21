@@ -60,6 +60,7 @@ public class tech1DirectDragProcessor : MonoBehaviour
     {
         if (GlobalMemory.Instance && GlobalMemory.Instance.targetDragType == DragType.direct_drag)
         {
+
             if (curDirectDragResult != DirectDragResult.direct_drag_success
                 || GlobalMemory.Instance.tech1Target1DirectDragResult != DirectDragResult.direct_drag_success)
             {

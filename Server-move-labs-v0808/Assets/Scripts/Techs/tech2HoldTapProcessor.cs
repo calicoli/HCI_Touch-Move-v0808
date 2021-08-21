@@ -21,6 +21,7 @@ public class tech2HoldTapProcessor : MonoBehaviour
     private const float wait_time_before_vanish = 0.15f;
 
     private bool haveRecordedStamp = false;
+    private bool retryStatusActive = false;
 
     // Start is called before the first frame update
     void Start()
@@ -32,6 +33,7 @@ public class tech2HoldTapProcessor : MonoBehaviour
     {
         delayTimer = wait_time_before_vanish;
         holdStartPos = holdRealtimePos = Vector2.zero;
+        retryStatusActive = false;
         haveRecordedStamp = false;
         touchSuccess = false;
         curHoldTapResult = HoldTapResult.hold_tap_success;
@@ -61,6 +63,7 @@ public class tech2HoldTapProcessor : MonoBehaviour
                 {
                     case HoldTapResult.hold_outside_before_tap:
                     case HoldTapResult.hold_released_before_tap:
+                    case HoldTapResult.user_skip_current_trial:
                         GlobalMemory.Instance.curLabTrialData.setTrialAccuracy(false, false);
                         break;
                     case HoldTapResult.tap_failed_to_arrive_pos:
@@ -89,6 +92,14 @@ public class tech2HoldTapProcessor : MonoBehaviour
                     trialController.switchTrialPhase(PublicTrialParams.TrialPhase.a_failed_trial);
                 }
             }
+
+            if (Input.touchCount == 4)
+            {
+                curHoldTapResult = HoldTapResult.user_skip_current_trial;
+                curTarget1HoldTapStatus = HoldTapStatus.retry_status_active;
+                retryStatusActive = true;
+            }
+
             if (GlobalMemory.Instance.lab1Target1Status == TargetStatus.total_on_screen_1)
             {
                 if (curTarget1HoldTapStatus == HoldTapStatus.inactive_on_screen_1)
@@ -313,7 +324,15 @@ public class tech2HoldTapProcessor : MonoBehaviour
 
             GlobalMemory.Instance.tech2Target1HoldTapStatus = curTarget1HoldTapStatus;
             GlobalMemory.Instance.tech2Target1HoldTapResult = curHoldTapResult;
-            if (curTarget1HoldTapStatus != prevTarget1HoldTapStatus
+            if (retryStatusActive
+                && curTarget1HoldTapStatus == HoldTapStatus.retry_status_active
+                && curHoldTapResult == HoldTapResult.user_skip_current_trial)
+            {
+                retryStatusActive = false;
+                GlobalMemory.Instance.server.prepareNewMessage4Client(MessageType.HoldTapInfo);
+            }
+            else if (curTarget1HoldTapStatus != prevTarget1HoldTapStatus
+                && curTarget1HoldTapStatus != HoldTapStatus.retry_status_active
                 && curTarget1HoldTapStatus != HoldTapStatus.holding_on_screen_2
                 && curTarget1HoldTapStatus != HoldTapStatus.wait_s1_to_received_tap)
             {
