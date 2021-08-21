@@ -45,7 +45,7 @@ public class PublicDragParams : MonoBehaviour
         direct_drag_success = 0,
         drag_1_failed_to_arrive_junction = 1,
         drag_1_left_junction_after_arrive = 2,
-        drag_2_failed_to_touch = 3,
+        //drag_2_failed_to_touch = 3,
         drag_2_failed_to_leave_junction = 4,
         drag_2_rearrived_junction_after_leave = 5,
         drag_2_failed_to_arrive_pos = 6,
@@ -121,22 +121,38 @@ public class PublicDragParams : MonoBehaviour
         catch_failed_to_arrive_pos = 5,     // delay vanish
     }
     
-    /*
+    
     public struct tech1DirectDragTrialData
     {
-        int techid;
+        int trialid, firstid, secondid;
+        public Vector2 device2FirstTouchPosition, device2FirstCorrectPosition;
+        public long device2FirstTouchStamp, device2FirstCorrectTouchStamp;
+        long timespanBetweenFirstAndCorrectTouch;
 
-        public void init()
+        public void init(int tid, int id1, int id2)
         {
-            techid = 1;
+            tid = trialid;
+            firstid = id1;
+            secondid = id2;
+            device2FirstTouchPosition = device2FirstCorrectPosition = Vector2.zero;
+            device2FirstTouchStamp = device2FirstCorrectTouchStamp = timespanBetweenFirstAndCorrectTouch = 0;
         }
 
         public string getAllData()
         {
+            timespanBetweenFirstAndCorrectTouch = device2FirstTouchStamp - device2FirstTouchStamp;
             string str = "";
+            str = trialid.ToString() + techParamSeperator
+                + firstid.ToString() + techParamSeperator + secondid.ToString() + techParamSeperator
+                + device2FirstTouchPosition.ToString() + techParamSeperator
+                + device2FirstCorrectPosition.ToString() + techParamSeperator
+                + device2FirstTouchStamp.ToString() + techParamSeperator
+                + device2FirstCorrectTouchStamp.ToString() + techParamSeperator
+                + timespanBetweenFirstAndCorrectTouch.ToString() + techParamSeperator
+                ;
             return str;
         }
-    }*/
+    }
 
     public struct tech2HoldTapTrialData
     {

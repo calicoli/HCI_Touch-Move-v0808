@@ -156,7 +156,13 @@ public class lab1TrialController : MonoBehaviour
                 GlobalMemory.Instance.curLabPhase2RawData = new TrialPhase2RawData();
                 GlobalMemory.Instance.curLabPhase2RawData.init(curTrial.index, curTrial.firstid, curTrial.secondid);
 
-                if (GlobalMemory.Instance.curDragType == DragType.hold_tap)
+
+                if (GlobalMemory.Instance.curDragType == DragType.direct_drag)
+                {
+                    GlobalMemory.Instance.tech1TrialData = new tech1DirectDragTrialData();
+                    GlobalMemory.Instance.tech1TrialData.init(curTrial.index, curTrial.firstid, curTrial.secondid);
+                }
+                else if (GlobalMemory.Instance.curDragType == DragType.hold_tap)
                 {
                     GlobalMemory.Instance.tech2TrialData = new tech2HoldTapTrialData();
                     GlobalMemory.Instance.tech2TrialData.init(curTrial.index, curTrial.firstid, curTrial.secondid);

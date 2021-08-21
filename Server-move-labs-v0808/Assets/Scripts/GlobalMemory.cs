@@ -69,8 +69,8 @@ public class GlobalMemory: MonoBehaviour
     [HideInInspector]
     public TrialPhase2RawData curLabPhase2RawData;
     
-    //[HideInInspector]
-    //public tech1DirectDragTrialData tech1TrialData;
+    [HideInInspector]
+    public tech1DirectDragTrialData tech1TrialData;
     [HideInInspector]
     public tech2HoldTapTrialData tech2TrialData;
     [HideInInspector]
@@ -273,7 +273,7 @@ public class GlobalMemory: MonoBehaviour
     {
         Debug.Log("Befor parse: " + cTechData);
         if (lab1Target1Status == TargetStatus.total_on_screen_2 && 
-            (curDragType == DragType.hold_tap || curDragType == DragType.throw_catch))
+            (curDragType == DragType.direct_drag || curDragType == DragType.hold_tap || curDragType == DragType.throw_catch))
         {
             curLabTrialData.techData = cTechData;
         }
