@@ -19,6 +19,9 @@ public class lab1TargetVisualizer : MonoBehaviour
     //private static Color shadowColorInTestLab = new Color32(0, 0, 255, 255);
     private static Color shadowColorInTestLab = new Color32(0, 0, 0, 255);
 
+    private static Vector3 normalScale = new Vector3(1.6f, 1.6f, 1f);
+    private static Vector3 largeScale = new Vector3(2.4f, 2.4f, 1f);
+
     // Start is called before the first frame update
     void Start()
     {
@@ -86,6 +89,11 @@ public class lab1TargetVisualizer : MonoBehaviour
         target2.transform.localPosition = pos;
     }
 
+    private void updateTargetLocalScale(Vector3 sca)
+    {
+        target2.transform.localScale = sca;
+    }
+
     private void updateTargetVisibility(bool isVis)
     {
         target2.GetComponent<MeshRenderer>().enabled = isVis;
@@ -122,6 +130,16 @@ public class lab1TargetVisualizer : MonoBehaviour
         updateTargetColor(wrongColor);
     }
 
+    public void zoominTarget()
+    {
+        updateTargetLocalScale(largeScale);
+    }
+
+    public void zoomoutTarget()
+    {
+        updateTargetLocalScale(normalScale);
+    }
+
     public void showTarget()
     {
         updateTargetVisibility(true);
@@ -131,6 +149,7 @@ public class lab1TargetVisualizer : MonoBehaviour
     {
         updateTargetVisibility(false);
         updateTargetColor(defaultColor);
+        updateTargetLocalScale(normalScale);
     }
 
     public void moveTarget(Vector3 pos)

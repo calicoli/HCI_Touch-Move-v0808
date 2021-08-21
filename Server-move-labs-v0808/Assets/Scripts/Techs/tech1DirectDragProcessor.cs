@@ -217,7 +217,9 @@ public class tech1DirectDragProcessor : MonoBehaviour
 #endif
                     if ((targetVisualizer.getTargetPosition().x + targetVisualizer.getTargetLocalScale().x / 2) > rightBound)
                     {
+                        targetVisualizer.zoominTarget();
                         curTarget1DirectDragStatus = DirectDragStatus.across_from_screen_1;
+                        
                     }
                 }
                 else if (curTarget1DirectDragStatus == DirectDragStatus.across_from_screen_1)
@@ -343,6 +345,7 @@ public class tech1DirectDragProcessor : MonoBehaviour
                     if (GlobalMemory.Instance.tech1Target2DirectDragStatus == DirectDragStatus.across_end_from_screen_1)
                     {
                         targetVisualizer.hideTarget();
+                        targetVisualizer.zoomoutTarget();
                     }
                     else if (GlobalMemory.Instance.tech1Target2DirectDragStatus == DirectDragStatus.drag_phase2_end_on_screen_2)
                     {
@@ -364,6 +367,7 @@ public class tech1DirectDragProcessor : MonoBehaviour
                     {
                         targetVisualizer.moveTarget(GlobalMemory.Instance.tech1Target1DirectDragPosition);
                         targetVisualizer.activeTarget();
+                        targetVisualizer.zoominTarget();
                         targetVisualizer.showTarget();
                     }
                 }
@@ -374,6 +378,7 @@ public class tech1DirectDragProcessor : MonoBehaviour
                     {
                         targetVisualizer.moveTarget(GlobalMemory.Instance.tech1Target1DirectDragPosition);
                         targetVisualizer.inactiveTarget();
+                        targetVisualizer.zoominTarget();
                         targetVisualizer.showTarget();
                         curTarget1DirectDragStatus = DirectDragStatus.drag_phase1_end_on_screen_2;
                     }
@@ -523,7 +528,7 @@ public class tech1DirectDragProcessor : MonoBehaviour
 
                     if ( (targetVisualizer.getTargetPosition().x + targetVisualizer.getTargetLocalScale().x / 2) < rightBound)
                     {
-                        
+                        targetVisualizer.zoomoutTarget();
                         curTarget1DirectDragStatus = DirectDragStatus.across_end_from_screen_2;
                     }
                 }
