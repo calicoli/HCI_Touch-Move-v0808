@@ -23,7 +23,7 @@
 - Client decive: tap "Connect" button
 - Both device turns to black background if connected successfully
 2. Input user and lab infomation
-- Server device: input User ID
+- Server device: input User ID (>=1), Block ID (1-30)
 - Server device: select drag type
 - Server device: select lab mode
 - Server device: tap "Confirm" button
