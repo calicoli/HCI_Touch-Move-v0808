@@ -418,12 +418,14 @@ public class tech1DirectDragProcessor : MonoBehaviour
                                 GlobalMemory.Instance.tech1TrialData.device2FirstTouchStamp 
                                     = GlobalMemory.Instance.tech1TrialData.device2FirstCorrectTouchStamp
                                     = CurrentTimeMillis();
+                                GlobalMemory.Instance.curLabTrialData.techData = GlobalMemory.Instance.tech1TrialData.getAllData();
                             } else
                             {
                                 GlobalMemory.Instance.tech1TrialData.device2FirstCorrectPosition
                                     = Input.mousePosition;
                                 GlobalMemory.Instance.tech1TrialData.device2FirstCorrectTouchStamp
                                     = CurrentTimeMillis();
+                                GlobalMemory.Instance.curLabTrialData.techData = GlobalMemory.Instance.tech1TrialData.getAllData();
                             }
                             targetVisualizer.activeTarget();
                             dragStartTouchPosInWorld = processScreenPosToGetWorldPosAtZeroZ(Input.mousePosition);
@@ -434,6 +436,7 @@ public class tech1DirectDragProcessor : MonoBehaviour
                         {
                             GlobalMemory.Instance.tech1TrialData.device2FirstTouchPosition = Input.mousePosition;
                             GlobalMemory.Instance.tech1TrialData.device2FirstTouchStamp = CurrentTimeMillis();
+                            GlobalMemory.Instance.curLabTrialData.techData = GlobalMemory.Instance.tech1TrialData.getAllData();
                         }
                     }
                     else
@@ -459,6 +462,7 @@ public class tech1DirectDragProcessor : MonoBehaviour
                                     GlobalMemory.Instance.tech1TrialData.device2FirstTouchStamp
                                         = GlobalMemory.Instance.tech1TrialData.device2FirstCorrectTouchStamp
                                         = CurrentTimeMillis();
+                                    GlobalMemory.Instance.curLabTrialData.techData = GlobalMemory.Instance.tech1TrialData.getAllData();
                                 }
                                 else
                                 {
@@ -466,6 +470,7 @@ public class tech1DirectDragProcessor : MonoBehaviour
                                         = touch.position;
                                     GlobalMemory.Instance.tech1TrialData.device2FirstCorrectTouchStamp
                                         = CurrentTimeMillis();
+                                    GlobalMemory.Instance.curLabTrialData.techData = GlobalMemory.Instance.tech1TrialData.getAllData();
                                 }
                                 targetVisualizer.activeTarget();
                                 dragStartTouchPosInWorld = processScreenPosToGetWorldPosAtZeroZ(touch.position);
@@ -476,6 +481,7 @@ public class tech1DirectDragProcessor : MonoBehaviour
                             {
                                 GlobalMemory.Instance.tech1TrialData.device2FirstTouchPosition = touch.position;
                                 GlobalMemory.Instance.tech1TrialData.device2FirstTouchStamp = CurrentTimeMillis();
+                                GlobalMemory.Instance.curLabTrialData.techData = GlobalMemory.Instance.tech1TrialData.getAllData();
                             }
                         }
 

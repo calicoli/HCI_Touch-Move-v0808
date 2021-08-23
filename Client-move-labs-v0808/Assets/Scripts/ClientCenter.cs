@@ -329,7 +329,7 @@ public class ClientCenter : MonoBehaviour
             + cTarget2id + paramSeperators
             + cTrialPhase + paramSeperators
             + cTouch2data + paramSeperators;
-        if (GlobalMemory.Instance.lab1Target2Status == TargetStatus.total_on_screen_2
+        if (GlobalMemory.Instance.lab1Target2Status == TargetStatus.total_on_screen_1
             && GlobalMemory.Instance.targetDragType == DragType.direct_drag)
         {
             res += GlobalMemory.Instance.tech1TrialData.getAllData() + paramSeperators;

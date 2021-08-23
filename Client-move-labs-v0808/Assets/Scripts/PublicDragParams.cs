@@ -148,7 +148,7 @@ public class PublicDragParams : MonoBehaviour
 
         public string getAllData()
         {
-            timespanBetweenFirstAndCorrectTouch = device2FirstTouchStamp - device2FirstTouchStamp;
+            timespanBetweenFirstAndCorrectTouch = device2FirstCorrectTouchStamp - device2FirstTouchStamp;
             string str = "";
             str = trialid.ToString() + techParamSeperator
                 + firstid.ToString() + techParamSeperator + secondid.ToString() + techParamSeperator

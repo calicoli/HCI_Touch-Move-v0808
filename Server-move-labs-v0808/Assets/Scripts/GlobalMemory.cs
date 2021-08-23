@@ -273,7 +273,11 @@ public class GlobalMemory: MonoBehaviour
     {
         Debug.Log("Befor parse: " + cTechData);
         if (lab1Target1Status == TargetStatus.total_on_screen_2 && 
-            (curDragType == DragType.direct_drag || curDragType == DragType.hold_tap || curDragType == DragType.throw_catch))
+            (curDragType == DragType.hold_tap || curDragType == DragType.throw_catch) )
+        {
+            curLabTrialData.techData = cTechData;
+        }
+        else if (lab1Target1Status == TargetStatus.total_on_screen_1 && curDragType == DragType.direct_drag)
         {
             curLabTrialData.techData = cTechData;
         }
