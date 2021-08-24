@@ -40,7 +40,7 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
     private const float FLING_MIN_DISTANCE = 6f;  // ios 120
 
     private float delayTimer = 0f;
-    private const float wait_time_before_vanish = 0.15f;
+    private const float wait_time_before_vanish = 0.2f;
 
     // Start is called before the first frame update
     void Start()
@@ -72,6 +72,7 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
             if (curThrowCatchResult != ThrowCatchResult.throw_catch_success
                 || GlobalMemory.Instance.tech3Target1ThrowCatchResult != ThrowCatchResult.throw_catch_success)
             {
+                //Debug.Log("dy3-3: " + delayTimer.ToString());
                 Debug.Log("Trial c failed: " + curThrowCatchResult.ToString());
                 Debug.Log("Trial s failed: " + GlobalMemory.Instance.tech3Target1ThrowCatchResult.ToString());
                 uiController.updatePosInfo(curThrowCatchResult.ToString());

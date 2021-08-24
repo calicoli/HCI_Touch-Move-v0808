@@ -75,12 +75,10 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
     {
         if (GlobalMemory.Instance && GlobalMemory.Instance.curDragType == DragType.throw_catch)
         {
-            
-
             if (curThrowCatchResult != ThrowCatchResult.throw_catch_success
                 || GlobalMemory.Instance.tech3Target2ThrowCatchResult != ThrowCatchResult.throw_catch_success)
             {
-                
+                //Debug.Log("dy3-3: " + delayTimer.ToString());
                 Debug.Log("Trial s failed: " + curThrowCatchResult.ToString());
                 Debug.Log("Trial c failed: " + GlobalMemory.Instance.tech3Target2ThrowCatchResult.ToString());
                 uiController.updatePosInfo(curThrowCatchResult.ToString());
@@ -361,6 +359,7 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
                         }
                         else
                         {
+                            Debug.Log("dy3-1: " + delayTimer.ToString());
                             targetVisualizer.inactiveTarget();
                             targetVisualizer.wrongTarget();
                             curThrowCatchResult = ThrowCatchResult.throw_to_wrong_dir;
