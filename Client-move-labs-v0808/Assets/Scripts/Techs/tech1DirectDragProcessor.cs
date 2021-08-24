@@ -27,7 +27,7 @@ public class tech1DirectDragProcessor : MonoBehaviour
     private const float minX = DRAG_MIN_X, maxX = DRAG_MAX_X, minY = DRAG_MIN_Y, maxY = DRAG_MAX_Y;
 
     private float delayTimer = 0f;
-    private const float wait_time_before_vanish = 0.15f;
+    private const float wait_time_before_vanish = 0.2f;
 
     private bool haveRecordedStamp = false;
     private bool phase2FirstTouchHappened = false;
@@ -89,7 +89,7 @@ public class tech1DirectDragProcessor : MonoBehaviour
                     {
                         targetVisualizer.moveTarget(GlobalMemory.Instance.tech1Target2DirectDragPosition);
                         targetVisualizer.activeTarget();
-                        targetVisualizer.zoominTarget();
+                        //targetVisualizer.zoominTarget();
                         targetVisualizer.showTarget();
                     }
                 }
@@ -100,7 +100,7 @@ public class tech1DirectDragProcessor : MonoBehaviour
                     {
                         targetVisualizer.moveTarget(GlobalMemory.Instance.tech1Target2DirectDragPosition);
                         targetVisualizer.inactiveTarget();
-                        targetVisualizer.zoominTarget();
+                        //targetVisualizer.zoominTarget();
                         targetVisualizer.showTarget();
                         curTarget2DirectDragStatus = DirectDragStatus.drag_phase1_end_on_screen_1;
                     }
@@ -249,7 +249,7 @@ public class tech1DirectDragProcessor : MonoBehaviour
 #endif
                     if ( (targetVisualizer.getTargetPosition().x - targetVisualizer.getTargetLocalScale().x / 2) > leftBound)
                     {
-                        targetVisualizer.zoomoutTarget();
+                        //targetVisualizer.zoomoutTarget();
                         curTarget2DirectDragStatus = DirectDragStatus.across_end_from_screen_1;
                     }
                 }
@@ -492,7 +492,7 @@ public class tech1DirectDragProcessor : MonoBehaviour
 #endif
                     if ((targetVisualizer.getTargetPosition().x - targetVisualizer.getTargetLocalScale().x / 2) < leftBound)
                     {
-                        targetVisualizer.zoominTarget();
+                        //targetVisualizer.zoominTarget();
                         curTarget2DirectDragStatus = DirectDragStatus.across_from_screen_2;
                     }
                 }
@@ -612,7 +612,7 @@ public class tech1DirectDragProcessor : MonoBehaviour
                     if (GlobalMemory.Instance.tech1Target1DirectDragStatus == DirectDragStatus.across_end_from_screen_2)
                     {
                         targetVisualizer.hideTarget();
-                        targetVisualizer.zoomoutTarget();
+                        //targetVisualizer.zoomoutTarget();
                     }
                     else if (GlobalMemory.Instance.tech1Target1DirectDragStatus == DirectDragStatus.drag_phase2_end_on_screen_1)
                     {

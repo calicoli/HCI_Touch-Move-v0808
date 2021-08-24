@@ -146,8 +146,8 @@ public class lab1TargetVisualizer : MonoBehaviour
     {
         updateTargetColor(wrongColor);
     }
-
-    public void zoominTarget()
+    
+    /* public void zoominTarget()
     {
         updateTargetLocalScale(largeScale);
     }
@@ -155,7 +155,7 @@ public class lab1TargetVisualizer : MonoBehaviour
     public void zoomoutTarget()
     {
         updateTargetLocalScale(normalScale);
-    }
+    } */
 
     public void showTarget()
     {
@@ -166,7 +166,7 @@ public class lab1TargetVisualizer : MonoBehaviour
     {
         updateTargetVisibility(false);
         updateTargetColor(defaultColor);
-        updateTargetLocalScale(normalScale);
+        //updateTargetLocalScale(normalScale);
     }
 
     public void moveTarget(Vector3 pos)

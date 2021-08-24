@@ -29,7 +29,7 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
 
     private float leftBound;
 
-    private const float unitMoveDuration = 0.15f; // The time the target moves one screen width as the unit time
+    private const float unitMoveDuration = 0.2f; // The time the target moves one screen width as the unit time
 
     private const float minX = DRAG_MIN_X, maxX = DRAG_MAX_X, minY = DRAG_MIN_Y, maxY = DRAG_MAX_Y;
     private const float minFlickDistance = 60f;

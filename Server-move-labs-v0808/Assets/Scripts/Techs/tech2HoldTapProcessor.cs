@@ -18,7 +18,7 @@ public class tech2HoldTapProcessor : MonoBehaviour
     private Vector2 holdStartPos, holdRealtimePos;
 
     private float delayTimer = 0f;
-    private const float wait_time_before_vanish = 0.15f;
+    private const float wait_time_before_vanish = 0.2f;
 
     private bool haveRecordedStamp = false;
     private bool retryStatusActive = false;

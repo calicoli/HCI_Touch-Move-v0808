@@ -42,7 +42,7 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
     private const float FLING_MIN_DISTANCE = 6f;  // ios 120
 
     private float delayTimer = 0f;
-    private const float wait_time_before_vanish = 0.15f;
+    private const float wait_time_before_vanish = 0.2f;
 
     //private bool haveRecordedStamp = false;
     private bool retryStatusActive = false;
