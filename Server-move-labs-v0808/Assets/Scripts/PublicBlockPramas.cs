@@ -40,8 +40,20 @@ public class PublicBlockParams : MonoBehaviour
                 default:
                     break;
             }
-
         }
+
+        public void setAllSequenceWithUseridAndTechid(int userid, int techid)
+        {
+            switch (labName)
+            {
+                case LabName.Lab1_move_28:
+                    setLab1Sequance(userid, techid);
+                    break;
+                default:
+                    break;
+            }
+        }
+
         public void printSequence(ArrayList list)
         {
             string res = "";
@@ -62,12 +74,30 @@ public class PublicBlockParams : MonoBehaviour
                 string sa = getSequenceString(seqAngle);
                 string ss = getSequenceString(seqShape);
                 res = string.Format(
-                    "Posture:{0}{1}{0}Orientation: {0}{2}{0}Shape:{0}{3}{0}Angle:{0}{4}{0}",
-                    Environment.NewLine, sp, so, ss, sa
+                    "Posture;{0}{1}{0}Orientation;{0}{2}{0}Angle;{0}{3}{0}",
+                    Environment.NewLine, sp, so, sa
                     );
             }
             return res;
         }
+
+        public string getAllDataWithLabNameAndUserid(int userid)
+        {
+            string res = "";
+            if (labName == LabName.Lab1_move_28)
+            {
+                string sp = getSequenceString(seqPosture);
+                string so = getSequenceString(seqOrientation);
+                string sa = getSequenceString(seqAngle);
+                string ss = getSequenceString(seqShape);
+                res = string.Format(
+                    "{0}Pos;{2}{1}{0}Ori;{3}{1}{0}Ang;{4}{1}",
+                    "uid;" + userid.ToString() + ";", Environment.NewLine, sp, so, sa
+                    );
+            }
+            return res;
+        }
+
         #endregion
 
         private void setLab1Sequance(int userid)
@@ -104,6 +134,56 @@ public class PublicBlockParams : MonoBehaviour
             }
         }
 
+        private void setLab1Sequance(int userid, int techid)
+        {
+            Debug.Log(userid.ToString() + " " + techid.ToString());
+            ArrayList tmpPosture = getPostureSequenceWithUserid(userid, techid, Enum.GetNames(typeof(Lab1_move_28.Posture)).Length),
+                      tmpOrientation = getRepeatOrientationSequenceWithUserid(userid, techid, Enum.GetNames(typeof(Lab1_move_28.Orientation)).Length),
+                      tmpAngle = getFirstAngleSequenceWithUserid(userid, techid, Lab1_move_28.AngleOfScreens.Length);
+            printSequence(tmpPosture);
+            printSequence(tmpOrientation);
+            printSequence(tmpAngle);
+            ArrayList doubleOrientation = getPalindromeArrayList(tmpOrientation),
+                      doubleAngle = getPalindromeArrayList(tmpAngle);
+            printSequence(doubleOrientation);
+            printSequence(doubleAngle);
+
+            for (int blockid = 0; blockid < lenBlock; blockid++)
+            {
+                int pid, aid, sid, oid;
+                // posture id
+                pid = (int)tmpPosture[blockid / (lenBlock / tmpPosture.Count)];
+                seqPosture.Add(pid);
+                // orientation id
+                oid = (int)doubleOrientation[blockid % doubleOrientation.Count];
+                seqOrientation.Add(oid);
+                // angle id
+                aid = (int)doubleAngle[(blockid % doubleAngle.Count)];
+                seqAngle.Add(aid);
+                // shape id
+                if (Lab1_move_28.AngleOfScreens[aid] < 180)
+                {
+                    sid = (int)Lab1_move_28.Shape.concave;
+                }
+                else if (Lab1_move_28.AngleOfScreens[aid] == 180)
+                {
+                    sid = (int)Lab1_move_28.Shape.flat;
+                }
+                else
+                {
+                    sid = (int)Lab1_move_28.Shape.convex;
+                }
+                seqShape.Add(sid);
+            }
+        }
+
+        private ArrayList getPostureSequenceWithUserid(int userid, int techid, int lenPosture)
+        {
+            ArrayList postures = new ArrayList();
+            postures.Add(0);
+            return postures;
+        }
+
         private ArrayList getPostureSequenceWithUserid(int userid, int lenPosture)
         {
             ArrayList postures = new ArrayList();
@@ -133,6 +213,45 @@ public class PublicBlockParams : MonoBehaviour
             return postures;
         }
 
+        private ArrayList getRepeatOrientationSequenceWithUserid(int userid, int techid, int lenOrientation)
+        {
+            ArrayList oris = new ArrayList();
+            if ((userid % 12 == 1 && (techid == 0 || techid == 2) ) ||
+                (userid % 12 == 2 && (techid == 1) ) ||
+                (userid % 12 == 3 && (techid == 0 || techid == 1)) ||
+                (userid % 12 == 4 && (techid == 2)) ||
+                (userid % 12 == 5 && (techid == 1 || techid == 2)) ||
+                (userid % 12 == 6 && (techid == 0)) ||
+                (userid % 12 == 7 && (techid == 1)) ||
+                (userid % 12 == 8 && (techid == 0 || techid == 2)) ||
+                (userid % 12 == 9 && (techid == 2)) ||
+                (userid % 12 == 10 && (techid == 0 || techid == 1)) ||
+                (userid % 12 == 11 && (techid == 0)) ||
+                (userid % 12 == 0 && (techid == 1 || techid == 2))
+                )
+            {
+                for (int i = 0; i < lenOrientation; i++)
+                {
+                    for (int k = 0; k < Lab1_move_28.AngleOfScreens.Length; k++)
+                    {
+                        oris.Add(i);
+                    }
+                }
+
+            }
+            else
+            {
+                for (int i = lenOrientation - 1; i > -1; i--)
+                {
+                    for (int k = 0; k < Lab1_move_28.AngleOfScreens.Length; k++)
+                    {
+                        oris.Add(i);
+                    }
+                }
+            }
+            return oris;
+        }
+
         private ArrayList getRepeatOrientationSequenceWithUserid(int userid, int lenOrientation)
         {
             ArrayList oris = new ArrayList();
@@ -145,7 +264,6 @@ public class PublicBlockParams : MonoBehaviour
                         oris.Add(i);
                     }
                 }
-
             }
             else if (userid % 4 == 3 || userid % 4 == 0)
             {
@@ -158,6 +276,26 @@ public class PublicBlockParams : MonoBehaviour
                 }
             }
             return oris;
+        }
+
+        private ArrayList getFirstAngleSequenceWithUserid(int userid, int techid, int lenAngle)
+        {
+            ArrayList angles = new ArrayList();
+            if (userid % 24 >= 1 && userid % 24 <= 12)
+            {
+                for (int i = 0; i < lenAngle; i++)
+                {
+                    angles.Add(i);
+                }
+            }
+            else
+            {
+                for (int i = lenAngle - 1; i > -1; i--)
+                {
+                    angles.Add(i);
+                }
+            }
+            return angles;
         }
 
         private ArrayList getFirstAngleSequenceWithUserid(int userid, int lenAngle)

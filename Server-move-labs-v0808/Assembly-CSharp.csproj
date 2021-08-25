@@ -62,18 +62,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Demo\demoDataMemory.cs" />
+    <Compile Include="Assets\Demo\demoDirectDragProcessor.cs" />
+    <Compile Include="Assets\Demo\demoFlickerVisualizer.cs" />
+    <Compile Include="Assets\Demo\demoHoldTapProcessor.cs" />
+    <Compile Include="Assets\Demo\demoRenderProcessor.cs" />
+    <Compile Include="Assets\Demo\demoTargetVisualizer.cs" />
+    <Compile Include="Assets\Demo\demoThrowCatchProcessor.cs" />
+    <Compile Include="Assets\Demo\demoTouchProcessor.cs" />
+    <Compile Include="Assets\Demo\demoTouchVisualizer.cs" />
+    <Compile Include="Assets\Demo\demoUIController.cs" />
     <Compile Include="Assets\Scripts\AngleProcessor.cs" />
     <Compile Include="Assets\Scripts\CircleRenderer.cs" />
-    <Compile Include="Assets\Scripts\Demo\demoDataMemory.cs" />
-    <Compile Include="Assets\Scripts\Demo\demoDirectDragProcessor.cs" />
-    <Compile Include="Assets\Scripts\Demo\demoFlickerVisualizer.cs" />
-    <Compile Include="Assets\Scripts\Demo\demoHoldTapProcessor.cs" />
-    <Compile Include="Assets\Scripts\Demo\demoRenderProcessor.cs" />
-    <Compile Include="Assets\Scripts\Demo\demoTargetVisualizer.cs" />
-    <Compile Include="Assets\Scripts\Demo\demoThrowCatchProcessor.cs" />
-    <Compile Include="Assets\Scripts\Demo\demoTouchProcessor.cs" />
-    <Compile Include="Assets\Scripts\Demo\demoTouchVisualizer.cs" />
-    <Compile Include="Assets\Scripts\Demo\demoUIController.cs" />
     <Compile Include="Assets\Scripts\Entry\enPhaseController.cs" />
     <Compile Include="Assets\Scripts\Entry\enUIController.cs" />
     <Compile Include="Assets\Scripts\FileProcessor.cs" />

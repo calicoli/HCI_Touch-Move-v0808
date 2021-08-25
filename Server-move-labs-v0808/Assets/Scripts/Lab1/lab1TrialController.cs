@@ -37,6 +37,7 @@ public class lab1TrialController : MonoBehaviour
     private int curTrialNumber;
     private int retryTrialCount;
     private Queue<Trial> retryTrialQueue;
+    private Dictionary<Trial, int> retryTrialRecord;
 
     // Start is called before the first frame update
     void Start()
@@ -65,6 +66,7 @@ public class lab1TrialController : MonoBehaviour
 
         retryTrialCount = 0;
         retryTrialQueue = new Queue<Trial>();
+        retryTrialRecord = new Dictionary<Trial, int>();
     }
 
     // Update is called once per frame
@@ -119,6 +121,7 @@ public class lab1TrialController : MonoBehaviour
             }
             else if (curTrialPhase == TrialPhase.a_trial_set_params)
             {
+                GlobalMemory.Instance.curTrialStartTime = DateTime.Now;
                 curTrialNumber++;
                 GlobalMemory.Instance.curLabTrialNumber = curTrialNumber;
                 if (curTrialNumber <= GlobalMemory.Instance.curLabInfos.totalTrialCount)
@@ -259,15 +262,26 @@ public class lab1TrialController : MonoBehaviour
             else if (curTrialPhase == TrialPhase.a_failed_trial)
             {
                 disableAllTechniques();
-                retryTrialCount++;
-                retryTrialQueue.Enqueue(curTrial);
-                Debug.Log("RetryTrialCount/Queue: " + retryTrialCount.ToString() + "/" + retryTrialQueue.Count.ToString());
+                if (!retryTrialRecord.ContainsKey(curTrial) || retryTrialRecord[curTrial] < 3)
+                {
+                    if (!retryTrialRecord.ContainsKey(curTrial))
+                    {
+                        retryTrialRecord.Add(curTrial, 1);
+                    } else
+                    {
+                        retryTrialRecord[curTrial]++;
+                    }
+                    retryTrialCount++;
+                    retryTrialQueue.Enqueue(curTrial);
+                    Debug.Log("RetryTrialCount/Queue: " + retryTrialCount.ToString() + "/" + retryTrialQueue.Count.ToString());
+                }
                 curTrialPhase = TrialPhase.a_trial_output_data;
             }
             else if (curTrialPhase == TrialPhase.a_trial_output_data)
             {
                 if (GlobalMemory.Instance.clientLabTrialPhase == TrialPhase.a_trial_end)
                 {
+                    GlobalMemory.Instance.curTrialEndTime = DateTime.Now;
                     bool writeFinished = false;
                     GlobalMemory.Instance.writeCurrentTrialDataToFile(out writeFinished);
                     if (writeFinished)
@@ -282,6 +296,7 @@ public class lab1TrialController : MonoBehaviour
                 {
                     retryTrialCount = 0;
                     retryTrialQueue.Clear();
+                    retryTrialRecord.Clear();
                     curTrialPhase = TrialPhase.repeatition_start;
                     Debug.Log("Repetition end.");
                 }

@@ -86,7 +86,7 @@ public class PublicLabParams : MonoBehaviour
     public class Lab1_move_28
     {
         public const int
-            totalBlockCount = 30, // for one technique
+            totalBlockCount = 10, // for one technique
             fullTrialCount = 14 * 2,
             testTrialCount = 14 * 2,
             fullRepetitionCount = 3,
@@ -103,9 +103,10 @@ public class PublicLabParams : MonoBehaviour
 
         public enum Posture
         {
-            NDH_hi_DH_hi = 0,
-            NDH_hi_DH_0i = 1,
-            NDH_h0_DH_0i = 2,
+            //NDH_hi_DH_hi = 0,
+            //NDH_hi_DH_0i = 1,
+            //NDH_h0_DH_0i = 2,
+            hold_and_interact = 0,
         }
         public enum Orientation
         {

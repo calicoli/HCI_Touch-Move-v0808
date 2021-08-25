@@ -12,10 +12,10 @@ public class lab1TargetVisualizer : MonoBehaviour
     private Vector3[] posMarkers;
 
     private static Color defaultColor = new Color32(255, 255, 255, 255);
-    private static Color activeColor = new Color32(255, 255, 0, 255);
-    private static Color correctColor = new Color32(0, 255, 0, 255);
-    private static Color wrongColor = new Color32(255, 0, 0, 255);
-    private static Color outlineColor = new Color32(0, 0, 255, 255);
+    private static Color activeColor = new Color32(240, 228, 66, 255);
+    private static Color correctColor = new Color32(0, 158, 115, 255);
+    private static Color wrongColor = new Color32(213, 94, 0, 255);
+    //private static Color outlineColor = new Color32(86, 180, 233, 255);
     private static Color shadowColorInFullLab = new Color32(0, 0, 0, 255);
     //private static Color shadowColorInTestLab = new Color32(0, 0, 255, 255);
     private static Color shadowColorInTestLab = new Color32(0, 0, 0, 255);

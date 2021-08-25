@@ -31,6 +31,7 @@ public class inUIController : MonoBehaviour
     public Text txtServerip;
 
     public Button btnConfirmNameAndLab;
+    //public Button btnMovetoNextBlock;
     public Button btnConfirmBlockCondition;
     public Button btnEnterLab;
 
@@ -98,9 +99,6 @@ public class inUIController : MonoBehaviour
                 btnConfirmBlockCondition.gameObject.SetActive(false);
             }
         }
-
-
-
 
     }
 
@@ -199,6 +197,11 @@ public class inUIController : MonoBehaviour
         setUserLabInfoVisibility(GlobalMemory.Instance.isUserLabInfoSet);
         setBlockInfoVisibility(false, false, false);
         setEnterLabBtnVisibility(false);
+    }
+
+    public void movetoNextBlock()
+    {
+
     }
     #endregion
 }

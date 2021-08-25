@@ -525,7 +525,7 @@ ScriptsOnlyBuild:
     className: demoTouchVisualizer
   - hash:
       serializedVersion: 2
-      Hash: bf23a7c36644de4a5397b6d7c2e31174
+      Hash: 3d9379f4749d2a90d8dfc40ee2c0674b
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: lab1UIController

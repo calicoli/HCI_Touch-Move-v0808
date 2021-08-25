@@ -39,7 +39,7 @@ public class CircleRenderer : MonoBehaviour
         LineRenderer lineRenderer = gameObject.GetComponent<LineRenderer>();
         //lineRenderer.alignment = LineAlignment.TransformZ;
         lineRenderer.material = lineMaterial;
-        lineRenderer.startColor = lineRenderer.endColor = lineColor;
+        //lineRenderer.startColor = lineRenderer.endColor = lineColor;
         lineRenderer.startWidth = lineRenderer.endWidth = lineWidth;
         lineRenderer.positionCount = numSegments + 1;
         lineRenderer.useWorldSpace = false;

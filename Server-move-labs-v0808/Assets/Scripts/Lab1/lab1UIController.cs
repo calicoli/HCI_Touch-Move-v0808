@@ -15,6 +15,7 @@ public class lab1UIController : MonoBehaviour
 
     public Button btnBack;
     public Text txtFinishLab;
+    public Text txtUniqueInfo;
 
     public Text txtDragMode;
     public Text txtSendInfo;
@@ -45,6 +46,7 @@ public class lab1UIController : MonoBehaviour
         }
         btnBack.gameObject.SetActive(false);
         txtFinishLab.gameObject.SetActive(false);
+        txtUniqueInfo.gameObject.SetActive(true);
     }
 
     // Update is called once per frame

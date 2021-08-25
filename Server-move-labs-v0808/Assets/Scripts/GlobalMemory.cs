@@ -68,6 +68,8 @@ public class GlobalMemory: MonoBehaviour
     public TrialPhase1RawData curLabPhase1RawData;
     [HideInInspector]
     public TrialPhase2RawData curLabPhase2RawData;
+    [HideInInspector]
+    public DateTime curTrialStartTime, curTrialEndTime;
     
     [HideInInspector]
     public tech1DirectDragTrialData tech1TrialData;
@@ -144,7 +146,7 @@ public class GlobalMemory: MonoBehaviour
 
             // set variable: seqBlock
             seqBlocks.setBlockLength(LabName.Lab1_move_28);
-            seqBlocks.setAllSequence(userid);
+            seqBlocks.setAllSequenceWithUseridAndTechid(userid, (int)curDragType);
 
             // set variable: conBlock
             for (int blockid = BLOCK_START_INDEX; blockid <= curLabInfos.totalBlockCount; blockid++)
@@ -363,7 +365,7 @@ public class GlobalMemory: MonoBehaviour
     public void writeAllBlockConditionsToFile()
     {
         string allUserFileName = curLabInfos.labName.ToString() + "-"
-            + curDragType.ToString() + "-"
+            //+ curDragType.ToString() + "-"
             + curLabInfos.labMode.ToString() 
             + "-AllUsers.txt";
         string userFilename = curLabInfos.labName.ToString() + "-"
@@ -371,10 +373,15 @@ public class GlobalMemory: MonoBehaviour
             + curLabInfos.labMode.ToString() + "-"
             + "User" + userid.ToString() + ".txt";
         DateTime dt = DateTime.Now;
-        string strContent = dt.ToString() + Environment.NewLine
-            + "All block conditions of user" + userid.ToString() + Environment.NewLine;
+        string strContent = dt.ToString() + Environment.NewLine;
+        strContent = strContent + "uid;" + userid.ToString() + ";Tec;";
+        for (int i = 0; i< 10; i++)
+        {
+            strContent = strContent + ((int)curDragType).ToString() + ";";
+        }
+        strContent += Environment.NewLine;
         //strContent += seqBlocks.getAllDataWithID(4);
-        strContent += seqBlocks.getAllDataWithLabName();
+        strContent += seqBlocks.getAllDataWithLabNameAndUserid(userid);
         fileProcessor.writeNewDataToFile(allUserFileName, strContent);
         fileProcessor.writeNewDataToFile(userFilename, strContent);
     }
@@ -442,6 +449,7 @@ public class GlobalMemory: MonoBehaviour
         strContent += getCurrentShapeAndAngle();
         strContent += CurrentTimeMillis().ToString() + ";";
         strContent += Time.time.ToString() + ";";
+        strContent += curTrialStartTime.ToString() + ";" + curTrialEndTime.ToString() + ";";
 
         fileProcessor.writeNewDataToFile(userFilename, strContent);
 

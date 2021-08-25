@@ -672,7 +672,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5d3b73efa678c649a4b688770056d7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugOnPC: 1
+  debugOnPC: 0
   uiController: {fileID: 1485549974}
 --- !u!1 &915337434
 GameObject:
