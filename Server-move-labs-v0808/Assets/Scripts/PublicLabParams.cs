@@ -89,7 +89,7 @@ public class PublicLabParams : MonoBehaviour
             totalBlockCount = 10, // for one technique
             fullTrialCount = 14 * 2,
             testTrialCount = 14 * 2,
-            fullRepetitionCount = 3,
+            fullRepetitionCount = 2,
             testRepetitionCount = 1,
             s1PositionCount = 12,
             s2PositionCount = 12;
@@ -106,7 +106,7 @@ public class PublicLabParams : MonoBehaviour
             //NDH_hi_DH_hi = 0,
             //NDH_hi_DH_0i = 1,
             //NDH_h0_DH_0i = 2,
-            hold_and_interact = 0,
+            hold_interact = 0,
         }
         public enum Orientation
         {

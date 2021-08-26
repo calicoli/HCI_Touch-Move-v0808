@@ -9,7 +9,6 @@ public class tech1DirectDragProcessor : MonoBehaviour
 {
     public lab1UIController uiController;
     public lab1TrialController trialController;
-    public lab1TouchVisualizer touchVisualizer;
     public lab1TargetVisualizer targetVisualizer;
 
     private int firstid, secondid;
@@ -213,7 +212,7 @@ public class tech1DirectDragProcessor : MonoBehaviour
                         {
                             GlobalMemory.Instance.curLabPhase2RawData.touch2EndStamp = CurrentTimeMillis();
                             GlobalMemory.Instance.curLabPhase2RawData.touch2EndPos = Input.mousePosition;
-                            GlobalMemory.Instance.curLabPhase2RawData.movePhase2StartPos = targetVisualizer.getTargetScreenPosition();
+                            GlobalMemory.Instance.curLabPhase2RawData.movePhase2EndPos = targetVisualizer.getTargetScreenPosition();
                             targetVisualizer.inactiveTarget();
                             targetVisualizer.wrongTarget();
                             curDirectDragResult = DirectDragResult.drag_2_failed_to_leave_junction;
@@ -238,7 +237,7 @@ public class tech1DirectDragProcessor : MonoBehaviour
                             {
                                 GlobalMemory.Instance.curLabPhase2RawData.touch2EndStamp = CurrentTimeMillis();
                                 GlobalMemory.Instance.curLabPhase2RawData.touch2EndPos = touch.position;
-                                GlobalMemory.Instance.curLabPhase2RawData.movePhase2StartPos = targetVisualizer.getTargetScreenPosition();
+                                GlobalMemory.Instance.curLabPhase2RawData.movePhase2EndPos = targetVisualizer.getTargetScreenPosition();
                                 targetVisualizer.inactiveTarget();
                                 targetVisualizer.wrongTarget();
                                 curDirectDragResult = DirectDragResult.drag_2_failed_to_leave_junction;

@@ -31,7 +31,8 @@ public class lab1TargetVisualizer : MonoBehaviour
         setPosMarkers();
         hideTarget();
         hideShadow();
-        if( GlobalMemory.Instance && GlobalMemory.Instance.curLabInfos.labMode == PublicInfo.LabMode.Full)
+        hideMarkers();
+        if ( GlobalMemory.Instance && GlobalMemory.Instance.curLabInfos.labMode == PublicInfo.LabMode.Full)
         {
             updateShadowColor(shadowColorInFullLab);
             hideMarkers();
@@ -101,7 +102,7 @@ public class lab1TargetVisualizer : MonoBehaviour
 
     private void updateTargetPosition(Vector3 pos)
     {
-        target1.transform.localPosition = pos;
+        target1.transform.position = pos;
     }
 
     private void updateTargetLocalScale(Vector3 sca)

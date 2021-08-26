@@ -10,7 +10,6 @@ using static PublicDragParams;
 
 public class ClientCenter : MonoBehaviour
 {
-
     private Color disconnectColor = new Color(0.8156f, 0.3529f, 0.4313f);
     private Color connectColor = new Color(0f, 0f, 0f);
 

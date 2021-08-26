@@ -194,7 +194,6 @@ public class lab1TrialController : MonoBehaviour
                 {
                     if (curTrial.firstid < curTrial.secondid)
                     {
-                        
                         GlobalMemory.Instance.lab1Target1Status = TargetStatus.total_on_screen_1;
                         switch (GlobalMemory.Instance.curDragType)
                         {
@@ -215,7 +214,6 @@ public class lab1TrialController : MonoBehaviour
                     }
                     else
                     {
-                        
                         GlobalMemory.Instance.lab1Target1Status = TargetStatus.total_on_screen_2;
                         switch (GlobalMemory.Instance.curDragType)
                         {

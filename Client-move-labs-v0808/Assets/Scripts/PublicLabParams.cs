@@ -34,8 +34,8 @@ public class PublicLabParams : MonoBehaviour
             switch (name)
             {
                 case LabName.Lab1_move_28:
-                    setParams(Lab1_move_28.totalBlockCount, 
-                        Lab1_move_28.fullTrialCount, Lab1_move_28.fullRepetitionCount, 
+                    setParams(Lab1_move_28.totalBlockCount,
+                        Lab1_move_28.fullTrialCount, Lab1_move_28.fullRepetitionCount,
                         Lab1_move_28.s1PositionCount, Lab1_move_28.s2PositionCount,
                         Enum.GetNames(typeof(Lab1_move_28.Posture)).Length,
                         Enum.GetNames(typeof(Lab1_move_28.Orientation)).Length,
@@ -66,6 +66,7 @@ public class PublicLabParams : MonoBehaviour
             switch (labName)
             {
                 case LabName.Lab1_move_28:
+                    labMode = LabMode.Test;
                     totalTrialCount = Lab1_move_28.testTrialCount;
                     repetitionCount = Lab1_move_28.testRepetitionCount;
                     break;
@@ -85,7 +86,7 @@ public class PublicLabParams : MonoBehaviour
     public class Lab1_move_28
     {
         public const int
-            totalBlockCount = 30, // for one technique
+            totalBlockCount = 10, // for one technique
             fullTrialCount = 14 * 2,
             testTrialCount = 14 * 2,
             fullRepetitionCount = 3,
@@ -102,9 +103,10 @@ public class PublicLabParams : MonoBehaviour
 
         public enum Posture
         {
-            NDH_hi_DH_hi = 0,
-            NDH_hi_DH_0i = 1,
-            NDH_h0_DH_0i = 2,
+            //NDH_hi_DH_hi = 0,
+            //NDH_hi_DH_0i = 1,
+            //NDH_h0_DH_0i = 2,
+            hold_interact = 0,
         }
         public enum Orientation
         {

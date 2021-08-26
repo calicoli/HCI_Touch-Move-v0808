@@ -86,7 +86,7 @@ public class lab1TargetVisualizer : MonoBehaviour
 
     private void updateTargetPosition(Vector3 pos)
     {
-        target2.transform.localPosition = pos;
+        target2.transform.position = pos;
     }
 
     private void updateTargetLocalScale(Vector3 sca)

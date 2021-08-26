@@ -618,7 +618,7 @@ ScriptsOnlyBuild:
     className: TextMeshProUGUI
   - hash:
       serializedVersion: 2
-      Hash: d0295ae80ef6e87010757ca64a39e14c
+      Hash: 9438f8c7dba2df95fe3acaef5a8584eb
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: tech1DirectDragProcessor

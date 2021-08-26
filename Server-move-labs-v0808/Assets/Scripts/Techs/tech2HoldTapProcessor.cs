@@ -372,7 +372,6 @@ public class tech2HoldTapProcessor : MonoBehaviour
 
     private bool process1Touch4Target1(Vector2 pos, int targetid)
     {
-        
         int hitid = -1;
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(pos);
