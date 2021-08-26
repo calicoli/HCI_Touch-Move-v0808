@@ -86,7 +86,7 @@ public class lab1PhaseController : MonoBehaviour
             {
                 sender.prepareNewMessage4Client(MessageType.Command, ServerCommand.server_say_end_lab);
                 uiController.ShowTheEndText();
-                GlobalMemory.Instance.writeAllBlocksFinishedFlagToFile();
+                //GlobalMemory.Instance.writeAllBlocksFinishedFlagToFile();
             }
         }
     }

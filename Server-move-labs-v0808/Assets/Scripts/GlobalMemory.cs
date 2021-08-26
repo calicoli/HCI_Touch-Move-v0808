@@ -48,6 +48,8 @@ public class GlobalMemory: MonoBehaviour
     public int curBlockid;
     [HideInInspector]
     public BlockCondition curBlockCondition;
+    [HideInInspector]
+    public int uniqueTrialid;
 
     // trial params
     [HideInInspector]
@@ -364,13 +366,17 @@ public class GlobalMemory: MonoBehaviour
     #region Public Write-file Method
     public void writeAllBlockConditionsToFile()
     {
-        string allUserFileName = curLabInfos.labName.ToString() + "-"
+        string allUserFileName = 
+            curLabInfos.labMode.ToString() + "-"
+            + "BlockSequence" + "-"
+            + curLabInfos.labName.ToString() + "-"
             //+ curDragType.ToString() + "-"
-            + curLabInfos.labMode.ToString() 
-            + "-AllUsers.txt";
-        string userFilename = curLabInfos.labName.ToString() + "-"
-            + curDragType.ToString() + "-"
-            + curLabInfos.labMode.ToString() + "-"
+            + "AllUsers.txt";
+        string userFilename =
+            curLabInfos.labMode.ToString() + "-"
+            + "BlockSequence" + "-"
+            + curLabInfos.labName.ToString() + "-"
+            //+ curDragType.ToString() + "-"
             + "User" + userid.ToString() + ".txt";
         DateTime dt = DateTime.Now;
         string strContent = dt.ToString() + Environment.NewLine;
@@ -388,11 +394,12 @@ public class GlobalMemory: MonoBehaviour
 
     public void writeCurrentBlockConditionToFile()
     {
-        string userFilename = curLabInfos.labName.ToString() + "-"
-            + curDragType.ToString() + "-"
-            + curLabInfos.labMode.ToString() + "-"
+        string userFilename =
+            curLabInfos.labMode.ToString() + "-"
+            + curLabInfos.labName.ToString() + "-"
+            //+ curDragType.ToString() + "-"
             + "User" + userid.ToString() + ".txt";
-        string strContent = Environment.NewLine + DateTime.Now.ToString() + Environment.NewLine;
+        string strContent = DateTime.Now.ToString() + Environment.NewLine;
         switch (curLabInfos.labName)
         {
             case LabName.Lab1_move_28:
@@ -407,33 +414,39 @@ public class GlobalMemory: MonoBehaviour
 
     public void writeCurrentRepeatIndexTrialSequenceToFile()
     {
-        string userFilename = curLabInfos.labName.ToString() + "-"
-            + curDragType.ToString() + "-"
-            + curLabInfos.labMode.ToString() + "-"
+        string userFilename = 
+            curLabInfos.labMode.ToString() + "-"
+            + "TrialSequence" + "-"
+            //+ curDragType.ToString() + "-"
+            + curLabInfos.labName.ToString() + "-"
             + "User" + userid.ToString() + ".txt";
         string strContent = "";
         switch (curLabInfos.labName)
         {
             case LabName.Lab1_move_28:
-                strContent = Environment.NewLine + curLabTrialSequence.getAllDataForFile();
+                strContent = curLabTrialSequence.getAllDataForFile();
                 break;
             default:
                 break;
         }
         fileProcessor.writeNewDataToFile(userFilename, strContent);
 
-        string seqFilename = "SeqTrial" + "-"
+        string seqFilename =
+            curLabInfos.labMode.ToString() + "-"
+            + "TrialSequence" + "-" 
+            + curLabInfos.labName.ToString() + "-"
             + curDragType.ToString() + "-"
-            + curLabInfos.labMode.ToString() + "-"
-            + "User" + userid.ToString() + ".txt";
+            + "AllUsers.txt";
         fileProcessor.writeNewDataToFile(seqFilename, strContent);
     }
 
     public void writeCurrentTrialDataToFile(out bool finishedWrite)
     {
-        string userFilename = curLabInfos.labName.ToString() + "-"
-            + curDragType.ToString() + "-"
-            + curLabInfos.labMode.ToString() + "-"
+        string userFilename = 
+            curLabInfos.labMode.ToString() + "-"
+            + "TrialData" + "-"
+            + curLabInfos.labName.ToString() + "-"
+            //+ curDragType.ToString() + "-"
             + "User" + userid.ToString() + ".txt";
         string strContent = "";
         switch (curLabInfos.labName)
@@ -453,15 +466,17 @@ public class GlobalMemory: MonoBehaviour
 
         fileProcessor.writeNewDataToFile(userFilename, strContent);
 
-        string trialdataFilename = "DataTrial" + "-"
+        string trialdataFilename =
+            curLabInfos.labMode.ToString() + "-"
+            + "TrialData" + "-"
             + curLabInfos.labName.ToString() + "-"
-            //+ curDragType.ToString() + "-"
-            + curLabInfos.labMode.ToString() + "-"
-            + "User" + userid.ToString() + ".txt";
+            + curDragType.ToString() + "-"
+            + "AllUsers.txt";
         fileProcessor.writeNewDataToFile(trialdataFilename, strContent);
         finishedWrite = true;
     }
 
+    /*
     public void writeAllBlocksFinishedFlagToFile()
     {
         string userFilename = curLabInfos.labName.ToString() + "-"
@@ -471,7 +486,7 @@ public class GlobalMemory: MonoBehaviour
         string strContent = Environment.NewLine + DateTime.Now.ToString()
             + "~~AllBlocksFinished!~~" + Environment.NewLine;
         fileProcessor.writeNewDataToFile(userFilename, strContent);
-    }
+    }*/
 
     public string getCurrentShapeAndAngle()
     {

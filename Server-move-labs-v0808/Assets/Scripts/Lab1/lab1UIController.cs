@@ -91,40 +91,47 @@ public class lab1UIController : MonoBehaviour
     }
 
     #region Public UI method
-    public void updateDragMode(string str)
+    public void updateUniqueInfo (string str)
+    {
+        txtUniqueInfo.text = str;
+    }
+
+    public void updateDragMode (string str)
     {
         txtDragMode.text = str;
     }
 
-    public void updateSendInfo(string str)
+    public void updateSendInfo (string str)
     {
         txtSendInfo.text = str;
     }
-    public void updateRcvInfo(string str)
+
+    public void updateRcvInfo (string str)
     {
         txtRcvInfo.text = str;
     }
 
-    public void updateDebugInfo(string str)
+    public void updateDebugInfo (string str)
     {
         txtDebugInfo.text = str;
     }
 
-    public void updateStatusInfo(string str)
+    public void updateStatusInfo (string str)
     {
         txtStatusInfo.text = str;
     }
 
-    public void updatePosInfo(string str)
+    public void updatePosInfo (string str)
     {
         txtPosInfo.text = str;
     }
 
-    public void updateDragInfo(string str)
+    public void updateDragInfo (string str)
     {
         txtDragInfo.text = str;
     }
-    public void updatePhaseInfo(string str)
+
+    public void updatePhaseInfo (string str)
     {
         txtPhaseInfo.text = str;
     }

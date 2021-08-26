@@ -127,7 +127,7 @@ public class inPhaseController : MonoBehaviour
         else if (curPhase == WelcomePhase.in_lab_scene)
         {
             GlobalMemory.Instance.excuteCommand(ServerCommand.server_say_enter_lab);
-            GlobalMemory.Instance.writeCurrentBlockConditionToFile();
+            //GlobalMemory.Instance.writeCurrentBlockConditionToFile();
             string sceneToLoad = GlobalMemory.Instance.getLabSceneToEnter();
             SceneManager.LoadScene(sceneToLoad);
         }

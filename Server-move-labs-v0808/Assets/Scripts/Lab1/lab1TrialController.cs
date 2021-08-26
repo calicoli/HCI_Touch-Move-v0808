@@ -86,6 +86,7 @@ public class lab1TrialController : MonoBehaviour
 
             if (curTrialPhase == TrialPhase.block_start)
             {
+                GlobalMemory.Instance.uniqueTrialid = 0;
                 curTrialPhase = TrialPhase.repeatition_start;
             }
             else if (curTrialPhase == TrialPhase.repeatition_start)
@@ -124,6 +125,7 @@ public class lab1TrialController : MonoBehaviour
                 GlobalMemory.Instance.curTrialStartTime = DateTime.Now;
                 curTrialNumber++;
                 GlobalMemory.Instance.curLabTrialNumber = curTrialNumber;
+                GlobalMemory.Instance.uniqueTrialid++;
                 if (curTrialNumber <= GlobalMemory.Instance.curLabInfos.totalTrialCount)
                 {
                     curTrialIndex++;
@@ -151,7 +153,8 @@ public class lab1TrialController : MonoBehaviour
                 int rid = curRepeatTime;
                 int tid = curTrialIndex;
                 int nid = curTrialNumber;
-                string prefix = string.Format("Tech{0:D2}-B{1:D2}-R{2:D2}-T{3:D2}-N{4:D2}", techid, bid, rid, tid, nid);
+                int uid = GlobalMemory.Instance.uniqueTrialid;
+                string prefix = string.Format("Tech{0:D2}-B{1:D2}-R{2:D2}-T{3:D2}-N{4:D2};{5}", techid, bid, rid, tid, nid, uid);
                 GlobalMemory.Instance.curLabTrialData.setPrefix(prefix);
 
                 GlobalMemory.Instance.curLabPhase1RawData = new TrialPhase1RawData();
@@ -175,6 +178,7 @@ public class lab1TrialController : MonoBehaviour
                     GlobalMemory.Instance.tech3TrialData = new tech3ThrowCatchTrialData();
                     GlobalMemory.Instance.tech3TrialData.init(curTrial.index, curTrial.firstid, curTrial.secondid);
                 }
+                uiController.updateUniqueInfo(string.Format("B{0:D2} - U{1}", GlobalMemory.Instance.curBlockid, GlobalMemory.Instance.uniqueTrialid));
 
                 // test mode show params
                 uiController.setTrialInfo(prefix, curTrial.firstid, curTrial.secondid);
