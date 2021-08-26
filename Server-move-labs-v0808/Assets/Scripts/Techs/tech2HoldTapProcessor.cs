@@ -372,6 +372,7 @@ public class tech2HoldTapProcessor : MonoBehaviour
 
     private bool process1Touch4Target1(Vector2 pos, int targetid)
     {
+        /*
         int hitid = -1;
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(pos);
@@ -386,7 +387,7 @@ public class tech2HoldTapProcessor : MonoBehaviour
             return true;
         else
             return false;
-        /*
+        */
         float distance = Vector3.Distance(targetVisualizer.getTargetPosition(), processScreenPosToGetWorldPosAtZeroZ(pos));
         if (distance <= targetVisualizer.getShadowLocalScale().x / 2)
         {
@@ -395,7 +396,7 @@ public class tech2HoldTapProcessor : MonoBehaviour
         else
         {
             return false;
-        }*/
+        }
     }
 
     private Vector3 processScreenPosToGetWorldPosAtZeroZ(Vector2 tp)

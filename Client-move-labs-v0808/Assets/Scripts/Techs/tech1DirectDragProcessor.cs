@@ -658,6 +658,7 @@ public class tech1DirectDragProcessor : MonoBehaviour
 
     private bool process1Touch4Target2(Vector2 pos, int targetid)
     {
+        /*
         int hitid = -1;
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(pos);
@@ -672,7 +673,16 @@ public class tech1DirectDragProcessor : MonoBehaviour
             return true;
         else
             return false;
-
+        */
+        float distance = Vector3.Distance(targetVisualizer.getTargetPosition(), processScreenPosToGetWorldPosAtZeroZ(pos));
+        if (distance <= targetVisualizer.getShadowLocalScale().x / 2)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     private Vector3 processScreenPosToGetWorldPosAtZeroZ(Vector2 tp)
