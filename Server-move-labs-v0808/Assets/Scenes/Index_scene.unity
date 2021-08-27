@@ -735,6 +735,7 @@ MonoBehaviour:
   curClientScene: 0
   curIndexPhase: 0
   curBlockid: 0
+  uniqueTrialid: 0
   clientRefreshedTrialData: 0
   curLabPhase: 0
   curLabRepeatid: 0
@@ -2098,11 +2099,11 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
-    - m_Text: 1 - Direct Drag
+    - m_Text: A - Direct Drag
       m_Image: {fileID: 0}
-    - m_Text: 2 - Hold Tap
+    - m_Text: B - Hold Tap
       m_Image: {fileID: 0}
-    - m_Text: 3 - Throw Catch
+    - m_Text: C - Throw Catch
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2937,7 +2938,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 1 - Direct Drag
+  m_Text: A - Direct Drag
 --- !u!222 &8973411754784362780
 CanvasRenderer:
   m_ObjectHideFlags: 0

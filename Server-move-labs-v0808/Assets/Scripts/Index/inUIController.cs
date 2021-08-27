@@ -136,7 +136,7 @@ public class inUIController : MonoBehaviour
         txtLabInfo.text = GlobalMemory.Instance.curLabInfos.labMode == LabMode.Full
             ? "in Full Mode" + Environment.NewLine
             : "in Test Mode" + Environment.NewLine;
-        txtLabInfo.text += "of Tech " + ((int)GlobalMemory.Instance.curDragType + 1).ToString() + ": "
+        txtLabInfo.text += "of Tech " + ((char)(GlobalMemory.Instance.curDragType + 65)).ToString() + ": "
             + GlobalMemory.Instance.curDragType.ToString();
     }
     #endregion

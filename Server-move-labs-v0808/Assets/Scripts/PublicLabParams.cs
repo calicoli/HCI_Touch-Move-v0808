@@ -87,12 +87,12 @@ public class PublicLabParams : MonoBehaviour
     {
         public const int
             totalBlockCount = 10, // for one technique
-            fullTrialCount = 14 * 2,
-            testTrialCount = 14 * 2,
+            fullTrialCount = 10 * 2,
+            testTrialCount = 10 * 1,
             fullRepetitionCount = 2,
             testRepetitionCount = 1,
-            s1PositionCount = 12,
-            s2PositionCount = 12;
+            s1PositionCount = 8,
+            s2PositionCount = 8;
 
         public enum Technique
         {

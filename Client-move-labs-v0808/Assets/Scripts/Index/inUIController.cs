@@ -50,7 +50,7 @@ public class inUIController : MonoBehaviour
             //txtLabName.text = "in " + GlobalMemory.Instance.getTargetLabName();
             txtLabName.text = "in " + GlobalMemory.Instance.targetLabMode.ToString() + " Mode"
                 + Environment.NewLine
-                + "of Tech " + ((int)GlobalMemory.Instance.targetDragType + 1).ToString() + ": "
+                + "of Tech " + ((char)(GlobalMemory.Instance.targetDragType + 65)).ToString() + ": "
                 + GlobalMemory.Instance.targetDragType.ToString();
         }
 
