@@ -139,7 +139,7 @@ public class PublicDragParams : MonoBehaviour
 
         public void init(int tid, int id1, int id2)
         {
-            tid = trialid;
+            trialid = tid;
             firstid = id1;
             secondid = id2;
             device2FirstTouchPosition = device2FirstCorrectPosition = Vector2.zero;
@@ -170,7 +170,7 @@ public class PublicDragParams : MonoBehaviour
 
         public void init(int tid, int id1, int id2)
         {
-            tid = trialid;
+            trialid = tid;
             firstid = id1;
             secondid = id2;
             maxOffset = 0f;
@@ -202,7 +202,7 @@ public class PublicDragParams : MonoBehaviour
 
         public void init(int tid, int id1, int id2)
         {
-            tid = trialid;
+            trialid = tid;
             firstid = id1;
             secondid = id2;
             deltaTime = 0;

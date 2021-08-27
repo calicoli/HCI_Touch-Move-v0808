@@ -59,7 +59,6 @@ public class tech1DirectDragProcessor : MonoBehaviour
     {
         if (GlobalMemory.Instance && GlobalMemory.Instance.curDragType == DragType.direct_drag)
         {
-
             if (curDirectDragResult != DirectDragResult.direct_drag_success
                 || GlobalMemory.Instance.tech1Target2DirectDragResult != DirectDragResult.direct_drag_success)
             {
@@ -229,14 +228,23 @@ public class tech1DirectDragProcessor : MonoBehaviour
                     if ((targetVisualizer.getTargetPosition().x + targetVisualizer.getTargetLocalScale().x / 2) > rightBound)
                     {
                         //targetVisualizer.zoominTarget();
+                        GlobalMemory.Instance.curLabPhase1RawData.targetReachMidpointStamp = CurrentTimeMillis();
                         curTarget1DirectDragStatus = DirectDragStatus.across_from_screen_1;
-                        
                     }
                 }
                 else if (curTarget1DirectDragStatus == DirectDragStatus.across_from_screen_1)
                 {
+                    if (GlobalMemory.Instance.refreshTarget1
+                        && GlobalMemory.Instance.tech1Target2DirectDragStatus == DirectDragStatus.drag_phase2_on_screen_2)
+                    {
+                        targetVisualizer.activeTarget();
+                        targetVisualizer.moveTarget(GlobalMemory.Instance.tech1Target1DirectDragPosition);
+                        GlobalMemory.Instance.refreshTarget1 = false;
+                        curTarget1DirectDragStatus = DirectDragStatus.wait_for_drag_on_2;
+                    }
+
 #if UNITY_ANDROID && UNITY_EDITOR
-                    if (Input.GetMouseButton(0) || Input.GetMouseButtonUp(0))
+                    else if (Input.GetMouseButton(0) || Input.GetMouseButtonUp(0))
                     {
                         if (touchSuccess)
                         {
@@ -250,20 +258,20 @@ public class tech1DirectDragProcessor : MonoBehaviour
                             if (Input.GetMouseButtonUp(0))
                             {
                                 targetVisualizer.inactiveTarget();
-                                GlobalMemory.Instance.curLabPhase1RawData.touch1EndStamp = CurrentTimeMillis();
-                                GlobalMemory.Instance.curLabPhase1RawData.touch1EndPos = Input.mousePosition;
-                                GlobalMemory.Instance.curLabPhase1RawData.movePhase1EndPos = targetVisualizer.getTargetScreenPosition();
-                                if ((targetVisualizer.getTargetPosition().x + targetVisualizer.getTargetLocalScale().x / 2) > rightBound)
-                                {
-                                    GlobalMemory.Instance.curLabPhase1RawData.targetReachMidpointStamp = CurrentTimeMillis();
-                                    curTarget1DirectDragStatus = DirectDragStatus.drag_phase1_end_on_screen_1;
-                                }
-                                else
-                                {
-                                    targetVisualizer.wrongTarget();
-                                    curDirectDragResult = DirectDragResult.drag_1_left_junction_after_arrive;
-                                    curTarget1DirectDragStatus = DirectDragStatus.t1tot2_trial_failed;
-                                }
+                            }
+                            GlobalMemory.Instance.curLabPhase1RawData.touch1EndStamp = CurrentTimeMillis();
+                            GlobalMemory.Instance.curLabPhase1RawData.touch1EndPos = Input.mousePosition;
+                            GlobalMemory.Instance.curLabPhase1RawData.movePhase1EndPos = targetVisualizer.getTargetScreenPosition();
+                            if ((targetVisualizer.getTargetPosition().x + targetVisualizer.getTargetLocalScale().x / 2) > rightBound)
+                            {
+                                //GlobalMemory.Instance.curLabPhase1RawData.targetReachMidpointStamp = CurrentTimeMillis();
+                                //curTarget1DirectDragStatus = DirectDragStatus.drag_phase1_end_on_screen_1;
+                            }
+                            else
+                            {
+                                targetVisualizer.wrongTarget();
+                                curDirectDragResult = DirectDragResult.drag_1_left_junction_after_arrive;
+                                curTarget1DirectDragStatus = DirectDragStatus.t1tot2_trial_failed;
                             }
                         }
                     }
@@ -273,7 +281,7 @@ public class tech1DirectDragProcessor : MonoBehaviour
                         targetVisualizer.inactiveTarget();
                         if ((targetVisualizer.getTargetPosition().x + targetVisualizer.getTargetLocalScale().x / 2) > rightBound)
                         {
-                            GlobalMemory.Instance.curLabPhase1RawData.targetReachMidpointStamp = CurrentTimeMillis();
+                            //GlobalMemory.Instance.curLabPhase1RawData.targetReachMidpointStamp = CurrentTimeMillis();
                             curTarget1DirectDragStatus = DirectDragStatus.drag_phase1_end_on_screen_1;
                         }
                         else
@@ -284,7 +292,7 @@ public class tech1DirectDragProcessor : MonoBehaviour
                         }
                     }
 #elif UNITY_IOS || UNITY_ANDROID
-                    if (Input.touchCount == 1)
+                    else if (Input.touchCount == 1)
                     {
                         Touch touch = Input.GetTouch(0);
                         if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary
@@ -299,24 +307,26 @@ public class tech1DirectDragProcessor : MonoBehaviour
                                 {
                                     targetVisualizer.moveTarget(intentPos);
                                 }
-                                if (Input.GetMouseButtonUp(0))
+                                if(touch.phase == TouchPhase.Ended)
                                 {
                                     targetVisualizer.inactiveTarget();
-                                    GlobalMemory.Instance.curLabPhase1RawData.touch1EndStamp = CurrentTimeMillis();
-                                    GlobalMemory.Instance.curLabPhase1RawData.touch1EndPos = touch.position;
-                                    GlobalMemory.Instance.curLabPhase1RawData.movePhase1EndPos = targetVisualizer.getTargetScreenPosition();
-                                    if ((targetVisualizer.getTargetPosition().x + targetVisualizer.getTargetLocalScale().x / 2) > rightBound)
-                                    {
-                                        curTarget1DirectDragStatus = DirectDragStatus.drag_phase1_end_on_screen_1;
-                                        GlobalMemory.Instance.curLabPhase1RawData.targetReachMidpointStamp = CurrentTimeMillis();
-                                    }
-                                    else
-                                    {
-                                        targetVisualizer.wrongTarget();
-                                        curDirectDragResult = DirectDragResult.drag_1_left_junction_after_arrive;
-                                        curTarget1DirectDragStatus = DirectDragStatus.t1tot2_trial_failed;
-                                    }
                                 }
+                                
+                                GlobalMemory.Instance.curLabPhase1RawData.touch1EndStamp = CurrentTimeMillis();
+                                GlobalMemory.Instance.curLabPhase1RawData.touch1EndPos = touch.position;
+                                GlobalMemory.Instance.curLabPhase1RawData.movePhase1EndPos = targetVisualizer.getTargetScreenPosition();
+                                if ((targetVisualizer.getTargetPosition().x + targetVisualizer.getTargetLocalScale().x / 2) > rightBound)
+                                {
+                                    //curTarget1DirectDragStatus = DirectDragStatus.drag_phase1_end_on_screen_1;
+                                    //GlobalMemory.Instance.curLabPhase1RawData.targetReachMidpointStamp = CurrentTimeMillis();
+                                }
+                                else
+                                {
+                                    targetVisualizer.wrongTarget();
+                                    curDirectDragResult = DirectDragResult.drag_1_left_junction_after_arrive;
+                                    curTarget1DirectDragStatus = DirectDragStatus.t1tot2_trial_failed;
+                                }
+                                
                             }
                         }
                     }
@@ -327,7 +337,7 @@ public class tech1DirectDragProcessor : MonoBehaviour
                         if ((targetVisualizer.getTargetPosition().x + targetVisualizer.getTargetLocalScale().x / 2) > rightBound)
                         {
                             curTarget1DirectDragStatus = DirectDragStatus.drag_phase1_end_on_screen_1;
-                            GlobalMemory.Instance.curLabPhase1RawData.targetReachMidpointStamp = CurrentTimeMillis();
+                            //GlobalMemory.Instance.curLabPhase1RawData.targetReachMidpointStamp = CurrentTimeMillis();
                         }
                         else
                         {
@@ -341,8 +351,59 @@ public class tech1DirectDragProcessor : MonoBehaviour
                 }
                 else if (curTarget1DirectDragStatus == DirectDragStatus.drag_phase1_end_on_screen_1)
                 {
+#if UNITY_ANDROID && UNITY_EDITOR
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        touchSuccess = process1Touch4Target1(Input.mousePosition, 0);
+                        if (touchSuccess)
+                        {
+                            //GlobalMemory.Instance.curLabPhase1RawData.touch1StartStamp = CurrentTimeMillis();
+                            //GlobalMemory.Instance.curLabPhase1RawData.touch1StartPos = Input.mousePosition;
+                            targetVisualizer.activeTarget();
+                            dragStartTouchPosInWorld = processScreenPosToGetWorldPosAtZeroZ(Input.mousePosition);
+                            dragStartTargetPos = targetVisualizer.getTargetPosition();
+                            curTarget1DirectDragStatus = DirectDragStatus.across_from_screen_1;
+                        }
+                    }
+#elif UNITY_IOS || UNITY_ANDROID
+                    if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Began)
+                    {
+                        touchSuccess = process1Touch4Target1(Input.GetTouch(0).position, 0);
+                        if (touchSuccess)
+                        {
+                            //GlobalMemory.Instance.curLabPhase1RawData.touch1StartStamp = CurrentTimeMillis();
+                            //GlobalMemory.Instance.curLabPhase1RawData.touch1StartPos = Input.mousePosition;
+                            targetVisualizer.activeTarget();
+                            dragStartTouchPosInWorld = processScreenPosToGetWorldPosAtZeroZ(Input.GetTouch(0).position);
+                            dragStartTargetPos = targetVisualizer.getTargetPosition();
+                            curTarget1DirectDragStatus = DirectDragStatus.across_from_screen_1;
+                        }
+                    }
+
+#endif
                     //GlobalMemory.Instance.curLabTrialData.localTime.serverSendDataStamp = CurrentTimeMillis();
-                    curTarget1DirectDragStatus = DirectDragStatus.wait_for_drag_on_2;
+                    if (GlobalMemory.Instance.refreshTarget1
+                        && GlobalMemory.Instance.tech1Target2DirectDragStatus == DirectDragStatus.drag_phase2_on_screen_2)
+                    {
+                        targetVisualizer.activeTarget();
+                        targetVisualizer.moveTarget(GlobalMemory.Instance.tech1Target1DirectDragPosition);
+                        GlobalMemory.Instance.refreshTarget1 = false;
+                        curTarget1DirectDragStatus = DirectDragStatus.wait_for_drag_on_2;
+                    }
+                    if (GlobalMemory.Instance.tech1Target2DirectDragStatus == DirectDragStatus.across_end_from_screen_1)
+                    {
+                        targetVisualizer.hideTarget();
+                        //targetVisualizer.zoomoutTarget();
+                    }
+                    else if (GlobalMemory.Instance.tech1Target2DirectDragStatus == DirectDragStatus.drag_phase2_end_on_screen_2)
+                    {
+                        targetVisualizer.hideTarget();
+                        targetVisualizer.hideShadow();
+                        GlobalMemory.Instance.curLabPhase1RawData.targetReachEndpointInfoReceivedStamp = CurrentTimeMillis();
+                        GlobalMemory.Instance.curLabTrialData.setTrialAccuracy(true, true);
+                        GlobalMemory.Instance.curLabTrialData.techResult = curDirectDragResult.ToString();
+                        trialController.switchTrialPhase(PublicTrialParams.TrialPhase.a_successful_trial);
+                    }
                 }
                 else if (curTarget1DirectDragStatus == DirectDragStatus.wait_for_drag_on_2)
                 {
@@ -372,7 +433,8 @@ public class tech1DirectDragProcessor : MonoBehaviour
             else if (GlobalMemory.Instance.lab1Target1Status == TargetStatus.total_on_screen_2)
             {
                 if (curTarget1DirectDragStatus == DirectDragStatus.inactive_on_screen_2
-                    && GlobalMemory.Instance.tech1Target2DirectDragStatus == DirectDragStatus.across_from_screen_2)
+                    && (GlobalMemory.Instance.tech1Target2DirectDragStatus == DirectDragStatus.across_from_screen_2
+                        || GlobalMemory.Instance.tech1Target2DirectDragStatus == DirectDragStatus.drag_phase1_end_on_screen_2))
                 {
                     if (GlobalMemory.Instance.refreshTarget1)
                     {
@@ -380,18 +442,8 @@ public class tech1DirectDragProcessor : MonoBehaviour
                         targetVisualizer.activeTarget();
                         //targetVisualizer.zoominTarget();
                         targetVisualizer.showTarget();
-                    }
-                }
-                else if (curTarget1DirectDragStatus == DirectDragStatus.inactive_on_screen_2
-                    && GlobalMemory.Instance.tech1Target2DirectDragStatus == DirectDragStatus.drag_phase1_end_on_screen_2)
-                {
-                    if (GlobalMemory.Instance.refreshTarget1)
-                    {
-                        targetVisualizer.moveTarget(GlobalMemory.Instance.tech1Target1DirectDragPosition);
-                        targetVisualizer.inactiveTarget();
-                        //targetVisualizer.zoominTarget();
-                        targetVisualizer.showTarget();
-                        curTarget1DirectDragStatus = DirectDragStatus.drag_phase1_end_on_screen_2;
+                        //curTarget1DirectDragStatus = DirectDragStatus.drag_phase1_end_on_screen_2;
+                        GlobalMemory.Instance.refreshTarget1 = false;
                     }
                     if (!haveRecordedStamp)
                     {
@@ -399,9 +451,10 @@ public class tech1DirectDragProcessor : MonoBehaviour
                         GlobalMemory.Instance.curLabPhase2RawData.movePhase2StartPos = targetVisualizer.getTargetScreenPosition();
                         haveRecordedStamp = true;
                     }
-                }
-                else if (curTarget1DirectDragStatus == DirectDragStatus.drag_phase1_end_on_screen_2)
-                {
+                    if (GlobalMemory.Instance.tech1Target2DirectDragStatus == DirectDragStatus.drag_phase1_end_on_screen_2)
+                    {
+                        targetVisualizer.inactiveTarget();
+                    }
 #if UNITY_ANDROID && UNITY_EDITOR
                     if (Input.GetMouseButtonDown(0) || Input.GetMouseButton(0))
                     {
@@ -413,13 +466,14 @@ public class tech1DirectDragProcessor : MonoBehaviour
                             if (!phase2FirstTouchHappened)
                             {
                                 GlobalMemory.Instance.tech1TrialData.device2FirstTouchPosition
-                                    = GlobalMemory.Instance.tech1TrialData.device2FirstCorrectPosition 
+                                    = GlobalMemory.Instance.tech1TrialData.device2FirstCorrectPosition
                                     = Input.mousePosition;
-                                GlobalMemory.Instance.tech1TrialData.device2FirstTouchStamp 
+                                GlobalMemory.Instance.tech1TrialData.device2FirstTouchStamp
                                     = GlobalMemory.Instance.tech1TrialData.device2FirstCorrectTouchStamp
                                     = CurrentTimeMillis();
                                 GlobalMemory.Instance.curLabTrialData.techData = GlobalMemory.Instance.tech1TrialData.getAllData();
-                            } else
+                            }
+                            else
                             {
                                 GlobalMemory.Instance.tech1TrialData.device2FirstCorrectPosition
                                     = Input.mousePosition;

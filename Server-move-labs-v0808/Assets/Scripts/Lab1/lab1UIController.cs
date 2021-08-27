@@ -42,8 +42,8 @@ public class lab1UIController : MonoBehaviour
         }
         else if (GlobalMemory.Instance && GlobalMemory.Instance.curLabInfos.labMode == LabMode.Test)
         {
-            //setDebugUIVisibility(false);
-            setDebugUIVisibility(true);
+            setDebugUIVisibility(false);
+            //setDebugUIVisibility(true);
         }
         btnBack.gameObject.SetActive(false);
         txtFinishLab.gameObject.SetActive(false);

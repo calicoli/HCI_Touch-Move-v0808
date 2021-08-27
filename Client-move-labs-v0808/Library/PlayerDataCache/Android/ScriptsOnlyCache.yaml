@@ -806,4 +806,4 @@ ScriptsOnlyBuild:
   scenePathNames:
   - Assets/Scenes/Index_scene.unity
   - Assets/Scenes/Lab1_move_3techs.unity
-  playerPath: D:/WorkSpace/Unity Build/move-client-labs.apk
+  playerPath: D:/WorkSpace/Unity Build/move-client-final.apk
