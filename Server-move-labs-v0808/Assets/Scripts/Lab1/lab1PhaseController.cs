@@ -72,6 +72,7 @@ public class lab1PhaseController : MonoBehaviour
             trialController.setExperimentStatus(false);
             curPhase = LabPhase.wait_to_back_to_entry;
         }
+        
         else if (curPhase == LabPhase.wait_to_back_to_entry)
         {
             uiController.btnBack.gameObject.SetActive(true);

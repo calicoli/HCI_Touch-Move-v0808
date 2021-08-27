@@ -28,6 +28,7 @@ public class lab1TargetVisualizer : MonoBehaviour
         setPosMarkers();
         hideTarget();
         hideShadow();
+        hideMarkers();
         if (GlobalMemory.Instance && GlobalMemory.Instance.targetLabMode == PublicInfo.LabMode.Full)
         {
             updateShadowColor(shadowColorInFullLab);

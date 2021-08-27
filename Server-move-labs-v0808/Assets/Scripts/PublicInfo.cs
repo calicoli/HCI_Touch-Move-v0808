@@ -46,6 +46,7 @@ public class PublicInfo : MonoBehaviour
         server_say_exit_lab = 5,
         server_say_end_lab = 6,
         server_say_reset_drag_type_and_position = 7,
+        server_say_skip_current_block = 8,
     }
 
     public enum ClientCommand

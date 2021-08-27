@@ -14,6 +14,7 @@ public class lab1UIController : MonoBehaviour
     public lab1PhaseController phaseController;
 
     public Button btnBack;
+    public Button btnSkip;
     public Text txtFinishLab;
     public Text txtUniqueInfo;
 
@@ -36,6 +37,10 @@ public class lab1UIController : MonoBehaviour
     void Start()
     {
         Debug.Log("dy-" + Camera.main.aspect.ToString());
+        btnBack.gameObject.SetActive(false);
+        btnSkip.gameObject.SetActive(false);
+        txtFinishLab.gameObject.SetActive(false);
+        txtUniqueInfo.gameObject.SetActive(true);
         if (GlobalMemory.Instance && GlobalMemory.Instance.curLabInfos.labMode == LabMode.Full)
         {
             setDebugUIVisibility(false);
@@ -44,10 +49,9 @@ public class lab1UIController : MonoBehaviour
         {
             setDebugUIVisibility(false);
             //setDebugUIVisibility(true);
+            btnSkip.gameObject.SetActive(true);
         }
-        btnBack.gameObject.SetActive(false);
-        txtFinishLab.gameObject.SetActive(false);
-        txtUniqueInfo.gameObject.SetActive(true);
+        
     }
 
     // Update is called once per frame
@@ -58,6 +62,13 @@ public class lab1UIController : MonoBehaviour
         txtAngle.text = "Angle: " + Math.Round(GlobalMemory.Instance.curAngle, 1).ToString() + "°";
         updateSendInfo(GlobalMemory.Instance.sendInfo);
         updateRcvInfo(GlobalMemory.Instance.rcvInfo);
+    }
+
+    public void SkipCurrentBlock()
+    {
+        GlobalMemory.Instance.server.
+            prepareNewMessage4Client(MessageType.Command, ServerCommand.server_say_skip_current_block);
+        phaseController.moveToPhase(LabPhase.out_lab_scene);
     }
 
     public void BackToEntrySceneSoon()

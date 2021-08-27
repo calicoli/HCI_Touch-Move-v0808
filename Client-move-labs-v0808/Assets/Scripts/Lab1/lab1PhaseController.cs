@@ -47,6 +47,13 @@ public class lab1PhaseController : MonoBehaviour
             prevPhase = curPhase;
         }
 
+        if (GlobalMemory.Instance.serverCmdQueue.Count != 0 &&
+                GlobalMemory.Instance.serverCmdQueue.Peek() == ServerCommand.server_say_skip_current_block)
+        {
+            finishCurrentServerCmdExcution();
+            switchPhase(LabPhase.wait_to_back_to_entry);
+        }
+
         if (curPhase == LabPhase.in_lab_scene)
         {
             switchPhase(LabPhase.check_connection);
