@@ -93,6 +93,7 @@ public class lab1TrialController : MonoBehaviour
                         GlobalMemory.Instance.tech3TrialData = new tech3ThrowCatchTrialData();
                         GlobalMemory.Instance.tech3TrialData.init(curTrial.index, curTrial.firstid, curTrial.secondid);
                     }
+                    uiController.updateUniqueInfo(GlobalMemory.Instance.curLabUniqueTid.ToString());
 
                     // test mode show params
                     uiController.setTrialInfo(prefix, curTrial.firstid, curTrial.secondid);

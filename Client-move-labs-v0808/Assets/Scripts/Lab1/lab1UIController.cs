@@ -9,6 +9,7 @@ public class lab1UIController : MonoBehaviour
 {
     public Camera renderCamera;
     public Text txtFinishLab;
+    public Text txtUniqueInfo;
 
     public Text txtDragMode;
     public Text txtSendInfo;
@@ -33,10 +34,11 @@ public class lab1UIController : MonoBehaviour
         }
         else if (GlobalMemory.Instance && GlobalMemory.Instance.targetLabMode == LabMode.Test)
         {
-            //setDebugUIVisibility(true);
-            setDebugUIVisibility(false);
+            setDebugUIVisibility(true);
+            //setDebugUIVisibility(false);
         }
         txtFinishLab.gameObject.SetActive(false);
+        txtUniqueInfo.gameObject.SetActive(true);
     }
 
     // Update is called once per frame
@@ -64,6 +66,11 @@ public class lab1UIController : MonoBehaviour
         txtPosInfo.gameObject.SetActive(debugging);
         txtTrial.gameObject.SetActive(debugging);
         txtDragInfo.gameObject.SetActive(debugging);
+    }
+
+    public void updateUniqueInfo (string str)
+    {
+        txtUniqueInfo.text = str;
     }
 
     public void setTrialInfo(string prefix, int id1, int id2)

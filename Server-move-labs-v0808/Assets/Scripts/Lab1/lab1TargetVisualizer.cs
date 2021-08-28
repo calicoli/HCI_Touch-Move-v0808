@@ -40,7 +40,7 @@ public class lab1TargetVisualizer : MonoBehaviour
         else if (GlobalMemory.Instance && GlobalMemory.Instance.curLabInfos.labMode == PublicInfo.LabMode.Test)
         {
             updateShadowColor(shadowColorInTestLab);
-            //showMarkers();
+            showMarkers();
         }
     }
 

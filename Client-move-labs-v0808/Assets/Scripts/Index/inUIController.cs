@@ -24,6 +24,11 @@ public class inUIController : MonoBehaviour
 
     public Button btnConnect;
 
+    private void Start()
+    {
+        inputServerip.text = "172.16.81.22";
+    }
+
     void Update()
     {
         isConnecting = GlobalMemory.Instance.getConnectionStatus();

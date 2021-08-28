@@ -196,9 +196,10 @@ public class ClientCenter : MonoBehaviour
         int sTarget1id = Convert.ToInt32(messages[3]);
         int sTarget2id = Convert.ToInt32(messages[4]);
         string sTrialPhase = messages[5];
+        int sUniqueTid = Convert.ToInt32(messages[6]);
 
         GlobalMemory.Instance.
-            receiveTrialDataFromServer(sTrialNum, sTrialid, sTarget1id, sTarget2id, sTrialPhase);
+            receiveTrialDataFromServer(sTrialNum, sTrialid, sTarget1id, sTarget2id, sTrialPhase, sUniqueTid);
 
     }
 

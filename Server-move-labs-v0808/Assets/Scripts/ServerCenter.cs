@@ -306,16 +306,19 @@ public class ServerCenter : MonoBehaviour
     private string getLabTrialMessage()
     {
         string res;
+        
         string sTrialNum = GlobalMemory.Instance.curLabTrialNumber.ToString();
         string sTrialid = GlobalMemory.Instance.curLabTrialid.ToString();
         string sTarget1id = GlobalMemory.Instance.curLabTrial.firstid.ToString();
         string sTarget2id = GlobalMemory.Instance.curLabTrial.secondid.ToString();
         string sTrialPhase = GlobalMemory.Instance.curLabTrialPhase.ToString();
+        string sUniqueTid = GlobalMemory.Instance.uniqueTrialid.ToString();
         res = sTrialNum + paramSeperators
             + sTrialid + paramSeperators
             + sTarget1id + paramSeperators
             + sTarget2id + paramSeperators
             + sTrialPhase + paramSeperators
+            + sUniqueTid + paramSeperators
             ;
         Debug.Log("LabTrialMsg: " + res);
         return res;

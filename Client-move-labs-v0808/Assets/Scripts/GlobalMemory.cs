@@ -57,7 +57,7 @@ public class GlobalMemory : MonoBehaviour
     [HideInInspector]
     public LabPhase curLabPhase;
     [HideInInspector]
-    public int curLabRepeatid, curLabTrialid, curLabTrialNumber;
+    public int curLabRepeatid, curLabTrialid, curLabTrialNumber, curLabUniqueTid;
     [HideInInspector]
     public Trial curLabTrial;
     [HideInInspector]
@@ -162,7 +162,7 @@ public class GlobalMemory : MonoBehaviour
         return targetLabName.ToString();
     }
 
-    public void receiveTrialDataFromServer (int num, int tid, int t1id, int t2id, string tPhase)
+    public void receiveTrialDataFromServer (int num, int tid, int t1id, int t2id, string tPhase, int uid)
     {
         switch (targetLabName)
         {
@@ -172,6 +172,7 @@ public class GlobalMemory : MonoBehaviour
                 curLabTrialid = tid;
                 curLabTrial.setParams(tid, t1id, t2id);
                 serverLabTrialPhase = (TrialPhase)Enum.Parse(typeof(TrialPhase), tPhase);
+                curLabUniqueTid = uid;
                 break;
             default:
                 break;
