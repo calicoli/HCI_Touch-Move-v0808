@@ -473,6 +473,25 @@ public class GlobalMemory: MonoBehaviour
             + curDragType.ToString() + "-"
             + "AllUsers.txt";
         fileProcessor.writeNewDataToFile(trialdataFilename, strContent);
+
+        if (curLabInfos.labMode == LabMode.Full)
+        {
+            string analysisFilename =
+                "Analysis" + "-"
+                + curDragType.ToString() + "-"
+                + "AllUsers.txt";
+            string strFactor =
+                userid.ToString() + ";"
+                + curDragType.ToString() + ";"
+                + curBlockCondition.getOrientation() + ";"
+                + curBlockCondition.getAngle() + ";"
+                + curBlockid.ToString() + ";"
+                + uniqueTrialid.ToString() + ";"
+                + curLabRepeatid.ToString() + ";"
+                + curLabTrialNumber.ToString() + ";"
+                ;
+            fileProcessor.writeNewDataToFile(analysisFilename, strFactor + strContent);
+        }
         finishedWrite = true;
     }
 
