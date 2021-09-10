@@ -375,26 +375,29 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
                 }
                 else if (curTarget1ThrowCatchStatus == ThrowCatchStatus.wait_for_catch_on_2)
                 {
-                    if (GlobalMemory.Instance.tech3Target2ThrowCatchStatus == ThrowCatchStatus.catch_start_on_screen_2
-                        || GlobalMemory.Instance.tech3Target2ThrowCatchStatus == ThrowCatchStatus.t1_move_phase2_ongoing
-                        || GlobalMemory.Instance.tech3Target2ThrowCatchStatus == ThrowCatchStatus.t1_move_phase2_acrossing_over
-                        || GlobalMemory.Instance.tech3Target2ThrowCatchStatus == ThrowCatchStatus.catch_end_on_screen_2)
+                    if (GlobalMemory.Instance.tech3Target2ThrowCatchStatus == ThrowCatchStatus.catch_end_on_screen_2)
+                    {
+                        flickerVisualizer.stopFlicker();
+                        flickerVisualizer.showFlickerObjects();
+                        targetVisualizer.hideTarget();
+                        curTarget1ThrowCatchStatus = ThrowCatchStatus.catch_end_on_screen_2;
+                    }
+                    else if (GlobalMemory.Instance.tech3Target2ThrowCatchStatus == ThrowCatchStatus.catch_start_on_screen_2)
                     {
                         flickerVisualizer.stopFlicker();
                         flickerVisualizer.showFlickerObjects();
                     }
-                    if (GlobalMemory.Instance.tech3Target2ThrowCatchStatus == ThrowCatchStatus.t1_move_phase2_ongoing)
+                    else if (GlobalMemory.Instance.tech3Target2ThrowCatchStatus == ThrowCatchStatus.t1_move_phase2_ongoing)
                     {
+                        flickerVisualizer.stopFlicker();
+                        flickerVisualizer.showFlickerObjects();
                         targetVisualizer.moveTarget(GlobalMemory.Instance.tech3Target1ThrowCatchPosition);
                     }
                     else if (GlobalMemory.Instance.tech3Target2ThrowCatchStatus == ThrowCatchStatus.t1_move_phase2_acrossing_over)
                     {
+                        flickerVisualizer.stopFlicker();
+                        flickerVisualizer.showFlickerObjects();
                         targetVisualizer.hideTarget();
-                    }
-                    else if (GlobalMemory.Instance.tech3Target2ThrowCatchStatus == ThrowCatchStatus.catch_end_on_screen_2)
-                    {
-                        targetVisualizer.hideTarget();
-                        curTarget1ThrowCatchStatus = ThrowCatchStatus.catch_end_on_screen_2;
                     }
                 }
                 else if (curTarget1ThrowCatchStatus == ThrowCatchStatus.catch_end_on_screen_2)
@@ -522,6 +525,7 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
                             curThrowCatchResult = ThrowCatchResult.catch_failed_to_arrive_pos;
                             curTarget1ThrowCatchStatus = ThrowCatchStatus.t2tot1_trial_failed;
                         }
+                        GlobalMemory.Instance.tech3Target1ThrowCatchStatus = curTarget1ThrowCatchStatus;
                     }
                 }
                 else if (curTarget1ThrowCatchStatus == ThrowCatchStatus.catch_end_on_screen_1)
@@ -541,8 +545,8 @@ public class tech3ThrowCatchProcessor : MonoBehaviour
             }
         }
 
-        //uiController.updateDebugInfo(curTarget1ThrowCatchStatus.ToString());
-        //uiController.updateStatusInfo(GlobalMemory.Instance.tech3Target2ThrowCatchStatus.ToString());
+        uiController.updateDebugInfo(curTarget1ThrowCatchStatus.ToString());
+        uiController.updateStatusInfo(GlobalMemory.Instance.tech3Target2ThrowCatchStatus.ToString());
         //uiController.updatePosInfo(throwResult.ToString());
         GlobalMemory.Instance.tech3Target1ThrowCatchStatus = curTarget1ThrowCatchStatus;
         GlobalMemory.Instance.tech3Target1ThrowCatchPosition = targetVisualizer.getTargetPosition();

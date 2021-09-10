@@ -71,7 +71,8 @@ public class lab1TargetVisualizer : MonoBehaviour
             Debug.Log(i.ToString() + " " + markers.transform.GetChild(i).gameObject.name + " " 
                 + posMarkers[i].ToString() + " "
                 + renderCamera.WorldToScreenPoint(posMarkers[i]).ToString() + " "
-                + Vector3.Distance(posMarkers[i], renderCamera.ScreenToWorldPoint(new Vector2(1440f, 1600f))).ToString() ) ;
+                + Vector3.Distance(posMarkers[i], renderCamera.ScreenToWorldPoint(new Vector2(1440f, 1600f))).ToString() + " "
+                + Vector3.Distance(renderCamera.WorldToScreenPoint(posMarkers[i]), new Vector2(1440f, 1600f)).ToString() + " ") ;
         }
     }
 

@@ -236,7 +236,10 @@ public class GlobalMemory : MonoBehaviour
     {
         tech3Target1ThrowCatchStatus = t1tc;
         tech3Target1ThrowCatchPosition = new Vector3(t1px, t1py, 0f);
-        tech3Target1ThrowCatchResult = t1result;
+        if (tech3Target1ThrowCatchStatus != ThrowCatchStatus.catch_end_on_screen_1)
+        {
+            tech3Target1ThrowCatchResult = t1result;
+        }
 
         if (t1tc == ThrowCatchStatus.throw_successed_on_screen_1)
         {

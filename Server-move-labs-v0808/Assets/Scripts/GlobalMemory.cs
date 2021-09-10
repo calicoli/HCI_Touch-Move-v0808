@@ -350,6 +350,12 @@ public class GlobalMemory: MonoBehaviour
     {
         tech3Target2ThrowCatchStatus = t2tc;
         tech3Target2ThrowCatchResult = t2result;
+
+        if (tech3Target2ThrowCatchStatus != ThrowCatchStatus.catch_end_on_screen_2)
+        {
+            tech3Target2ThrowCatchResult = t2result;
+        }
+
         if (t2tc == ThrowCatchStatus.throw_successed_on_screen_2)
         {
             float rightBound = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0)).x;

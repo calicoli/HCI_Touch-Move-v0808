@@ -101,7 +101,8 @@ public class lab1TrialController : MonoBehaviour
                     curTrialPhase = TrialPhase.c_received_trial_params;
                     GlobalMemory.Instance.curLabTrialPhase = TrialPhase.c_received_trial_params;
                     sender.prepareNewMessage4Server(MessageType.Trial);
-                } else if( GlobalMemory.Instance.serverLabTrialPhase == TrialPhase.block_end)
+                }
+                else if( GlobalMemory.Instance.serverLabTrialPhase == TrialPhase.block_end)
                 {
                     curTrialPhase = TrialPhase.block_end;
                     GlobalMemory.Instance.serverLabTrialPhase = TrialPhase.inactive_phase;
